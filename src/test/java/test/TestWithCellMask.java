@@ -1,6 +1,5 @@
 package test;
 
-import de.embl.cba.spindle3d.command.Spindle3DFileProcessorCommand;
 import loci.common.DebugTools;
 import net.imagej.ImageJ;
 import org.junit.Test;

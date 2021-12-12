@@ -1,6 +1,5 @@
 package develop;
 
-import de.embl.cba.spindle3d.command.Spindle3DFileProcessorCommand;
 import loci.common.DebugTools;
 import net.imagej.ImageJ;
 import net.imglib2.type.numeric.RealType;
