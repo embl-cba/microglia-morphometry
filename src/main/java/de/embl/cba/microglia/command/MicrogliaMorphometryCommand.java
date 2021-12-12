@@ -1,9 +1,9 @@
 package de.embl.cba.microglia.command;
 
+import de.embl.cba.microglia.MicrogliaMorphometry;
 import de.embl.cba.morphometry.Logger;
 import de.embl.cba.morphometry.Measurements;
 import de.embl.cba.morphometry.Utils;
-import de.embl.cba.morphometry.microglia.MicrogliaMorphometry;
 import de.embl.cba.tables.Tables;
 import ij.ImagePlus;
 import inra.ijpb.measure.region2d.GeodesicDiameter;

@@ -10,7 +10,6 @@ import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.type.NativeType;
 import net.imglib2.type.numeric.RealType;
 import org.scijava.command.Command;
-import org.scijava.log.LogService;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
@@ -21,28 +20,25 @@ import java.util.ArrayList;
 @Plugin(type = Command.class, menuPath = "Plugins>Tracking>Microglia Segmentation And Tracking" )
 public class MicrogliaSegmentationAndTrackingCommand< T extends RealType<T> & NativeType< T > > implements Command
 {
-	@Parameter
-	public LogService logService;
+	private MicrogliaSettings settings = new MicrogliaSettings();
 
 	@Parameter
 	public OpService opService;
 
-	MicrogliaSettings settings = new MicrogliaSettings();
-
 	@Parameter( label = "Intensity image time series (single channel 2D+t)")
-	public File intensitiesFile;
+	public File intensityFile;
 
 	@Parameter( label = "Intensity threshold [relative]")
-	public double intensityThreshold = 1.5;
+	public double relativeIntensityThreshold = 1.5;
 
 	@Parameter( label = "Proceed from existing segmentation")
-	public boolean proceedFromExisting;
+	public boolean proceedFromExisting = false;
 
 	@Parameter( label = "Label mask time series (single channel 2D+t)", required = false )
-	public File segmentationFile;
+	public File segmentationFile = null;
 
 	@Parameter( label = "Output directory", style = "directory" )
-	public File outputDirectory;
+	public File outputDirectory = new File("src/test/resources/data");
 
 //	@Parameter( label = "Minimal time frame to be processed", min = "1" )
 	public long tMinOneBased = 1;
@@ -50,25 +46,27 @@ public class MicrogliaSegmentationAndTrackingCommand< T extends RealType<T> & Na
 //	@Parameter( label = "Maximal time frame to be processed", min = "1" )
 	public long tMaxOneBased = 1000000000L;
 
+
 	@Parameter
 	public boolean showIntermediateResults = settings.showIntermediateResults;
+
 	private ImagePlus imagePlus;
 	private ArrayList< RandomAccessibleInterval< T > > intensities;
 
 	public void run()
 	{
 		setSettings();
-		processFile( intensitiesFile );
+		processFile( intensityFile );
 	}
 
 	public void setSettings()
 	{
 		settings.outputLabelingsPath = outputDirectory + File.separator
-			+ intensitiesFile.getName().split( "\\." )[ 0 ] + "-labelMasks.tif";
+			+ intensityFile.getName().split( "\\." )[ 0 ] + "-labelMasks.tif";
 		settings.showIntermediateResults = showIntermediateResults;
 		settings.outputDirectory = outputDirectory;
 		settings.opService = opService;
-		settings.thresholdInUnitsOfBackgroundPeakHalfWidth = intensityThreshold;
+		settings.thresholdInUnitsOfBackgroundPeakHalfWidth = relativeIntensityThreshold;
 	}
 
 	private void processFile( File file )

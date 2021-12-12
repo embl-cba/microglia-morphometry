@@ -49,13 +49,27 @@ public class TrackingSplitterManualCorrectionUI< T extends RealType< T > & Nativ
 
 	public void configureAndShowUI()
 	{
-		add( updateLabelsButton() );
-
 		add( nextFrameButton() );
 
 		add( stopAndSaveButton() );
 
 		add( saveButton() );
+
+		// TODO: add( deleteRoiButton );
+		// TODO: add( fillRoiButton );
+		/*
+		IJ.setBackgroundColor(0, 0, 0);
+IJ.run(imp, "Clear", "slice");
+//IJ.setTool("dropper");
+IJ.setForegroundColor(85, 211, 255);
+IJ.setForegroundColor(196, 196, 196);
+IJ.setForegroundColor(196, 196, 196);
+IJ.run(imp, "Fill", "slice");
+IJ.setForegroundColor(0, 0, 0);
+IJ.setForegroundColor(4, 4, 4);
+imp2 = imp.duplicate();
+
+		 */
 
 		showPanel();
 	}
@@ -78,12 +92,10 @@ public class TrackingSplitterManualCorrectionUI< T extends RealType< T > & Nativ
 
 	public JButton updateLabelsButton()
 	{
-		final JButton button = new JButton( "Update Labels" );
+		final JButton button = new JButton( "Update labels" );
 		button.addActionListener( e -> {
 			labels = runMaximalOverlapTrackerOnEditedImagePlus();
-
 			closeCurrentEditedLabelsImagePlus();
-
 			showLabelsImageForEditing( labels );
 		} );
 

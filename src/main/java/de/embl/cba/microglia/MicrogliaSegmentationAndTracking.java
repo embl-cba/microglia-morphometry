@@ -1,8 +1,7 @@
 package de.embl.cba.microglia;
 
+import de.embl.cba.microglia.track.SemiAutomatedTrackingSplitter;
 import de.embl.cba.morphometry.Logger;
-import de.embl.cba.morphometry.segmentation.MicrogliaSegmenter;
-import de.embl.cba.morphometry.tracking.SemiAutomatedTrackingSplitter;
 import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.type.NativeType;
 import net.imglib2.type.numeric.RealType;
@@ -33,9 +32,10 @@ public class MicrogliaSegmentationAndTracking< T extends RealType< T > & NativeT
 			ArrayList< RandomAccessibleInterval< T > > intensities )
 	{
 		ArrayList<  RandomAccessibleInterval< T > > masks = new ArrayList<>();
-		for ( long t = 0; t < intensities.size() ; ++t )
+		final int numFrames = intensities.size();
+		for ( long t = 0; t < numFrames; ++t )
 		{
-			Logger.log("Creating mask for frame " + ( t + 1 ) );
+			Logger.log("Segmenting frame " + ( t + 1 ) + "/" + numFrames );
 			final MicrogliaSegmenter microgliaSegmenter =
 					new MicrogliaSegmenter( intensities.get( ( int ) t ), settings );
 			microgliaSegmenter.run();
