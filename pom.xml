@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<parent>
+		<groupId>org.scijava</groupId>
+		<artifactId>pom-scijava</artifactId>
+		<version>31.1.0</version>
+	</parent>
+
+	<groupId>de.embl.cba</groupId>
+	<artifactId>microglia-morphometry</artifactId>
+	<version>0.5.0-SNAPSHOT</version>
+
+	<name>microglia morphometry</name>
+	<description>Fiji plugin for semi-automated microglia segmentation and morphometry</description>
+	<inceptionYear>2018</inceptionYear>
+	<organization>
+		<name>EMBL</name>
+		<url>http://embl.de/</url>
+	</organization>
+	<licenses>
+		<license>
+			<name>Simplified BSD License</name>
+			<distribution>repo</distribution>
+		</license>
+	</licenses>
+
+	<developers>
+		<developer>
+			<id>tischi</id>
+			<name>Christian Tischer</name>
+			<roles>
+				<role>lead</role>
+				<role>developer</role>
+				<role>debugger</role>
+				<role>reviewer</role>
+				<role>support</role>
+				<role>maintainer</role>
+			</roles>
+		</developer>
+	</developers>
+	<contributors>
+		<contributor>
+		</contributor>
+	</contributors>
+
+	<mailingLists>
+		<mailingList>
+			<name>ImageJ Forum</name>
+			<archive>http://forum.imagej.net/</archive>
+		</mailingList>
+	</mailingLists>
+	
+	<scm>
+		<connection>scm:git:git://github.com/embl-cba/microglia-morphometry</connection>
+		<developerConnection>scm:git:git@github.com/embl-cba/microglia-morphometry</developerConnection>
+		<tag>HEAD</tag>
+		<url>https://github.com/embl-cba/microglia-morphometry</url>
+	</scm>
+	<issueManagement>
+		<system>GitHub</system>
+		<url>https://github.com/embl-cba/microglia-morphometry/issues</url>
+	</issueManagement>
+	
+	<ciManagement>
+		<system>None</system>
+	</ciManagement>
+
+	<properties>
+		<package-name>de.embl.cba</package-name>
+		<license.licenseName>bsd_2</license.licenseName>
+		<license.copyrightOwners>EMBL</license.copyrightOwners>
+		<enforcer.skip>true</enforcer.skip>
+
+		<imagej-utils.version>0.6.4</imagej-utils.version>
+	</properties>
+
+	<repositories>
+		<!-- NB: for SciJava dependencies -->
+		<repository>
+			<id>imagej.public</id>
+			<url>https://maven.imagej.net/content/groups/public</url>
+		</repository>
+	</repositories>
+
+
+	<dependencies>
+		<dependency>
+			<groupId>net.imagej</groupId>
+			<artifactId>imagej</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>de.embl.cba</groupId>
+			<artifactId>imagej-utils</artifactId>
+			<version>${imagej-utils.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<scope>test</scope>
+		</dependency>
+	</dependencies>
+</project>
+
