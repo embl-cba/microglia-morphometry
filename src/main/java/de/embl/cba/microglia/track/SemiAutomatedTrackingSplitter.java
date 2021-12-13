@@ -66,32 +66,30 @@ public class SemiAutomatedTrackingSplitter< T extends RealType< T > & NativeType
 
 	public void run()
 	{
-
+		// If there already is a label mask image,
+		// start at it's last time point.
+		// Otherwise start from the beginning
 		int tMin = labelings == null ? 0 : labelings.size();
 		int tMax = masks.size() - 1;
 
 		for ( int t = tMin; t <= tMax; ++t )
 		{
-			Logger.log( "Processing frame " + ( t + 1 ) );
+			Logger.log( "Processing frame " + ( t + 1 ) + "/" + ( tMax + 1 ) );
 
 			if ( t == 0 )
 			{
 				final RandomAccessibleInterval splitMask = getSplitMask( t );
 
-				final ImgLabeling imgLabeling = Regions.asImgLabeling(
-						splitMask,
-						ConnectedComponents.StructuringElement.FOUR_CONNECTED );
+				final ImgLabeling imgLabeling = Regions.asImgLabeling( splitMask, ConnectedComponents.StructuringElement.FOUR_CONNECTED );
 
 				labelings.add( imgLabeling.getIndexImg() );
 			}
 			else
 			{
-
 				previousLabeling = labelings.get( t - 1  );
 				maxIndex = Algorithms.getMaximumValue( previousLabeling ).intValue();
 
-				RandomAccessibleInterval< BitType > mask =
-						splitCurrentMaskBasedOnPreviousLabeling( t, previousLabeling );
+				RandomAccessibleInterval< BitType > mask = splitCurrentMaskBasedOnPreviousLabeling( t, previousLabeling );
 
 				final LabelingAndMaxIndex labelingAndMaxIndex =
 						TrackingUtils.getMaximalOverlapBasedLabeling(
@@ -107,7 +105,6 @@ public class SemiAutomatedTrackingSplitter< T extends RealType< T > & NativeType
 			{
 				manuallyCorrectLabelings( t );
 			}
-
 
 			if( trackingSplitterManualCorrectionUI.isStopped() )
 			{

@@ -98,18 +98,17 @@ public class TrackingUtils
 
 		final LabelingAndMaxIndex labelingAndMaxIndex = new LabelingAndMaxIndex();
 
-		labelingAndMaxIndex.labeling =
-				ArrayImgs.ints( Intervals.dimensionsAsLongArray( currentMask ) );
+		labelingAndMaxIndex.labeling = ArrayImgs.ints( Intervals.dimensionsAsLongArray( currentMask ) );
 
 		for ( LabelRegion< Integer > region : currentRegions )
 		{
-			final HashMap< Integer, Long > overlaps =
-					computeRegionOverlaps( referenceLabeling, region );
+			final HashMap< Integer, Long > overlaps = computeRegionOverlaps( referenceLabeling, region );
 
 			int objectId;
 
 			if( overlaps.size() == 0 )
 			{
+				// no overlap => create new label
 				objectId = ++maxIndex;
 			}
 			else
