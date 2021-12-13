@@ -49,18 +49,17 @@ public class TrackingSplitterManualCorrectionUI< T extends RealType< T > & Nativ
 
 	public void configureAndShowUI()
 	{
+		add( deleteRoiButton() );
+
+		add( fillRoiButton() );
+
+		add( updateLabelsButton() );
+
 		add( nextFrameButton() );
 
 		add( stopAndSaveButton() );
 
 		add( saveButton() );
-
-		// TODO: add( deleteRoiButton );
-		// TODO: add( fillRoiButton );
-		/*
-		IJ.run(imp, "Set...", "value=0");
-		IJ.run(imp, "Set...", "value=1");
-		 */
 
 		showPanel();
 	}
@@ -100,6 +99,20 @@ public class TrackingSplitterManualCorrectionUI< T extends RealType< T > & Nativ
 		editableLabelsImp.close();
 
 		syncWindows.close();
+	}
+
+	public JButton fillRoiButton()
+	{
+		final JButton button = new JButton( "Fill" );
+		button.addActionListener( e -> IJ.run( editableLabelsImp, "Set...", "value=1" ) );
+		return button;
+	}
+
+	public JButton deleteRoiButton()
+	{
+		final JButton button = new JButton( "Delete" );
+		button.addActionListener( e -> IJ.run (editableLabelsImp, "Set...", "value=0" ) );
+		return button;
 	}
 
 	public JButton nextFrameButton()

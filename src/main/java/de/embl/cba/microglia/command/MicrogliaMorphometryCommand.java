@@ -25,7 +25,7 @@ import static de.embl.cba.morphometry.Version.getArtifactVersion;
 import static de.embl.cba.tables.Tables.addRelativeImagePathColumn;
 import static de.embl.cba.tables.Tables.saveTable;
 
-@Plugin(type = Command.class, menuPath = "Plugins>Measure>Microglia Morphometry" )
+@Plugin(type = Command.class, menuPath = "Plugins>Microglia>Measure Microglia Morphometry" )
 public class MicrogliaMorphometryCommand < T extends RealType< T > & NativeType< T > >
 		implements Command
 {

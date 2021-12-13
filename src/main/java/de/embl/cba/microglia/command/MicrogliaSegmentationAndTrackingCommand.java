@@ -17,10 +17,10 @@ import java.io.File;
 import java.util.ArrayList;
 
 
-@Plugin(type = Command.class, menuPath = "Plugins>Tracking>Microglia Segmentation And Tracking" )
+@Plugin(type = Command.class, menuPath = "Plugins>Microglia>New Microglia Segmentation And Tracking" )
 public class MicrogliaSegmentationAndTrackingCommand< T extends RealType<T> & NativeType< T > > implements Command
 {
-	private MicrogliaSettings settings = new MicrogliaSettings();
+	protected MicrogliaSettings settings = new MicrogliaSettings();
 
 	@Parameter
 	public OpService opService;
@@ -31,32 +31,21 @@ public class MicrogliaSegmentationAndTrackingCommand< T extends RealType<T> & Na
 	@Parameter( label = "Intensity threshold [relative]")
 	public double relativeIntensityThreshold = 1.5;
 
-	@Parameter( label = "Proceed from existing segmentation")
-	public boolean proceedFromExisting = false;
-
-	@Parameter( label = "Label mask time series (single channel 2D+t)", required = false )
-	public File segmentationFile = null;
-
 	@Parameter( label = "Output directory", style = "directory" )
 	public File outputDirectory = new File("src/test/resources/data");
 
-//	@Parameter( label = "Minimal time frame to be processed", min = "1" )
-	public long tMinOneBased = 1;
-
-//	@Parameter( label = "Maximal time frame to be processed", min = "1" )
-	public long tMaxOneBased = 1000000000L;
-
-
-	@Parameter
 	public boolean showIntermediateResults = settings.showIntermediateResults;
 
-	private ImagePlus imagePlus;
-	private ArrayList< RandomAccessibleInterval< T > > intensities;
+	public long tMinOneBased = 1;
+	public long tMaxOneBased = 1000000000L;
+
+	protected ImagePlus imagePlus;
+	protected ArrayList< RandomAccessibleInterval< T > > intensities;
 
 	public void run()
 	{
 		setSettings();
-		processFile( intensityFile );
+		processFile( intensityFile, null );
 	}
 
 	public void setSettings()
@@ -69,11 +58,11 @@ public class MicrogliaSegmentationAndTrackingCommand< T extends RealType<T> & Na
 		settings.thresholdInUnitsOfBackgroundPeakHalfWidth = relativeIntensityThreshold;
 	}
 
-	private void processFile( File file )
+	protected void processFile( File intensityFile, File segmentationFile )
 	{
-		openIntensitiesAsFrameList( file );
+		openIntensitiesAsFrameList( intensityFile );
 
-		final ArrayList< RandomAccessibleInterval< T > > labelings = computeLabels();
+		final ArrayList< RandomAccessibleInterval< T > > labelings = computeLabels( segmentationFile );
 
 		Utils.saveLabelings(
 				labelings,
@@ -108,12 +97,11 @@ public class MicrogliaSegmentationAndTrackingCommand< T extends RealType<T> & Na
 				Math.min( tMaxOneBased, imagePlus.getNFrames() ) );
 	}
 
-	private ArrayList< RandomAccessibleInterval< T > > computeLabels()
+	private ArrayList< RandomAccessibleInterval< T > > computeLabels( File segmentationFile )
 	{
-		final MicrogliaSegmentationAndTracking segmentationAndTracking =
-				new MicrogliaSegmentationAndTracking( intensities, settings );
+		final MicrogliaSegmentationAndTracking segmentationAndTracking = new MicrogliaSegmentationAndTracking( intensities, settings );
 
-		if ( proceedFromExisting )
+		if ( segmentationFile != null )
 		{
 			final ImagePlus labelsImp
 					= Utils.openWithBioFormats( segmentationFile.getAbsolutePath() );
