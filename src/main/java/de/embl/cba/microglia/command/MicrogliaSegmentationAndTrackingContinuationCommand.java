@@ -13,8 +13,6 @@ import java.io.File;
 @Plugin(type = Command.class, menuPath = "Plugins>Microglia>Continue Microglia Segmentation And Tracking" )
 public class MicrogliaSegmentationAndTrackingContinuationCommand< T extends RealType<T> & NativeType< T > > extends MicrogliaSegmentationAndTrackingCommand
 {
-	private MicrogliaSettings settings = new MicrogliaSettings();
-
 	@Parameter( label = "Label mask time series (single channel 2D+t)", required = false )
 	public File segmentationFile;
 
@@ -22,7 +20,6 @@ public class MicrogliaSegmentationAndTrackingContinuationCommand< T extends Real
 	public void run()
 	{
 		setSettings();
-		proceedFromPrevious = true;
 		processFile( intensityFile, segmentationFile );
 	}
 }

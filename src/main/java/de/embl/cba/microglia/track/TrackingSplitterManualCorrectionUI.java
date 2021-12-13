@@ -5,7 +5,9 @@ import de.embl.cba.morphometry.Utils;
 import de.embl.cba.morphometry.regions.Regions;
 import ij.IJ;
 import ij.ImagePlus;
+import ij.gui.Roi;
 import ij.measure.Calibration;
+import ij.process.ImageProcessor;
 import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.type.NativeType;
 import net.imglib2.type.numeric.RealType;
@@ -104,15 +106,29 @@ public class TrackingSplitterManualCorrectionUI< T extends RealType< T > & Nativ
 	public JButton fillRoiButton()
 	{
 		final JButton button = new JButton( "Fill" );
-		button.addActionListener( e -> IJ.run( editableLabelsImp, "Set...", "value=1" ) );
+		button.addActionListener( e -> {
+			setValueInRoi( editableLabelsImp, 1 );
+		} );
 		return button;
 	}
 
 	public JButton deleteRoiButton()
 	{
 		final JButton button = new JButton( "Delete" );
-		button.addActionListener( e -> IJ.run (editableLabelsImp, "Set...", "value=0" ) );
+		button.addActionListener( e -> {
+			setValueInRoi( editableLabelsImp, 0 );
+		} );
 		return button;
+	}
+
+	private void setValueInRoi( ImagePlus imagePlus, int value )
+	{
+		final Roi roi = imagePlus.getRoi();
+		ImageProcessor ip = imagePlus.getProcessor();
+		ip.setColor( value );
+		ip.fill( roi );
+		imagePlus.deleteRoi();
+		imagePlus.updateAndDraw();
 	}
 
 	public JButton nextFrameButton()
@@ -162,7 +178,7 @@ public class TrackingSplitterManualCorrectionUI< T extends RealType< T > & Nativ
 	private void showPanel() {
 
 		//Create and set up the window.
-		frame = new JFrame("Manual editing");
+		frame = new JFrame("Manual label editing");
 
 		//Create and set up the content pane.
 		this.setOpaque(true); //content panes must be opaque
