@@ -20,14 +20,12 @@ import java.util.Map;
 
 public class MicrogliaMorphometry < T extends RealType< T > & NativeType< T > >
 {
-
 	private final ArrayList< RandomAccessibleInterval< T > > labelMaps;
 	private final ArrayList< RandomAccessibleInterval< T > > intensities;
 	private final OpService opService;
 	private ArrayList< HashMap< Integer, Map< String, Object > > > measurementsTimepointList;
 	private ArrayList< RandomAccessibleInterval< BitType > > skeletons;
 	private ArrayList< RandomAccessibleInterval< BitType > > annotations;
-
 
 	public MicrogliaMorphometry( ArrayList< RandomAccessibleInterval< T > > labelMasks,
 								 ArrayList< RandomAccessibleInterval< T > > intensities,
@@ -79,7 +77,6 @@ public class MicrogliaMorphometry < T extends RealType< T > & NativeType< T > >
 			Measurements.measureCentroidsToBrightestPointsDistances(
 					measurements
 			);
-
 
 			// Volumes ( = areas )
 			Measurements.measureVolumes(
