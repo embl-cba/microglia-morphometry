@@ -2,35 +2,44 @@
 
 A Fiji plugin for semi-automated segmentation, tracking and morphometric analysis of microglia cells in 2D images.
 
-## Install
+## Publication
 
-- Fiji
-- Updates sites:
-    - IJPB-Plugins 
-    - ...
+Soon to come....
 
-## Run
+## Installation
+
+- Install [Fiji](https://fiji.sc/)
+- Start Fiji and [add the following update sites](https://imagej.net/How_to_follow_a_3rd_party_update_site):
+  - [X] Microglia Morphometry
+  - [X] IJPB-Plugins
+- Restart Fiji
 
 ## Microglia segmentation and tracking
 
-The microglia segmentation and tracking is preformed semi-automated.
+Semi-automated microglia segmentation and tracking.
+
+Fiji menu: **Plugins > Microglia > New Microglia Segmentation And Tracking**
 
 Input:
 - Single color TIFF stack time lapse with microglia signal, each TIFF plane corresponding to one time point
-    - [Example intensity input](https://github.com/embl-cba/microglia-morphometry/raw/main/src/test/resources/data/MAX_pg6-3CF1_20--t1-3.tif)
+    - [Example intensity image input](https://github.com/embl-cba/microglia-morphometry/raw/main/src/test/resources/data/MAX_pg6-3CF1_20--t1-3.tif)
 
 Output:
 - TIFF stack with label mask images, each TIFF plane corrsponding to one time point. Cells keep their label across time, thereby encoding the tracking results.
     - [Example label mask output](https://github.com/embl-cba/microglia-morphometry/raw/main/src/test/resources/data/MAX_pg6-3CF1_20-labelMasks--t1-3.tif)
 
+In addition there also is **Plugins > Microglia > Continue Microglia Segmentation And Tracking**, which allows one to continue from a partially exiting label mask that does not yet contain all the time points.
+
 ### Parameters
 
-There are several parameters that can be set to adapt the algorithm to different cell types. Below are the values that were used for this publication. 
+There are few parameters that can be set to adapt the algorithm to different cell types. Below are the values that were used for this publication. 
 
 - `minimal_microglia_size` = 200 micrometer^2
 - `skel_maxLength` = 450 micrometer
 
-### Automated conversion to binary masks
+Note: Those parameters are currently hardcoded, but we could expose them in the plugin's user interface.
+
+### Automated semantic segmentation (conversion to binary masks)
 
 For all time points, the images are smoothed using an anisotropic diffusion filter [TODO: REF] and then individually binarised by means of an intensity threshold that is determined automatically from the respective image intensity histogram: The intensity at the histogram mode (`intensity_mode`) is computed as well as the right hand side (towards higher intensities) intensity where the count decreases to half the count at the mode (`intensity_rightHandHalfMode`). The threshold is then computed as `intensity_mode + 1.5 *( intensity_rightHandHalfBin - intensity_mode )`. On the resulting binary image connected components smaller than `minimal_microglia_size` are removed.
 
@@ -62,6 +71,8 @@ The output of the segmentation and tracking are a label mask TIFF stack, with ea
 
 The intensity and corresonding label mask images are used to compute shape and intensity features for each segmented cell.
 
+Fiji menu: **Plugins > Microglia > Measure Microglia Morphometry**
+
 Input:
 - Single color TIFF stack time lapse with microglia signal, each TIFF plane corresponding to one time point
     - [Example intensity input](https://github.com/embl-cba/microglia-morphometry/raw/main/src/test/resources/data/MAX_pg6-3CF1_20--t1-3.tif)
@@ -76,35 +87,39 @@ Output:
 - TIFF stack with cell skeleton images, each TIFF plane corrsponding to one time point.
     - [Example skeleton output](https://github.com/embl-cba/microglia-morphometry/raw/main/src/test/resources/data/output//MAX_pg6-3CF1_20-labelMasks--t1-3.tif-skeletons.tif)
 
-## Microglia morphometry features
+### Microglia morphometry features
 
-Units nomenclature:
+#### Units nomenclature
+
 - _Frames: time point
 - _Pixel: length in pixel units
 - _Pixel2: area in pixel units
 
-Features:
-- Object_Label: Cell's label index, as in the corresponding label mask image.	
-- Centroid_Time_Frames: Time point in the TIFF stack.
-- Area_Pixel2: Cell's area.	
-- BrightestPointToCentroidDistance_Pixel:
-- BrightestPoint_X_Pixel, BrightestPoint_Y_Pixel: Coordinates of the brigthest point within the cell.
-- Centroid_X_Pixel, Centroid_Y_Pixel, Centroid_Z_Pixel: Coordinates of the cell centroid.	
-- ConvexArea_Pixel2: Area of the cell's convex hull.
-- EllipsoidLongestAxisRadius_Pixel,	EllipsoidShortestAxisRadius_Pixel: Length of the longest and shortest axis of an elliposid that is fit to the cell pixels. 
-- GeodesicDiameter_Pixel: The cell's geodesic diameter [REF]
-- ImageBoundaryContact_Pixel: The number of pixels of the cell that are at the image boundary. This is useful to reject cells from the statistical analysis that are not fully in the image and therefore have invalid shape and intensity measurements.
-- LargestInscribedCircleRadius_Pixel: The radius of the largest disk that can be enclosed within the corresponding cell.
-- Perimeter_Pixel: The length of the cell's perimeter.
-- RadiusAtBrightestPoint_Pixel
-- SkeletonAvgBranchLength_Pixel:
-- SkeletonLongestBranchLength_Pixel:
-- SkeletonNumBranchPoints:
-- SkeletonTotalLength_Pixel:
+#### Features
 
-Other columns:
-- FrameInterval, FrameInterval_Unit: Temporal calibration of the image.
-- VoxelSpacing_Unit, VoxelSpacing_X, VoxelSpacing_Y, VoxelSpacing_Z: Spatial calibration of the image.
-- Path_LabelMasks, Path_Intensities, Path_Skeletons, Path_Annotations: Relative paths to all associated images. This is very useful for downstream analysis and visualisation. 	
+- MorpholibJ features ([www](https://imagej.net/plugins/morpholibj), [doi](https://doi.org/10.1093/bioinformatics/btw413)):
+    - Object_Label: The cell's label index, as in the corresponding label mask image.	
+    - GeodesicDiameter_Pixel: The longest shortest path bewteen any two points in the cell.
+    - LargestInscribedCircleRadius_Pixel: The radius of the largest disk that can be enclosed within the corresponding cell.
+    - Perimeter_Pixel: The length of the cell's perimeter.
+    - Area_Pixel2: The cell's area.	
+    - ConvexArea_Pixel2: The area of the cell's convex hull.
+    - EllipsoidLongestAxisRadius_Pixel,	EllipsoidShortestAxisRadius_Pixel: The length of the longest and shortest axis of an elliposid that is fit to the cell's pixels. 
+- Skeleton features ([www](https://imagej.net/plugins/analyze-skeleton/?amp=1), [doi](https://doi.org/10.1002/jemt.20829)):
+    - SkeletonAvgBranchLength_Pixel: The average length of all skeleton branches within the cell.
+    - SkeletonLongestBranchLength_Pixel: The length of the shortest branch.
+    - SkeletonNumBranchPoints: The number of branches.
+    - SkeletonTotalLength_Pixel: The summed up length of all branches.
+- Custom features:   
+    - Centroid_X_Pixel, Centroid_Y_Pixel, Centroid_Z_Pixel: The coordinates of the cell's centroid.
+    - Centroid_Time_Frames: The cell's time point in the TIFF stack.
+    - BrightestPoint_X_Pixel, BrightestPoint_Y_Pixel: The coordinates of the brigthest point within the cell, as determined after blurring the image with a Gaussian filter with a sigma of 3 pixels. This is useful to determine the likely position of the cell's soma.
+    - BrightestPointToCentroidDistance_Pixel: The distance of the cell's brightest point to its centroid.
+    - RadiusAtBrightestPoint_Pixel: The distance from the cell's brightest point to the closest point outside the cell. The motivation to add this feature was to get a measurement that could represent the size of the cell's soma.
+    - ImageBoundaryContact_Pixel: The number of pixels of the cell that are at the image boundary. This is useful to reject cells from the statistical analysis that are not fully in the image and therefore have compormised shape and intensity measurements.
+- Other columns:
+    - FrameInterval, FrameInterval_Unit: Temporal calibration of the image.
+    - VoxelSpacing_Unit, VoxelSpacing_X, VoxelSpacing_Y, VoxelSpacing_Z: Spatial calibration of the image.
+    - Path_LabelMasks, Path_Intensities, Path_Skeletons, Path_Annotations: Relative paths to all associated images. This is useful for downstream analysis and visualisation. 	
 
 
