@@ -95,6 +95,8 @@ Output:
 
 #### Features
 
+The CSV file contains columns for the following features:
+
 - MorpholibJ features ([www](https://imagej.net/plugins/morpholibj), [doi](https://doi.org/10.1093/bioinformatics/btw413)):
     - Object_Label: The cell's label index, as in the corresponding label mask image.	
     - GeodesicDiameter_Pixel: The longest shortest path bewteen any two points in the cell.
@@ -120,4 +122,20 @@ Output:
     - VoxelSpacing_Unit, VoxelSpacing_X, VoxelSpacing_Y, VoxelSpacing_Z: Spatial calibration of the image.
     - Path_LabelMasks, Path_Intensities, Path_Skeletons, Path_Annotations: Relative paths to all associated images. This is useful for downstream analysis and visualisation. 	
 
+#### Suggested derived features
+
+It can be useful to compute derived features, e.g. using a statistical data analysis software such as [R](https://www.r-project.org/).
+
+For example:
+
+- Solidity = Area_Pixel2 / ConvexArea_Pixel2
+- Roundness = Area_Pixel2 / EllipsoidLongestAxisRadius_Pixel^2
+- Roundness2 = Area_Pixel2 / EllipsoidShortestAxisRadius_Pixel^2
+- GeodesicElongation = GeodesicDiameter_Pixel^2 / Area_Pixel2
+- AspectRatio = LargestInscribedCircleRadius_Pixel^2 / Area_Pixel2
+- Circularity = Area_Pixel2 / Perimeter_Pixel^2
+- Somaness = RadiusAtBrightestPoint_Pixel^2 / Area_Pixel2
+- Branchiness = SkeletonNumBranchPoints / GeodesicDiameter_Pixel
+- Straightness = SkeletonLongestBranchLength_Pixel^2 / Area_Pixel2
+- Thickness = Area_Pixel2 / SkeletonTotalLength_Pixel^2
 
