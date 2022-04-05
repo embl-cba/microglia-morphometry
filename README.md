@@ -41,7 +41,7 @@ Note: Those parameters are currently hardcoded, but we could expose them in the 
 
 ### Automated semantic segmentation (conversion to binary masks)
 
-For all time points, the images are smoothed using an anisotropic diffusion filter [TODO: REF] and then individually binarised by means of an intensity threshold that is determined automatically from the respective image intensity histogram: The intensity at the histogram mode (`intensity_mode`) is computed as well as the right hand side (towards higher intensities) intensity where the count decreases to half the count at the mode (`intensity_rightHandHalfMode`). The threshold is then computed as `intensity_mode + 1.5 *( intensity_rightHandHalfBin - intensity_mode )`. On the resulting binary image connected components smaller than `minimal_microglia_size` are removed.
+For all time points, the images are smoothed using an anisotropic diffusion filter ([www](https://imagej.net/plugins/anisotropic-diffusion-2d), [doi](https://doi.org/10.1109/tpami.2005.87)) and then individually binarised by means of an intensity threshold that is determined automatically from the respective image intensity histogram: The intensity at the histogram mode (`intensity_mode`) is computed as well as the right hand side (towards higher intensities) intensity where the count decreases to half the count at the mode (`intensity_rightHandHalfMode`). The threshold is then computed as `intensity_mode + 1.5 *( intensity_rightHandHalfBin - intensity_mode )`. On the resulting binary image connected components smaller than `minimal_microglia_size` are removed.
 
 ### Semi-automated instance segmentation and tracking
 
@@ -56,8 +56,6 @@ The binary masks are converted to label masks using connected component analysis
 ### Manual label mask correction 
 
 For each time point, the result of above automated steps are presented to the user for manual correction. The user sees the intensity image and the label mask image side by side and the ability to draw into the label mask image. Using the ImageJ ROI tools one can select a region and either set pixels to 0 or 1. Clicking the "Update labels" button will then first convert the corrected label mask image to a binary image and then recompute a new label mask image. Thus, in effect, setting pixels to 0 can be used to split or remove (parts of) cells and settings pixels to 1 can be used to join or add cells.
-
-TODO: Link to video
 
 ### Automated tracking and splitting
 
@@ -97,6 +95,8 @@ Output:
 
 #### Features
 
+The CSV file contains columns for the following features:
+
 - MorpholibJ features ([www](https://imagej.net/plugins/morpholibj), [doi](https://doi.org/10.1093/bioinformatics/btw413)):
     - Object_Label: The cell's label index, as in the corresponding label mask image.	
     - GeodesicDiameter_Pixel: The longest shortest path bewteen any two points in the cell.
@@ -122,4 +122,20 @@ Output:
     - VoxelSpacing_Unit, VoxelSpacing_X, VoxelSpacing_Y, VoxelSpacing_Z: Spatial calibration of the image.
     - Path_LabelMasks, Path_Intensities, Path_Skeletons, Path_Annotations: Relative paths to all associated images. This is useful for downstream analysis and visualisation. 	
 
+#### Suggested derived features
+
+It can be useful to compute derived features, e.g. using a statistical data analysis software such as [R](https://www.r-project.org/).
+
+For example:
+
+- Solidity = Area_Pixel2 / ConvexArea_Pixel2
+- Roundness = Area_Pixel2 / EllipsoidLongestAxisRadius_Pixel^2
+- Roundness2 = Area_Pixel2 / EllipsoidShortestAxisRadius_Pixel^2
+- GeodesicElongation = GeodesicDiameter_Pixel^2 / Area_Pixel2
+- AspectRatio = LargestInscribedCircleRadius_Pixel^2 / Area_Pixel2
+- Circularity = Area_Pixel2 / Perimeter_Pixel^2
+- Somaness = RadiusAtBrightestPoint_Pixel^2 / Area_Pixel2
+- Branchiness = SkeletonNumBranchPoints / GeodesicDiameter_Pixel
+- Straightness = SkeletonLongestBranchLength_Pixel^2 / Area_Pixel2
+- Thickness = Area_Pixel2 / SkeletonTotalLength_Pixel^2
 
