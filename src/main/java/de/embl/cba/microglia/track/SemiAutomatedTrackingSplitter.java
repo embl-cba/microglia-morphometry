@@ -100,7 +100,6 @@ public class SemiAutomatedTrackingSplitter< T extends RealType< T > & NativeType
 				labelings.add( labelingAndMaxIndex.labeling );
 			}
 
-
 			if ( settings.manualSegmentationCorrection )
 			{
 				manuallyCorrectLabelings( t );

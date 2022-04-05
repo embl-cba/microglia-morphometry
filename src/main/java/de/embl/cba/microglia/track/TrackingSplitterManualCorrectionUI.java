@@ -11,12 +11,15 @@ import ij.process.ImageProcessor;
 import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.type.NativeType;
 import net.imglib2.type.numeric.RealType;
+import net.imglib2.type.numeric.integer.IntType;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+
+import static de.embl.cba.microglia.Utils.saveLabels;
 
 public class TrackingSplitterManualCorrectionUI< T extends RealType< T > & NativeType< T > >
 		extends JPanel
@@ -172,7 +175,7 @@ public class TrackingSplitterManualCorrectionUI< T extends RealType< T > & Nativ
 		final JButton button = new JButton( "Save" );
 		button.addActionListener( e -> SwingUtilities.invokeLater( () -> {
 			labels = runMaximalOverlapTrackerOnEditedImagePlus();
-			Utils.saveLabelings( labels, calibration, outputLabelingsPath );
+			saveLabels( labels, calibration, outputLabelingsPath );
 		} ) );
 		return button;
 	}
@@ -205,8 +208,7 @@ public class TrackingSplitterManualCorrectionUI< T extends RealType< T > & Nativ
 
 	public ArrayList< RandomAccessibleInterval< T > > runMaximalOverlapTrackerOnEditedImagePlus()
 	{
-		final ArrayList< RandomAccessibleInterval< T > > labels =
-				Utils.get2DImagePlusMovieAsFrameList( editableLabelsImp, 1 );
+		final ArrayList< RandomAccessibleInterval< IntType > > labels = de.embl.cba.microglia.Utils.asIntType( Utils.get2DImagePlusMovieAsFrameList( editableLabelsImp, 1 ) );
 
 		// Due to the editing small unconnected regions of pixels may occur
 		Regions.removeSmallRegionsInMasks( labels, minimalObjectSizeInPixels );

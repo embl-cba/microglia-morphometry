@@ -12,6 +12,8 @@
 	<artifactId>microglia-morphometry</artifactId>
 	<version>0.5.1</version>
 
+     <!-- mvn clean install -Dscijava.app.directory=/Users/tischer/Desktop/Fiji/Fiji-Microglia-Morphometry.app-->
+
 	<name>microglia morphometry</name>
 	<description>Fiji plugin for semi-automated microglia segmentation and morphometry</description>
 	<inceptionYear>2018</inceptionYear>

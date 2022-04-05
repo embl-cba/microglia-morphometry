@@ -7,18 +7,17 @@ import de.embl.cba.morphometry.Utils;
 import ij.ImagePlus;
 import net.imagej.ops.OpService;
 import net.imglib2.RandomAccessibleInterval;
-import net.imglib2.converter.Converters;
-import net.imglib2.img.display.imagej.ImageJFunctions;
 import net.imglib2.type.NativeType;
 import net.imglib2.type.numeric.RealType;
 import net.imglib2.type.numeric.integer.IntType;
-import net.imglib2.type.numeric.real.DoubleType;
 import org.scijava.command.Command;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
 import java.io.File;
 import java.util.ArrayList;
+
+import static de.embl.cba.microglia.Utils.*;
 
 
 @Plugin(type = Command.class, menuPath = "Plugins>Microglia>New Microglia Segmentation And Tracking" )
@@ -68,10 +67,8 @@ public class MicrogliaSegmentationAndTrackingCommand< T extends RealType<T> & Na
 
 		final ArrayList< RandomAccessibleInterval< T > > labelings = computeLabels( segmentationFile );
 
-		Utils.saveLabelings(
-				labelings,
-				imagePlus.getCalibration(),
-				settings.outputLabelingsPath );
+		saveLabels( labelings, imagePlus.getCalibration(), settings.outputLabelingsPath );
+
 	}
 
 	private void openIntensitiesAsFrameList( File file )
@@ -107,24 +104,9 @@ public class MicrogliaSegmentationAndTrackingCommand< T extends RealType<T> & Na
 
 		if ( segmentationFile != null )
 		{
-			final ImagePlus labelsImp = Utils.openWithBioFormats( segmentationFile.getAbsolutePath() );
+			final ArrayList< RandomAccessibleInterval< IntType > > labels = openLabels( segmentationFile );
 
-			final ArrayList< RandomAccessibleInterval< T > > unsignedShorts
-					= Utils.get2DImagePlusMovieAsFrameList(
-					labelsImp,
-					1 );
-
-			// the images are opened as UnsignedShortType
-			// but in the code we are using IntType
-			final ArrayList< RandomAccessibleInterval< IntType > > ints = new ArrayList<>();
-			for ( RandomAccessibleInterval< T > unsignedShort : unsignedShorts )
-			{
-				final RandomAccessibleInterval< IntType > intType =
-						Converters.convert( unsignedShort, ( i, o ) -> o.setReal(  i.getRealDouble() ), new IntType() );
-				ints.add( intType );
-			}
-
-			segmentationAndTracking.setLabelings( ints );
+			segmentationAndTracking.setLabelings( labels );
 		}
 
 		segmentationAndTracking.run();
