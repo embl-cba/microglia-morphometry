@@ -7,8 +7,12 @@ import de.embl.cba.morphometry.Utils;
 import ij.ImagePlus;
 import net.imagej.ops.OpService;
 import net.imglib2.RandomAccessibleInterval;
+import net.imglib2.converter.Converters;
+import net.imglib2.img.display.imagej.ImageJFunctions;
 import net.imglib2.type.NativeType;
 import net.imglib2.type.numeric.RealType;
+import net.imglib2.type.numeric.integer.IntType;
+import net.imglib2.type.numeric.real.DoubleType;
 import org.scijava.command.Command;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
@@ -103,15 +107,24 @@ public class MicrogliaSegmentationAndTrackingCommand< T extends RealType<T> & Na
 
 		if ( segmentationFile != null )
 		{
-			final ImagePlus labelsImp
-					= Utils.openWithBioFormats( segmentationFile.getAbsolutePath() );
+			final ImagePlus labelsImp = Utils.openWithBioFormats( segmentationFile.getAbsolutePath() );
 
-			final ArrayList< RandomAccessibleInterval< T > > labelings
+			final ArrayList< RandomAccessibleInterval< T > > unsignedShorts
 					= Utils.get2DImagePlusMovieAsFrameList(
 					labelsImp,
 					1 );
 
-			segmentationAndTracking.setLabelings( labelings );
+			// the images are opened as UnsignedShortType
+			// but in the code we are using IntType
+			final ArrayList< RandomAccessibleInterval< IntType > > ints = new ArrayList<>();
+			for ( RandomAccessibleInterval< T > unsignedShort : unsignedShorts )
+			{
+				final RandomAccessibleInterval< IntType > intType =
+						Converters.convert( unsignedShort, ( i, o ) -> o.setReal(  i.getRealDouble() ), new IntType() );
+				ints.add( intType );
+			}
+
+			segmentationAndTracking.setLabelings( ints );
 		}
 
 		segmentationAndTracking.run();

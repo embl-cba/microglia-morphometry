@@ -51,9 +51,11 @@ public class TrackingSplitterManualCorrectionUI< T extends RealType< T > & Nativ
 
 	public void configureAndShowUI()
 	{
-		add( deleteRoiButton() );
+		// According to Valerie this button is "dangerous"
+		// add( deleteRoiButton() );
 
-		add( fillRoiButton() );
+		// According to Valerie this button is "dangerous"
+		// add( fillRoiButton() );
 
 		add( updateLabelsButton() );
 

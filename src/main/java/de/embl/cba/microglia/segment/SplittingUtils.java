@@ -13,7 +13,6 @@ import java.util.Map;
 
 public class SplittingUtils
 {
-
 	public static HashMap< Integer, Integer > getNumObjectsFromSkeleton(
 			ImgLabeling< Integer, IntType > imgLabeling,
 			RandomAccessibleInterval< BitType > skeleton,
