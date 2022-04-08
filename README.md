@@ -14,6 +14,10 @@ Soon to come....
   - [X] IJPB-Plugins
 - Restart Fiji
 
+## Screenshots
+
+<img src="./documentation/microglia-segmentation.jpg" width="800">
+
 ## Microglia segmentation and tracking
 
 Semi-automated microglia segmentation and tracking.
