@@ -1,4 +1,4 @@
-# Microglia Morphometry
+<img src="./documentation/header.png" width="1000">
 
 A Fiji plugin for semi-automated segmentation, tracking and morphometric analysis of microglia cells in 2D images.
 
