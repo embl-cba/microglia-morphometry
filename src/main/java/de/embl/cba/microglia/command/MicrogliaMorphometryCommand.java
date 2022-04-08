@@ -11,6 +11,8 @@ import net.imagej.ops.OpService;
 import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.type.NativeType;
 import net.imglib2.type.numeric.RealType;
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.FilenameUtils;
 import org.scijava.command.Command;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
@@ -56,14 +58,10 @@ public class MicrogliaMorphometryCommand < T extends RealType< T > & NativeType<
 	{
 		if ( ! checkInstallationOfMorpholibJ() ) return;
 
-		Logger.log( "" );
-		Logger.log( "" );
-		Logger.log( "Microglia Morphometry Command - Version " + getArtifactVersion() );
-		Logger.log( "Analyzing: " + labelMaskFile );
+		dataSetID = FilenameUtils.removeExtension( intensityFile.getName() );
 
-//		fetchFilesFromFolder();
-
-		intensityFile = new File( labelMaskFile.toString().replace( "-labelMasks",  "" ) );
+		Logger.log( "\n# Microglia Morphometry Measurements - Version " + getArtifactVersion() );
+		Logger.log( "Analyzing: " + dataSetID );
 
 		final MicrogliaMorphometry< T > microgliaMorphometry =
 				new MicrogliaMorphometry(
@@ -72,11 +70,8 @@ public class MicrogliaMorphometryCommand < T extends RealType< T > & NativeType<
 						opService );
 
 		microgliaMorphometry.run();
-
 		saveResults( dataSetID, microgliaMorphometry );
-
 		Logger.log( "Done!" );
-
 	}
 
 	private boolean checkInstallationOfMorpholibJ()
@@ -95,7 +90,6 @@ public class MicrogliaMorphometryCommand < T extends RealType< T > & NativeType<
 	private ArrayList< RandomAccessibleInterval< T > > openLabelMasks()
 	{
 		labelMaskImagePlus = openAsImagePlus( labelMaskFile );
-		dataSetID = labelMaskImagePlus.getTitle();
 		return Utils.get2DImagePlusMovieAsFrameList( labelMaskImagePlus, 1 );
 	}
 
@@ -108,8 +102,7 @@ public class MicrogliaMorphometryCommand < T extends RealType< T > & NativeType<
 	private void saveResults( String dataSetID,
 							  MicrogliaMorphometry< T > microgliaMorphometry )
 	{
-		final ArrayList< HashMap< Integer, Map< String, Object > > >
-				measurementsTimepointList = microgliaMorphometry.getMeasurementsTimepointList();
+		final ArrayList< HashMap< Integer, Map< String, Object > > > measurementsTimepointList = microgliaMorphometry.getMeasurementsTimepointList();
 
 		Measurements.addCalibration( measurementsTimepointList, labelMaskImagePlus );
 
