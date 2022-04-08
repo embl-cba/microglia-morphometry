@@ -24,7 +24,12 @@ Run example ImageJ Macros:
 
 ## Screenshots
 
+### Manual correction of the automated segmentation
+
 <img src="./documentation/microglia-segmentation.jpg" width="800">
+
+### Automated skeletonization
+
 <img src="./documentation/skeleton-two-cells.png" width="400"></a>
 
 ## Plugins > Microglia > New Microglia Segmentation And Tracking
