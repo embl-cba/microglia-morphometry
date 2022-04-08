@@ -17,7 +17,8 @@ Soon to come....
 
 ## Quick Start
 
-- Download those ImageJ Macros: 
+- Download and run those ImageJ Macros:
+  -  
 
 ## Screenshots
 
