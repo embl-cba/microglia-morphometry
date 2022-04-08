@@ -1,6 +1,7 @@
-package de.embl.cba.microglia;
+package de.embl.cba.microglia.segment;
 
 import anisotropic_diffusion.Anisotropic_Diffusion_2D;
+import de.embl.cba.microglia.MicrogliaSettings;
 import de.embl.cba.morphometry.Algorithms;
 import de.embl.cba.morphometry.CoordinateAndValue;
 import de.embl.cba.morphometry.IntensityHistogram;
@@ -18,14 +19,14 @@ import static de.embl.cba.morphometry.viewing.BdvViewer.show;
 import static de.embl.cba.transforms.utils.Scalings.createRescaledArrayImg;
 import static de.embl.cba.transforms.utils.Transforms.getScalingFactors;
 
-public class MicrogliaSegmenter< T extends RealType< T > & NativeType< T > >
+public class MicrogliaBinarizer< T extends RealType< T > & NativeType< T > >
 {
 	final MicrogliaSettings settings;
 	private RandomAccessibleInterval< BitType > mask;
 	final private RandomAccessibleInterval< T > intensity;
 	final private boolean showIntermediateResults;
 
-	public MicrogliaSegmenter(
+	public MicrogliaBinarizer(
 			RandomAccessibleInterval< T > intensity,
 			MicrogliaSettings settings )
 	{

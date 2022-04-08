@@ -17,16 +17,16 @@ import java.util.HashMap;
 import static de.embl.cba.microglia.segment.SplittingUtils.getNumObjectsFromSkeleton;
 
 
-public class ShapeAndIntensitySplitter< T extends RealType< T > & NativeType< T > >
+public class MicrogliaShapeAndIntensitySplitter< T extends RealType< T > & NativeType< T > >
 {
 	final MicrogliaSettings settings;
 	final private RandomAccessibleInterval< BitType > mask;
 	final private RandomAccessibleInterval< T > intensity;
 	private RandomAccessibleInterval< BitType > splitMask;
 
-	public ShapeAndIntensitySplitter( RandomAccessibleInterval< BitType > mask,
-									  RandomAccessibleInterval< T > intensity,
-									  MicrogliaSettings settings )
+	public MicrogliaShapeAndIntensitySplitter( RandomAccessibleInterval< BitType > mask,
+											   RandomAccessibleInterval< T > intensity,
+											   MicrogliaSettings settings )
 	{
 		this.mask = mask;
 		this.intensity = intensity;

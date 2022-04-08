@@ -1,7 +1,7 @@
 package de.embl.cba.microglia.track;
 
 import de.embl.cba.microglia.MicrogliaSettings;
-import de.embl.cba.microglia.segment.ShapeAndIntensitySplitter;
+import de.embl.cba.microglia.segment.MicrogliaShapeAndIntensitySplitter;
 import de.embl.cba.morphometry.Algorithms;
 import de.embl.cba.morphometry.Constants;
 import de.embl.cba.morphometry.Logger;
@@ -66,38 +66,15 @@ public class SemiAutomatedTrackingSplitter< T extends RealType< T > & NativeType
 
 	public void run()
 	{
-		// If there already is a label mask image,
-		// start at it's last time point.
-		// Otherwise start from the beginning
-		int tMin = labelings == null ? 0 : labelings.size();
+		final int tMaxExistingLabeling = labelings.size() - 1;
+		int tMin = labelings == null ? 0 : tMaxExistingLabeling;
 		int tMax = masks.size() - 1;
 
 		for ( int t = tMin; t <= tMax; ++t )
 		{
-			Logger.log( "Processing frame " + ( t + 1 ) + "/" + ( tMax + 1 ) );
-
-			if ( t == 0 )
+			if ( t > tMaxExistingLabeling )
 			{
-				final RandomAccessibleInterval splitMask = getSplitMask( t );
-
-				final ImgLabeling imgLabeling = Regions.asImgLabeling( splitMask, ConnectedComponents.StructuringElement.FOUR_CONNECTED );
-
-				labelings.add( imgLabeling.getIndexImg() );
-			}
-			else
-			{
-				previousLabeling = labelings.get( t - 1  );
-				maxIndex = Algorithms.getMaximumValue( previousLabeling ).intValue();
-
-				RandomAccessibleInterval< BitType > mask = splitCurrentMaskBasedOnPreviousLabeling( t, previousLabeling );
-
-				final LabelingAndMaxIndex labelingAndMaxIndex =
-						TrackingUtils.getMaximalOverlapBasedLabeling(
-								previousLabeling,
-								mask,
-								maxIndex );
-
-				labelings.add( labelingAndMaxIndex.labeling );
+				createAndAddNewLabeling(t );
 			}
 
 			if ( settings.manualSegmentationCorrection )
@@ -112,10 +89,39 @@ public class SemiAutomatedTrackingSplitter< T extends RealType< T > & NativeType
 		}
 	}
 
+	private void createAndAddNewLabeling(int t )
+	{
+		Logger.log( "Instance segmentation of frame " + t );
+
+		if ( t == 0 )
+		{
+			final RandomAccessibleInterval splitMask = getSplitMask( t );
+
+			final ImgLabeling imgLabeling = Regions.asImgLabeling( splitMask, ConnectedComponents.StructuringElement.FOUR_CONNECTED );
+
+			labelings.add( imgLabeling.getIndexImg() );
+		}
+		else
+		{
+			previousLabeling = labelings.get( t - 1 );
+			maxIndex = Algorithms.getMaximumValue( previousLabeling ).intValue();
+
+			RandomAccessibleInterval< BitType > mask = splitCurrentMaskBasedOnPreviousLabeling( t, previousLabeling );
+
+			final LabelingAndMaxIndex labelingAndMaxIndex =
+					TrackingUtils.getMaximalOverlapBasedLabeling(
+							previousLabeling,
+							mask,
+							maxIndex );
+
+			labelings.add( labelingAndMaxIndex.labeling );
+		}
+	}
+
 	public RandomAccessibleInterval getSplitMask( int t )
 	{
-		final ShapeAndIntensitySplitter splitter =
-				new ShapeAndIntensitySplitter( masks.get( t ), intensities.get( t ), settings );
+		final MicrogliaShapeAndIntensitySplitter splitter =
+				new MicrogliaShapeAndIntensitySplitter( masks.get( t ), intensities.get( t ), settings );
 		splitter.run();
 		return splitter.getSplitMask();
 	}

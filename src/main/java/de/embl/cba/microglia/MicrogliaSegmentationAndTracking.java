@@ -1,5 +1,6 @@
 package de.embl.cba.microglia;
 
+import de.embl.cba.microglia.segment.MicrogliaBinarizer;
 import de.embl.cba.microglia.track.SemiAutomatedTrackingSplitter;
 import de.embl.cba.morphometry.Logger;
 import net.imglib2.RandomAccessibleInterval;
@@ -35,11 +36,11 @@ public class MicrogliaSegmentationAndTracking< T extends RealType< T > & NativeT
 		final int numFrames = intensities.size();
 		for ( long t = 0; t < numFrames; ++t )
 		{
-			Logger.log("Segmenting frame " + ( t + 1 ) + "/" + numFrames );
-			final MicrogliaSegmenter microgliaSegmenter =
-					new MicrogliaSegmenter( intensities.get( ( int ) t ), settings );
-			microgliaSegmenter.run();
-			masks.add( microgliaSegmenter.getMask() );
+			Logger.log("Creating binary masks " + ( t + 1 ) + "/" + numFrames );
+			final MicrogliaBinarizer microgliaBinarizer =
+					new MicrogliaBinarizer( intensities.get( ( int ) t ), settings );
+			microgliaBinarizer.run();
+			masks.add( microgliaBinarizer.getMask() );
 		}
 		return masks;
 	}

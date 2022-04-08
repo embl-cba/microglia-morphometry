@@ -68,7 +68,6 @@ public class MicrogliaSegmentationAndTrackingCommand< T extends RealType<T> & Na
 		final ArrayList< RandomAccessibleInterval< T > > labelings = computeLabels( segmentationFile );
 
 		saveLabels( labelings, imagePlus.getCalibration(), settings.outputLabelingsPath );
-
 	}
 
 	private void openIntensitiesAsFrameList( File file )
@@ -111,8 +110,7 @@ public class MicrogliaSegmentationAndTrackingCommand< T extends RealType<T> & Na
 
 		segmentationAndTracking.run();
 
-		final ArrayList< RandomAccessibleInterval< T > > labelings
-				= segmentationAndTracking.getLabelings();
+		final ArrayList< RandomAccessibleInterval< T > > labelings = segmentationAndTracking.getLabelings();
 
 		return labelings;
 	}
