@@ -15,6 +15,10 @@ Soon to come....
   - [X] Segmentation Annotator
 - Restart Fiji
 
+## Quick Start
+
+- Download those ImageJ Macros: 
+
 ## Screenshots
 
 <img src="./documentation/microglia-segmentation.jpg" width="800">
