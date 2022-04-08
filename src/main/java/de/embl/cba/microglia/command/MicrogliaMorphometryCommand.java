@@ -46,9 +46,6 @@ public class MicrogliaMorphometryCommand < T extends RealType< T > & NativeType<
 	@Parameter ( label = "Output directory", style = "directory" )
 	public File outputDirectory;
 
-	@Parameter
-	public boolean showIntermediateResults = false;
-
 	private ImagePlus labelMaskImagePlus;
 	private File tableOutputFile;
 	private String dataSetID;

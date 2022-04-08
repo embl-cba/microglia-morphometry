@@ -20,7 +20,6 @@ public class TestMorphometryMeasurements
 		command.intensityFile = new File("src/test/resources/data/MAX_pg6-3CF1_20--t1-3.tif");
 		command.labelMaskFile = new File("src/test/resources/data/MAX_pg6-3CF1_20--t1-3-labelMasks.tif");
 		command.outputDirectory = new File( "src/test/resources/data/" );
-		command.showIntermediateResults = false;
 		command.run();
 	}
 }
