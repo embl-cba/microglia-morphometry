@@ -15,10 +15,13 @@ Soon to come....
   - [X] Segmentation Annotator
 - Restart Fiji
 
-## Quick Start
+## Quick start
 
-- Download and run those ImageJ Macros:
-  -  
+Run example ImageJ Macros:
+- [Download](https://github.com/embl-cba/microglia-morphometry/raw/main/scripts/scripts.zip)
+- Unzip
+- Drag and drop one of the macros onto Fiji and click [ Run ] in the script editor, which will open automatically.
+
 
 ## Screenshots
 
