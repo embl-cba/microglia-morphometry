@@ -21,6 +21,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+import static de.embl.cba.microglia.Utils.*;
 import static de.embl.cba.morphometry.Version.getArtifactVersion;
 import static de.embl.cba.tables.Tables.addRelativeImagePathColumn;
 import static de.embl.cba.tables.Tables.saveTable;
@@ -93,14 +94,14 @@ public class MicrogliaMorphometryCommand < T extends RealType< T > & NativeType<
 
 	private ArrayList< RandomAccessibleInterval< T > > openLabelMasks()
 	{
-		labelMaskImagePlus = Utils.openWithBioFormats( labelMaskFile.toString() );
+		labelMaskImagePlus = openAsImagePlus( labelMaskFile );
 		dataSetID = labelMaskImagePlus.getTitle();
 		return Utils.get2DImagePlusMovieAsFrameList( labelMaskImagePlus, 1 );
 	}
 
 	private ArrayList< RandomAccessibleInterval< T > > openIntensities()
 	{
-		intensityImagePlus = Utils.openWithBioFormats( intensityFile.toString() );
+		intensityImagePlus = openAsImagePlus( intensityFile );
 		return Utils.get2DImagePlusMovieAsFrameList( intensityImagePlus, 1 );
 	}
 

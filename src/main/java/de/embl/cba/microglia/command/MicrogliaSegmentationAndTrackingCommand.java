@@ -72,13 +72,7 @@ public class MicrogliaSegmentationAndTrackingCommand< T extends RealType<T> & Na
 
 	private void openIntensitiesAsFrameList( File file )
 	{
-		imagePlus = Utils.openWithBioFormats( file.getAbsolutePath() );
-
-		if ( imagePlus == null )
-		{
-			Logger.error( "Could not open image: " + file );
-			return;
-		}
+		imagePlus = openAsImagePlus( file );
 
 		if ( imagePlus.getNChannels() > 1 )
 		{

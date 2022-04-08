@@ -67,7 +67,7 @@ public class SemiAutomatedTrackingSplitter< T extends RealType< T > & NativeType
 	public void run()
 	{
 		final int tMaxExistingLabeling = labelings.size() - 1;
-		int tMin = labelings == null ? 0 : tMaxExistingLabeling;
+		int tMin = Math.max( 0, tMaxExistingLabeling );
 		int tMax = masks.size() - 1;
 
 		for ( int t = tMin; t <= tMax; ++t )

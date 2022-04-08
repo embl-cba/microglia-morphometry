@@ -47,7 +47,7 @@ public class TrackingSplitterManualCorrectionUI< T extends RealType< T > & Nativ
 		this.minimalObjectSizeInPixels = minimalObjectSizeInPixels;
 		this.calibration = calibration;
 
-		showLabelsImageForEditing( labels );
+		showLabelsForEditing( labels );
 
 		configureAndShowUI();
 	}
@@ -71,7 +71,7 @@ public class TrackingSplitterManualCorrectionUI< T extends RealType< T > & Nativ
 		showPanel();
 	}
 
-	public void showLabelsImageForEditing( ArrayList< RandomAccessibleInterval< T > > labels )
+	public void showLabelsForEditing( ArrayList< RandomAccessibleInterval< T > > labels )
 	{
 		editableLabelsImp = Utils.labelingsAsImagePlus( labels );
 		editableLabelsImp.show();
@@ -93,7 +93,7 @@ public class TrackingSplitterManualCorrectionUI< T extends RealType< T > & Nativ
 		button.addActionListener( e -> {
 			labels = runMaximalOverlapTrackerOnEditedImagePlus();
 			closeCurrentEditedLabelsImagePlus();
-			showLabelsImageForEditing( labels );
+			showLabelsForEditing( labels );
 		} );
 
 		return button;
