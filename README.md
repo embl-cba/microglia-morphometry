@@ -12,7 +12,6 @@ Soon to come....
 - Start Fiji and [add the following update sites](https://imagej.net/How_to_follow_a_3rd_party_update_site):
   - [X] Microglia-Morphometry
   - [X] IJPB-Plugins
-  - [X] Segmentation Annotator
 - Restart Fiji
 
 ## Quick start
