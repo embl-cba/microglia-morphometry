@@ -16,10 +16,9 @@ Soon to come....
 
 ## Quick start
 
-Run example ImageJ Macros:
-- [Download](https://github.com/embl-cba/microglia-morphometry/raw/main/scripts/scripts.zip)
-- Unzip
-- Drag and drop one of the macros onto Fiji and click [ Run ] in the script editor, which will open automatically.
+- [Download example ImageJ macros](https://github.com/embl-cba/microglia-morphometry/raw/main/scripts/scripts.zip)
+  - Unzip
+- Drag and drop one of the macros onto Fiji and click [ Run ] in the script editor.
 
 ## Screenshots
 
