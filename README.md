@@ -78,6 +78,21 @@ Once the above manual segmentation correction is finished the user clicks the "N
 
 The output of the segmentation and tracking are a label mask TIFF stack, with each TIFF plane corresponding to one time point. This label mask stack can be saved by clicking the "Save" button. The "Stop and save" button also terminates the program and closes the user interface windows.
 
+## Plugins > Microglia > Continue Microglia Segmentation And Tracking
+
+Semi-automated microglia segmentation and tracking. This command implements the same functionality as the one described above [ Plugins > Microglia > New Microglia Segmentation And Tracking ]. However, one can continue working on a partially finished segmentation. 
+
+The segmentation will continue on the last frame of the label mask image. Note that this allows to also correct the segmentation of a data set only containing a single frame.
+
+Input:
+- Single color TIFF stack time lapse with microglia signal, each TIFF plane corresponding to one time point
+    - [Example intensity image with 5 frames](https://github.com/embl-cba/microglia-morphometry/raw/main/src/test/resources/data/MAX_pg6-3CF1_20--t1-5.tif)
+- TIFF stack with label mask images, each TIFF plane corrsponding to one time point. That is, the output of this command however, typically only partially finished with **less** frames than the input.
+    - [Example label mask image with 3 frames](https://github.com/embl-cba/microglia-morphometry/raw/main/src/test/resources/data/MAX_pg6-3CF1_20-labelMasks--t1-3.tif)
+
+Output:
+- Same as in [ Plugins > Microglia > New Microglia Segmentation And Tracking ]
+
 ## Plugins > Microglia > Measure Microglia Morphometry
 
 The intensity and corresonding label mask images are used to compute shape and intensity features for each segmented cell.
