@@ -14,8 +14,8 @@ public class TestContinueSegmentationMultipleFrames
 		final ImageJ ij = new ImageJ();
 		final MicrogliaSegmentationAndTrackingContinuationCommand command = new MicrogliaSegmentationAndTrackingContinuationCommand();
 		command.opService = ij.op();
-		command.intensityFile = new File("https://github.com/embl-cba/microglia-morphometry/raw/main/src/test/resources/data/MAX_pg6-3CF1_20--t1-5.tif");
-		command.segmentationFile =  new File("https://github.com/embl-cba/microglia-morphometry/raw/main/src/test/resources/data/MAX_pg6-3CF1_20--t1-3-labelMasks.tif");
+		command.intensityFile = new File("https://github.com/embl-cba/microglia-morphometry/raw/main/src/test/resources/data/MAX_pg6-3CF1_20--t1-3.tif");
+		command.segmentationFile = new File("https://github.com/embl-cba/microglia-morphometry/raw/main/src/test/resources/data/MAX_pg6-3CF1_20--t1-3-labelMasks.tif");
 		command.outputDirectory = new File( "src/test/resources/data" );
 		command.relativeIntensityThreshold = 1.5;
 		command.run();
