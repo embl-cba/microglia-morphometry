@@ -1,4 +1,4 @@
-<a href="#"><img src="./documentation/header.png" width="1000"></a>
+# Microglia Morphometry
 
 A Fiji plugin for semi-automated segmentation, tracking and morphometric analysis of microglia cells in 2D images.
 
@@ -12,26 +12,27 @@ Soon to come....
 - Start Fiji and [add the following update sites](https://imagej.net/How_to_follow_a_3rd_party_update_site):
   - [X] Microglia-Morphometry
   - [X] IJPB-Plugins
-  - [X] Segmentation Annotator
 - Restart Fiji
 
 ## Quick start
 
-Run example ImageJ Macros:
-- [Download](https://github.com/embl-cba/microglia-morphometry/raw/main/scripts/scripts.zip)
-- Unzip
-- Drag and drop one of the macros onto Fiji and click [ Run ] in the script editor, which will open automatically.
-
+- [Download example ImageJ macros](https://github.com/embl-cba/microglia-morphometry/raw/main/scripts/scripts.zip)
+  - Unzip
+- Drag and drop one of the macros onto Fiji and click [ Run ] in the script editor.
 
 ## Screenshots
 
+### Manual correction of the automated segmentation
+
 <img src="./documentation/microglia-segmentation.jpg" width="800">
 
-## Microglia segmentation and tracking
+### Automated skeletonization
+
+<img src="./documentation/skeleton-two-cells.png" width="400"></a>
+
+## Plugins > Microglia > New Microglia Segmentation And Tracking
 
 Semi-automated microglia segmentation and tracking.
-
-Fiji menu: **Plugins > Microglia > New Microglia Segmentation And Tracking**
 
 Input:
 - Single color TIFF stack time lapse with microglia signal, each TIFF plane corresponding to one time point
@@ -59,10 +60,9 @@ For all time points, the images are smoothed using an anisotropic diffusion filt
 ### Semi-automated instance segmentation and tracking
 
 The instance segmentation (object detection) and tracking are linked and preformed with human interaction. The main challenge here is that microliga can be touching making it difficult to separate them fully automatically. 
+To address this challenge, the binary mask is first subjected to an automated object splitting algorithm, followed by the opportunity to manually correct the segmentation. 
 
-In brieg, for each time point, the binary mask is first subjected to an automated object splitting algorithm. Next, there is the opportunity to manually paint 
-
-#### Automated object splitting
+### Automated object splitting
 
 The binary masks are converted to label masks using connected component analysis. Each connected component is skeletonized and the total skeleton length (`skel_length`) is measured. A likely number of microglia within each connected component is computed as `n = ceil( skel_length / skel_maxLength)`. For each connected component with `n > 1` the position of local intensity maxima (corresponding to likely microglia soma) is computed. The `n` brightest local intensity maxima are used as seed points to split the connected component using an intensity based watershed algorithm. Splits are only accepted if the resulting objects are larger than `minimal_microglia_size`.
 
@@ -78,11 +78,9 @@ Once the above manual segmentation correction is finished the user clicks the "N
 
 The output of the segmentation and tracking are a label mask TIFF stack, with each TIFF plane corresponding to one time point. This label mask stack can be saved by clicking the "Save" button. The "Stop and save" button also terminates the program and closes the user interface windows.
 
-## Microglia morphometry
+## Plugins > Microglia > Measure Microglia Morphometry
 
 The intensity and corresonding label mask images are used to compute shape and intensity features for each segmented cell.
-
-Fiji menu: **Plugins > Microglia > Measure Microglia Morphometry**
 
 Input:
 - Single color TIFF stack time lapse with microglia signal, each TIFF plane corresponding to one time point
@@ -151,4 +149,12 @@ For example:
 - Branchiness = SkeletonNumBranchPoints / GeodesicDiameter_Pixel
 - Straightness = SkeletonLongestBranchLength_Pixel^2 / Area_Pixel2
 - Thickness = Area_Pixel2 / SkeletonTotalLength_Pixel^2
+
+## Data exploration and downstream analysis
+
+### Image Data Explorer (R)
+
+...
+
+
 
