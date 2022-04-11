@@ -12,5 +12,7 @@
  * - IJPB-Plugins
  * 
  **/
+ 
+outputDirectory = getDirectory("temp");
 
-run("New Microglia Segmentation And Tracking", "intensityfile='https://github.com/embl-cba/microglia-morphometry/raw/main/src/test/resources/data/MAX_pg6-3CF1_20--t1-3.tif' relativeintensitythreshold=1.5 outputdirectory=/tmp");
+run("New Microglia Segmentation And Tracking", "intensityfile='https://github.com/embl-cba/microglia-morphometry/raw/main/src/test/resources/data/MAX_pg6-3CF1_20--t1-3.tif' relativeintensitythreshold=1.5 outputdirectory='"+outputDirectory+"'");
