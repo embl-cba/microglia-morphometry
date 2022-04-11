@@ -154,7 +154,8 @@ For example:
 
 ### Image Data Explorer (R)
 
-...
+- [Download](https://github.com/embl-cba/microglia-morphometry/raw/main/src/test/resources/data/MAX_pg6-3CF1_20--t1-3.zip) an example data set, including the input intensity images, output segmentation images and results table.
+- ...
 
 
 
