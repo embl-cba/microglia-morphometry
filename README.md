@@ -150,3 +150,11 @@ For example:
 - Straightness = SkeletonLongestBranchLength_Pixel^2 / Area_Pixel2
 - Thickness = Area_Pixel2 / SkeletonTotalLength_Pixel^2
 
+## Data exploration and downstream analysis
+
+### Image Data Explorer (R)
+
+...
+
+
+
