@@ -105,11 +105,11 @@ Input:
 
 Output:
 - CSV file containing various cell shape and intensity features (see below for details)
-    - [Example cell features CSV](https://github.com/embl-cba/microglia-morphometry/raw/main/src/test/resources/data/output/MAX_pg6-3CF1_20-labelMasks--t1-3.tif.csv)
+    - [Example cell features CSV](https://github.com/embl-cba/microglia-morphometry/raw/main/src/test/resources/data/MAX_pg6-3CF1_20-labelMasks--t1-3.tif.csv)
 - TIFF stack with point annotation images, each TIFF plane corrsponding to one time point.
-    - [Example annotation output](https://github.com/embl-cba/microglia-morphometry/raw/main/src/test/resources/data/output/MAX_pg6-3CF1_20-labelMasks--t1-3.tif-annotations.tif)
+    - [Example annotation output](https://github.com/embl-cba/microglia-morphometry/raw/main/src/test/resources/data/MAX_pg6-3CF1_20-labelMasks--t1-3.tif-annotations.tif)
 - TIFF stack with cell skeleton images, each TIFF plane corrsponding to one time point.
-    - [Example skeleton output](https://github.com/embl-cba/microglia-morphometry/raw/main/src/test/resources/data/output//MAX_pg6-3CF1_20-labelMasks--t1-3.tif-skeletons.tif)
+    - [Example skeleton output](https://github.com/embl-cba/microglia-morphometry/raw/main/src/test/resources/data//MAX_pg6-3CF1_20-labelMasks--t1-3.tif-skeletons.tif)
 
 ### Microglia morphometry features
 

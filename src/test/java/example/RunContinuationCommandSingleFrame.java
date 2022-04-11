@@ -16,7 +16,7 @@ public class RunContinuationCommandSingleFrame
 		command.opService = ij.op();
 		command.intensityFile = new File("src/test/resources/data/MAX_pg22_1C8hF1--t1.tif");
 		command.segmentationFile =  new File("src/test/resources/data/MAX_pg22_1C8hF1-labelMasks--t1.tif");
-		command.outputDirectory = new File( "src/test/resources/data/output" );
+		command.outputDirectory = new File( "src/test/resources/data" );
 		command.relativeIntensityThreshold = 1.5;
 		command.run();
 	}

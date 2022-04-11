@@ -17,7 +17,7 @@ public class RunMicrogliaMorphometryCommand
 		command.opService = ij.op();
 		command.intensityFile = new File("src/test/resources/data/MAX_pg6-3CF1_20--t1-3.tif");
 		command.labelMaskFile = new File("src/test/resources/data/MAX_pg6-3CF1_20-labelMasks--t1-3.tif");
-		command.outputDirectory = new File( "src/test/resources/data/output" );
+		command.outputDirectory = new File( "src/test/resources/data" );
 		command.run();
 	}
 }
