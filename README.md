@@ -169,7 +169,22 @@ For example:
 
 ### Segmentation Annotator (Fiji)
 
-<img src="./documentation/segmentation-annotator.png" width="800">
+- Open Fiji and install the update site:
+  - [X] Segmentation-Annotator
+- [Download](https://github.com/embl-cba/microglia-morphometry/raw/main/src/test/resources/data/MAX_pg6-3CF1_20--t1-3.zip) an example data set, including the input intensity images, output segmentation images and results table.
+  - Unzip 
+- Open the table in the [Segmentation Annotator](https://github.com/tischi/segmentation-annotator#segmentation-annotator) as shown below
+
+#### Open dataset from table
+
+<img src="./documentation/seg-anno-plugin.png" width="800">
+
+#### Random segment coloring
+<img src="./documentation/seg-anno-glasbey.png" width="800">
+
+#### Coloring by cell size
+<img src="./documentation/seg-anno-size.png" width="800">
+
 
 ### Image Data Explorer (R)
 

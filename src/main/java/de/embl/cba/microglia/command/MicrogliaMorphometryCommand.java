@@ -18,6 +18,7 @@ import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
 import javax.swing.*;
+import javax.swing.table.TableColumn;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -64,7 +65,8 @@ public class MicrogliaMorphometryCommand < T extends RealType< T > & NativeType<
 				new MicrogliaMorphometry(
 						openLabelMasks(),
 						openIntensities(),
-						opService );
+						opService,
+						labelMaskImagePlus.getCalibration() );
 
 		microgliaMorphometry.run();
 		saveResults( dataSetID, microgliaMorphometry );
@@ -99,11 +101,11 @@ public class MicrogliaMorphometryCommand < T extends RealType< T > & NativeType<
 	private void saveResults( String dataSetID,
 							  MicrogliaMorphometry< T > microgliaMorphometry )
 	{
-		final ArrayList< HashMap< Integer, Map< String, Object > > > measurementsTimepointList = microgliaMorphometry.getMeasurementsTimepointList();
+		final ArrayList< HashMap< Integer, Map< String, Object > > > measurements = microgliaMorphometry.getMeasurementsTimepointList();
 
-		Measurements.addCalibration( measurementsTimepointList, labelMaskImagePlus );
+		Measurements.addCalibration( measurements, labelMaskImagePlus );
 
-		final JTable table = Measurements.asTable( measurementsTimepointList );
+		final JTable table = Measurements.asTable( measurements );
 
 		tableOutputFile = new File(
 				outputDirectory.toString() + File.separator + dataSetID + ".csv" );
