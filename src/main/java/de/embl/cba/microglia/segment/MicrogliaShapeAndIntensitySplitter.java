@@ -1,6 +1,5 @@
 package de.embl.cba.microglia.segment;
 
-import de.embl.cba.microglia.MicrogliaSettings;
 import de.embl.cba.morphometry.Algorithms;
 import de.embl.cba.morphometry.Utils;
 import de.embl.cba.morphometry.regions.Regions;

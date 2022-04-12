@@ -1,6 +1,6 @@
 package de.embl.cba.microglia.track;
 
-import de.embl.cba.microglia.MicrogliaSettings;
+import de.embl.cba.microglia.segment.MicrogliaSettings;
 import de.embl.cba.microglia.segment.MicrogliaShapeAndIntensitySplitter;
 import de.embl.cba.morphometry.Algorithms;
 import de.embl.cba.morphometry.Constants;

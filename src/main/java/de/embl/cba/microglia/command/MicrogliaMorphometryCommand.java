@@ -1,6 +1,6 @@
 package de.embl.cba.microglia.command;
 
-import de.embl.cba.microglia.MicrogliaMorphometry;
+import de.embl.cba.microglia.measure.MicrogliaMorphometry;
 import de.embl.cba.morphometry.Logger;
 import de.embl.cba.morphometry.Measurements;
 import de.embl.cba.morphometry.Utils;
@@ -11,21 +11,18 @@ import net.imagej.ops.OpService;
 import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.type.NativeType;
 import net.imglib2.type.numeric.RealType;
-import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.scijava.command.Command;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
 import javax.swing.*;
-import javax.swing.table.TableColumn;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
 import static de.embl.cba.microglia.Utils.*;
-import static de.embl.cba.morphometry.Version.getArtifactVersion;
 import static de.embl.cba.tables.Tables.addRelativeImagePathColumn;
 import static de.embl.cba.tables.Tables.saveTable;
 
@@ -33,8 +30,6 @@ import static de.embl.cba.tables.Tables.saveTable;
 public class MicrogliaMorphometryCommand < T extends RealType< T > & NativeType< T > >
 		implements Command
 {
-	public static final String DELIM = "\t";
-
 	@Parameter
 	public OpService opService;
 
@@ -58,7 +53,7 @@ public class MicrogliaMorphometryCommand < T extends RealType< T > & NativeType<
 
 		dataSetID = FilenameUtils.removeExtension( intensityFile.getName() );
 
-		Logger.log( "\n# Microglia Morphometry Measurements - Version " + getArtifactVersion() );
+		Logger.log( "\n# Microglia Morphometry Measurements");
 		Logger.log( "Analyzing: " + dataSetID );
 
 		final MicrogliaMorphometry< T > microgliaMorphometry =

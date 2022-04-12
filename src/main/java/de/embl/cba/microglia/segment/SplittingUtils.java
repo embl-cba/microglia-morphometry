@@ -1,6 +1,5 @@
 package de.embl.cba.microglia.segment;
 
-import de.embl.cba.microglia.MicrogliaSettings;
 import de.embl.cba.morphometry.Constants;
 import de.embl.cba.morphometry.Measurements;
 import net.imglib2.RandomAccessibleInterval;

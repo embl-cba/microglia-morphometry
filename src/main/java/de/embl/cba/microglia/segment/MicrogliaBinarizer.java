@@ -1,7 +1,6 @@
 package de.embl.cba.microglia.segment;
 
 import anisotropic_diffusion.Anisotropic_Diffusion_2D;
-import de.embl.cba.microglia.MicrogliaSettings;
 import de.embl.cba.morphometry.Algorithms;
 import de.embl.cba.morphometry.CoordinateAndValue;
 import de.embl.cba.morphometry.IntensityHistogram;

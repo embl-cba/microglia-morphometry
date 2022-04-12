@@ -1,4 +1,4 @@
-package de.embl.cba.microglia;
+package de.embl.cba.microglia.segment;
 
 import de.embl.cba.morphometry.Utils;
 import ij.measure.Calibration;

@@ -1,6 +1,5 @@
-package de.embl.cba.microglia;
+package de.embl.cba.microglia.segment;
 
-import de.embl.cba.microglia.segment.MicrogliaBinarizer;
 import de.embl.cba.microglia.track.SemiAutomatedTrackingSplitter;
 import de.embl.cba.morphometry.Logger;
 import net.imglib2.RandomAccessibleInterval;

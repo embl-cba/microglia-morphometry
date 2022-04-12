@@ -1,7 +1,7 @@
 package de.embl.cba.microglia.command;
 
-import de.embl.cba.microglia.MicrogliaSegmentationAndTracking;
-import de.embl.cba.microglia.MicrogliaSettings;
+import de.embl.cba.microglia.segment.MicrogliaSegmentationAndTracking;
+import de.embl.cba.microglia.segment.MicrogliaSettings;
 import de.embl.cba.morphometry.Logger;
 import de.embl.cba.morphometry.Utils;
 import ij.ImagePlus;
