@@ -190,7 +190,7 @@ For example:
 
 - [Download](https://github.com/embl-cba/microglia-morphometry/raw/main/src/test/resources/data/MAX_pg6-3CF1_20--t1-3.zip) an example data set, including the input intensity images, output segmentation images and results table.
 - Unzip
-- Navigate to https://shiny-portal.embl.de > Data analysis tools > Image Data Explorer or install the Image Data Explorer locally.
+- Navigate to https://shiny-portal.embl.de > Data analysis tools > Image Data Explorer or [install the Image Data Explorer locally](https://git.embl.de/heriche/image-data-explorer/-/wikis/Installation).
 - As input data file, select the csv file from the example data folder.
 - As image root dir in the Images section, select the unzipped example data folder.  The fields 'column with file name for image' should already be filled. If you want to view different images, select the relevant columns from those whose names starts with Path.
 - In the ROIs section, select the columns BrightestPoint_X and BrightestPoint_Y for X and Y respectively and select column Centroid_Time_Frames for the third dimension (Z/T)
