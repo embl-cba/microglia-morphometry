@@ -3,6 +3,7 @@ package de.embl.cba.microglia.track;
 import de.embl.cba.morphometry.SyncWindowsHack;
 import de.embl.cba.morphometry.Utils;
 import de.embl.cba.morphometry.regions.Regions;
+import de.embl.cba.tables.FileAndUrlUtils;
 import ij.IJ;
 import ij.ImagePlus;
 import ij.gui.Roi;
@@ -67,6 +68,8 @@ public class TrackingSplitterManualCorrectionUI< T extends RealType< T > & Nativ
 		add( stopAndSaveButton() );
 
 		add( saveButton() );
+
+		add( helpButton() );
 
 		showPanel();
 	}
@@ -176,6 +179,15 @@ public class TrackingSplitterManualCorrectionUI< T extends RealType< T > & Nativ
 		button.addActionListener( e -> SwingUtilities.invokeLater( () -> {
 			labels = runMaximalOverlapTrackerOnEditedImagePlus();
 			saveLabels( labels, calibration, outputLabelingsPath );
+		} ) );
+		return button;
+	}
+
+	public JButton helpButton()
+	{
+		final JButton button = new JButton( "Help" );
+		button.addActionListener( e -> SwingUtilities.invokeLater( () -> {
+			FileAndUrlUtils.openURI( "https://github.com/embl-cba/microglia-morphometry#manual-label-mask-correction" );
 		} ) );
 		return button;
 	}

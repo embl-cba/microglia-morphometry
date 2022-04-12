@@ -42,8 +42,6 @@ Output:
 - TIFF stack with label mask images, each TIFF plane corrsponding to one time point. Cells keep their label across time, thereby encoding the tracking results.
     - [Example label mask output](https://github.com/embl-cba/microglia-morphometry/raw/main/src/test/resources/data/MAX_pg6-3CF1_20-labelMasks--t1-3.tif)
 
-In addition there also is **Plugins > Microglia > Continue Microglia Segmentation And Tracking**, which allows one to continue from a partially exiting label mask that does not yet contain all the time points.
-
 ### Parameters
 
 There are few parameters that can be set to adapt the algorithm to different cell types. Below are the values that were used for this publication. 
@@ -53,7 +51,7 @@ There are few parameters that can be set to adapt the algorithm to different cel
 
 Note: Those parameters are currently hardcoded, but we could expose them in the plugin's user interface.
 
-### Automated semantic segmentation (conversion to binary masks)
+### Automated semantic segmentation
 
 For all time points, the images are smoothed using an anisotropic diffusion filter ([www](https://imagej.net/plugins/anisotropic-diffusion-2d), [doi](https://doi.org/10.1109/tpami.2005.87)) and then individually binarised by means of an intensity threshold that is determined automatically from the respective image intensity histogram: The intensity at the histogram mode (`intensity_mode`) is computed as well as the right hand side (towards higher intensities) intensity where the count decreases to half the count at the mode (`intensity_rightHandHalfMode`). The threshold is then computed as `intensity_mode + 1.5 *( intensity_rightHandHalfBin - intensity_mode )`. On the resulting binary image connected components smaller than `minimal_microglia_size` are removed.
 
@@ -68,15 +66,15 @@ The binary masks are converted to label masks using connected component analysis
 
 ### Manual label mask correction 
 
-For each time point, the result of above automated steps are presented to the user for manual correction. The user sees the intensity image and the label mask image side by side and the ability to draw into the label mask image. Using the ImageJ ROI tools one can select a region and either set pixels to 0 or 1. Clicking the "Update labels" button will then first convert the corrected label mask image to a binary image and then recompute a new label mask image. Thus, in effect, setting pixels to 0 can be used to split or remove (parts of) cells and settings pixels to 1 can be used to join or add cells.
+For each time point, the result of above automated steps are presented to the user for manual correction. The user sees the intensity image and the label mask image side by side and has the ability to draw into the label mask image. Using the ImageJ ROI tools (e.g. the polyline tool)  one can select a region and either set pixels to `0` (`[ Edit > Clear ]`) for splitting or removing parts of cells or set pixels to some arbitrary value `> 0` (`[ Edit > Draw ]`) for joining cells. The  **[ Update labels ]** button will first convert the corrected label mask image to a binary image (thus, for the drawing it only matters whether pixel values are `0` or `>0` ) and then recompute a new label mask image by means of a connected component labeling. 
 
 ### Automated tracking and splitting
 
-Once the above manual segmentation correction is finished the user clicks the "Next frame" button. This will trigger the tracking of cells from the current frame (`t`) to the next frame (`t+1`). In frame `t+1` the algorithm starts from the automatically segmented cells as explained above. Next, it takes into account the (manually corrected) information from the current frame `t` to split cells that are likely wrongly connected in frame `t+1`. To do so, for each connected component in frame `t+1` it determines the potentially multiple label regions that it overlaps with in frame `t`. Using those overlap regions as seeds it performs a watershed splitting to draw dividing lines in frame `t+1`. Using the resulting binary mask image it then assigns the labels in frame `t+1` based on the label that each connected component maximally overlaps with in frame `t`. If the overlap is zero, a new label index will be assigned. This way of assinging the label indices in frame `t+1` implements the tracking such that cells belonging to one track have the same label index throughout the time series. 
+Once the above manual segmentation correction is finished the user clicks the **[ Next frame ]** button. This will trigger the tracking of cells from the current frame (`t`) to the next frame (`t+1`). In frame `t+1` the algorithm starts from the automatically segmented cells as explained above. Next, it takes into account the (manually corrected) information from the current frame `t` to split cells that are likely wrongly connected in frame `t+1`. To do so, for each connected component in frame `t+1` it determines the potentially multiple label regions that it overlaps with in frame `t`. Using those overlap regions as seeds it performs a watershed splitting to draw dividing lines in frame `t+1`. Using the resulting binary mask image it then assigns the labels in frame `t+1` based on the label that each connected component maximally overlaps with in frame `t`. If the overlap is zero, a new label index will be assigned. This way of assigning the label indices in frame `t+1` implements the tracking such that cells belonging to one track have the same label index throughout the time series. 
 
 ### Saving the label mask images
 
-The output of the segmentation and tracking are a label mask TIFF stack, with each TIFF plane corresponding to one time point. This label mask stack can be saved by clicking the "Save" button. The "Stop and save" button also terminates the program and closes the user interface windows.
+The output of the segmentation and tracking are a label mask TIFF stack, with each TIFF plane corresponding to one time point. This label mask stack can be saved by clicking the **[ Save ]** button. The **[ Stop and save ]** button also terminates the program and closes the user interface windows.
 
 ## Plugins > Microglia > Continue Microglia Segmentation And Tracking
 
@@ -179,17 +177,26 @@ For example:
 
 <img src="./documentation/seg-anno-plugin.png" width="800">
 
+- "Image path column prefix" needs to be set to `Path_` in order for the plugin to automatically identify the columns in the table containing the paths to the images. Note that these paths are relative, which means here that the images must reside in the same folder as the table. 
+- "Object positions are calibrated" needs to be unchecked, because the positions in the table are in fact in pixel units. This is important, because when clicking on a table row (see below) the image will be automatically focussed on the clicked cell (for which the image and object coordinate systems need to match).
+
 #### Random segment coloring
 <img src="./documentation/seg-anno-glasbey.png" width="800">
 
 #### Coloring by cell size
 <img src="./documentation/seg-anno-size.png" width="800">
 
-
 ### Image Data Explorer (R)
 
 - [Download](https://github.com/embl-cba/microglia-morphometry/raw/main/src/test/resources/data/MAX_pg6-3CF1_20--t1-3.zip) an example data set, including the input intensity images, output segmentation images and results table.
-- ...
+- Unzip
+- Navigate to https://shiny-portal.embl.de > Data analysis tools > Image Data Explorer or install the Image Data Explorer locally.
+- As input data file, select the csv file from the example data folder.
+- As image root dir in the Images section, select the unzipped example data folder.  The fields 'column with file name for image' should already be filled. If you want to view different images, select the relevant columns from those whose names starts with Path.
+- In the ROIs section, select the columns BrightestPoint_X and BrightestPoint_Y for X and Y respectively and select column Centroid_Time_Frames for the third dimension (Z/T)
+- Populate the other fields as desired by selecting relevant table columns (the high-throughput microscopy section is not needed and can be ignored)
+- Optionally, save the current selection of inputs by clicking the 'Save the current choices' button. Note that this saves all fields except the input data file. To re-use the saved selection, first input a data file with the same column names then use the browse button under 'Restore settings from file' to select the previously saved file (with an .rds extension). Adjust the input sections as needed, in particular change the image root dir if the images are in a different folder than what was saved.
+- Switch to the Explore workspace by clicking on Explore in the navigation side bar.
 
 
 
