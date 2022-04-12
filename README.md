@@ -198,5 +198,8 @@ For example:
 - Optionally, save the current selection of inputs by clicking the 'Save the current choices' button. Note that this saves all fields except the input data file. To re-use the saved selection, first input a data file with the same column names then use the browse button under 'Restore settings from file' to select the previously saved file (with an .rds extension). Adjust the input sections as needed, in particular change the image root dir if the images are in a different folder than what was saved.
 - Switch to the Explore workspace by clicking on Explore in the navigation side bar.
 
+<img src="./documentation/ide-screenshot.png" width="800">
+
+
 
 
