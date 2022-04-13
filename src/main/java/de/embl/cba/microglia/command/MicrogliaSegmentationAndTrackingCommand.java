@@ -37,6 +37,12 @@ public class MicrogliaSegmentationAndTrackingCommand< T extends RealType<T> & Na
 	@Parameter( label = "Output directory", style = "directory" )
 	public File outputDirectory = new File("src/test/resources/data");
 
+	@Parameter( label = "Minimal cell size [um^2]" )
+	public double minimalMicrogliaSize = 200;
+
+	@Parameter( label = "Maximal cell skeleton length [um]" )
+	public double skeletonMaxLength = 450;
+
 	public boolean showIntermediateResults = settings.showIntermediateResults;
 
 	public long tMinOneBased = 1;
@@ -59,6 +65,8 @@ public class MicrogliaSegmentationAndTrackingCommand< T extends RealType<T> & Na
 		settings.outputDirectory = outputDirectory;
 		settings.opService = opService;
 		settings.thresholdInUnitsOfBackgroundPeakHalfWidth = relativeIntensityThreshold;
+		settings.minimalObjectSize = minimalMicrogliaSize;
+		settings.skeletonMaxLength = skeletonMaxLength;
 	}
 
 	protected void processFile( File intensityFile, File segmentationFile )
