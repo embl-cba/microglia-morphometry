@@ -35,7 +35,7 @@ Soon to come....
 Semi-automated microglia segmentation and tracking.
 
 Input:
-- Single color TIFF stack time lapse with microglia signal, each TIFF plane corresponding to one time point
+- Calibrated(!) single color TIFF stack time lapse with microglia signal, each TIFF plane corresponding to one time point
     - [Example intensity image input](https://github.com/embl-cba/microglia-morphometry/raw/main/src/test/resources/data/MAX_pg6-3CF1_20--t1-3.tif)
 
 Output:
@@ -44,12 +44,13 @@ Output:
 
 ### Parameters
 
-There are few parameters that can be set to adapt the algorithm to different cell types. Below are the values that were used for this publication. 
+There are few parameters that can be set to adapt the algorithm to different cell types. Below are the values that were used for the data in the above publication. 
 
-- `minimal_microglia_size` = 200 micrometer^2
-- `skel_maxLength` = 450 micrometer
+- `Minimal cell size [um^2]` = 200 micrometer^2
+- `Maximal cell skeleton length [um]` = 450 micrometer
 
-Note: Those parameters are currently hardcoded, but we could expose them in the plugin's user interface.
+Note: 
+- As the parameters are in micrometer units it is critical that the input images have the correct calibration (pixel size)!
 
 ### Automated semantic segmentation
 
