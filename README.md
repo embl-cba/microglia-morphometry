@@ -35,7 +35,7 @@ Soon to come....
 Semi-automated microglia segmentation and tracking.
 
 Input:
-- Single color TIFF stack time lapse with microglia signal, each TIFF plane corresponding to one time point
+- Calibrated(!) single color TIFF stack time lapse with microglia signal, each TIFF plane corresponding to one time point
     - [Example intensity image input](https://github.com/embl-cba/microglia-morphometry/raw/main/src/test/resources/data/MAX_pg6-3CF1_20--t1-3.tif)
 
 Output:
@@ -44,12 +44,13 @@ Output:
 
 ### Parameters
 
-There are few parameters that can be set to adapt the algorithm to different cell types. Below are the values that were used for this publication. 
+There are few parameters that can be set to adapt the algorithm to different cell types. Below are the values that were used for the data in the above publication. 
 
-- `minimal_microglia_size` = 200 micrometer^2
-- `skel_maxLength` = 450 micrometer
+- `Minimal cell size [um^2]` = 200 micrometer^2
+- `Maximal cell skeleton length [um]` = 450 micrometer
 
-Note: Those parameters are currently hardcoded, but we could expose them in the plugin's user interface.
+Note: 
+- As the parameters are in micrometer units it is critical that the input images have the correct calibration (pixel size)!
 
 ### Automated semantic segmentation
 
@@ -180,7 +181,7 @@ For example:
 - "Image path column prefix" needs to be set to `Path_` in order for the plugin to automatically identify the columns in the table containing the paths to the images. Note that these paths are relative, which means here that the images must reside in the same folder as the table. 
 - "Object positions are calibrated" needs to be unchecked, because the positions in the table are in fact in pixel units. This is important, because when clicking on a table row (see below) the image will be automatically focussed on the clicked cell (for which the image and object coordinate systems need to match).
 
-#### Random segment coloring
+#### Segmented cells and measured features exploration
 <img src="./documentation/seg-anno-glasbey.png" width="800">
 
 #### Coloring by cell size
@@ -190,7 +191,7 @@ For example:
 
 - [Download](https://github.com/embl-cba/microglia-morphometry/raw/main/src/test/resources/data/MAX_pg6-3CF1_20--t1-3.zip) an example data set, including the input intensity images, output segmentation images and results table.
 - Unzip
-- Navigate to https://shiny-portal.embl.de > Data analysis tools > Image Data Explorer or install the Image Data Explorer locally.
+- Navigate to https://shiny-portal.embl.de > Data analysis tools > Image Data Explorer or [install the Image Data Explorer locally](https://git.embl.de/heriche/image-data-explorer/-/wikis/Installation).
 - As input data file, select the csv file from the example data folder.
 - As image root dir in the Images section, select the unzipped example data folder.  The fields 'column with file name for image' should already be filled. If you want to view different images, select the relevant columns from those whose names starts with Path.
 - In the ROIs section, select the columns BrightestPoint_X and BrightestPoint_Y for X and Y respectively and select column Centroid_Time_Frames for the third dimension (Z/T)
