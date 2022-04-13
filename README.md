@@ -180,7 +180,7 @@ For example:
 - "Image path column prefix" needs to be set to `Path_` in order for the plugin to automatically identify the columns in the table containing the paths to the images. Note that these paths are relative, which means here that the images must reside in the same folder as the table. 
 - "Object positions are calibrated" needs to be unchecked, because the positions in the table are in fact in pixel units. This is important, because when clicking on a table row (see below) the image will be automatically focussed on the clicked cell (for which the image and object coordinate systems need to match).
 
-#### Random segment coloring
+#### Segmented cells and measured features exploration
 <img src="./documentation/seg-anno-glasbey.png" width="800">
 
 #### Coloring by cell size
