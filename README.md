@@ -16,9 +16,51 @@ Soon to come....
 
 ## Quick start
 
+This allows you to quickly launch each of the different steps that this plugin suite supports.
+For in depth instructions, please read the below documentation and follow the video tutorials.
+
 - [Download example ImageJ macros](https://github.com/embl-cba/microglia-morphometry/raw/main/scripts/scripts.zip)
   - Unzip
 - Drag and drop one of the macros onto Fiji and click [ Run ] in the script editor.
+
+## Sample data
+
+### Fully segmented 
+
+- [Microglia 2D time-lapse (3 frames) image data](https://github.com/embl-cba/microglia-morphometry/raw/main/src/test/resources/data/MAX_pg6-3CF1_20--t1-3.tif)
+- [Microglia 2D time-lapse (3 frames) segmentation data](https://github.com/embl-cba/microglia-morphometry/raw/main/src/test/resources/data/MAX_pg6-3CF1_20--t1-3-labelMasks.tif)
+
+### Partially segmented
+
+- [Microglia 2D time-lapse (5 frames) image data]((https://github.com/embl-cba/microglia-morphometry/raw/main/src/test/resources/data/MAX_pg6-3CF1_20--t1-5.tif)
+- [Microglia 2D time-lapse (3 frames) segmentation data](https://github.com/embl-cba/microglia-morphometry/raw/main/src/test/resources/data/MAX_pg6-3CF1_20--t1-3-labelMasks.tif)
+
+### Morphometry output
+
+- [Morphometry table](https://raw.githubusercontent.com/embl-cba/microglia-morphometry/main/src/test/resources/data/MAX_pg6-3CF1_20--t1-3.csv)
+
+## Video tutorials
+
+
+### Microglia segmentation and tracking
+
+This video will demonstrate the usage of
+
+- [ Plugins › Microglia › New Microglia Segmentation And Tracking ]
+- [ Plugins › Microglia › Continue Microglia Segmentation And Tracking ]
+
+Requirements:
+
+- Fiji with the Microglia-Morphometry plugin installed (s.a.)
+ 
+
+### BBB
+
+### CCC
+
+## Example data
+
+The above "Quick Start" section automatically downloads example data 
 
 ## Screenshots
 
