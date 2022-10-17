@@ -17,6 +17,8 @@ Soon to come....
 ## Quick start
 
 This allows you to quickly launch each of the different steps that this plugin suite supports.
+No sample data is required, as the below ImageJ macros will automatically fetch the data from this repository.
+
 For in depth instructions, please read the below documentation and follow the video tutorials.
 
 - [Download example ImageJ macros](https://github.com/embl-cba/microglia-morphometry/raw/main/scripts/scripts.zip)
@@ -25,42 +27,37 @@ For in depth instructions, please read the below documentation and follow the vi
 
 ## Sample data
 
-### Fully segmented 
+### Fully segmented
 
 - [Microglia 2D time-lapse (3 frames) image data](https://github.com/embl-cba/microglia-morphometry/raw/main/src/test/resources/data/MAX_pg6-3CF1_20--t1-3.tif)
+  - Input to `[ Plugins › Microglia › New Microglia Segmentation And Tracking ]`
 - [Microglia 2D time-lapse (3 frames) segmentation data](https://github.com/embl-cba/microglia-morphometry/raw/main/src/test/resources/data/MAX_pg6-3CF1_20--t1-3-labelMasks.tif)
+  - Output of `[ Plugins › Microglia › New Microglia Segmentation And Tracking ]`
+
+The above files serve as input to `[ Plugins › Microglia › Measure Microglia Morphometry ]`
 
 ### Partially segmented
 
-- [Microglia 2D time-lapse (5 frames) image data]((https://github.com/embl-cba/microglia-morphometry/raw/main/src/test/resources/data/MAX_pg6-3CF1_20--t1-5.tif)
+- [Microglia 2D time-lapse (5 frames) image data](https://github.com/embl-cba/microglia-morphometry/raw/main/src/test/resources/data/MAX_pg6-3CF1_20--t1-5.tif)
 - [Microglia 2D time-lapse (3 frames) segmentation data](https://github.com/embl-cba/microglia-morphometry/raw/main/src/test/resources/data/MAX_pg6-3CF1_20--t1-3-labelMasks.tif)
+
+The above files can be used as input to `[ Plugins › Microglia › Continue Microglia Segmentation And Tracking ]`, where the last two frames can be segmented.
 
 ### Morphometry output
 
+- [Skeletons](https://github.com/embl-cba/microglia-morphometry/raw/main/src/test/resources/data/MAX_pg6-3CF1_20--t1-3-skeletons.tif)
+- [Soma and centroid annotations](https://github.com/embl-cba/microglia-morphometry/raw/main/src/test/resources/data/MAX_pg6-3CF1_20--t1-3-annotations.tif)
 - [Morphometry table](https://raw.githubusercontent.com/embl-cba/microglia-morphometry/main/src/test/resources/data/MAX_pg6-3CF1_20--t1-3.csv)
 
 ## Video tutorials
 
-
 ### Microglia segmentation and tracking
 
-This video will demonstrate the usage of
+[This video](https://youtu.be/bvgOJj7KscM) will demonstrate the usage of `[ Plugins › Microglia › New Microglia Segmentation And Tracking ]`
 
-- [ Plugins › Microglia › New Microglia Segmentation And Tracking ]
-- [ Plugins › Microglia › Continue Microglia Segmentation And Tracking ]
+### Microglia morphometry
 
-Requirements:
-
-- Fiji with the Microglia-Morphometry plugin installed (s.a.)
- 
-
-### BBB
-
-### CCC
-
-## Example data
-
-The above "Quick Start" section automatically downloads example data 
+[This video](https://youtu.be/jooXDrIq_L8) will demonstrate the usage of `[ Plugins › Microglia › Continue Microglia Segmentation And Tracking ]`
 
 ## Screenshots
 
@@ -89,8 +86,9 @@ Output:
 There are few parameters that can be set to adapt the algorithm to different cell types. Below are the values that were used for the data in the above publication. 
 
 - `Minimal cell size [um^2]` = 200 micrometer^2
+  - This is used in the automated [Semantic Segmentation](https://github.com/embl-cba/microglia-morphometry#automated-semantic-segmentation)
 - `Maximal cell skeleton length [um]` = 450 micrometer
-
+  - This is used in the automated [Object Splitting](https://github.com/embl-cba/microglia-morphometry#automated-object-splitting) 
 Note: 
 - As the parameters are in micrometer units it is critical that the input images have the correct calibration (pixel size)!
 

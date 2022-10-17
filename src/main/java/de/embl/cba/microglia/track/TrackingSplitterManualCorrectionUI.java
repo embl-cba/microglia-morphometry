@@ -6,7 +6,9 @@ import de.embl.cba.morphometry.regions.Regions;
 import de.embl.cba.tables.FileAndUrlUtils;
 import ij.IJ;
 import ij.ImagePlus;
+import ij.WindowManager;
 import ij.gui.Roi;
+import ij.gui.Toolbar;
 import ij.measure.Calibration;
 import ij.process.ImageProcessor;
 import net.imglib2.RandomAccessibleInterval;
@@ -55,11 +57,9 @@ public class TrackingSplitterManualCorrectionUI< T extends RealType< T > & Nativ
 
 	public void configureAndShowUI()
 	{
-		// According to Valerie this button is "dangerous"
-		// add( deleteRoiButton() );
+		add( drawButton() );
 
-		// According to Valerie this button is "dangerous"
-		// add( fillRoiButton() );
+		add( deleteButton() );
 
 		add( updateLabelsButton() );
 
@@ -111,20 +111,21 @@ public class TrackingSplitterManualCorrectionUI< T extends RealType< T > & Nativ
 		syncWindows.close();
 	}
 
-	public JButton fillRoiButton()
+	public JButton deleteButton()
 	{
-		final JButton button = new JButton( "Fill" );
+		final JButton button = new JButton( "Erase" );
 		button.addActionListener( e -> {
-			setValueInRoi( editableLabelsImp, 1 );
+			Toolbar.setForegroundColor( new Color( 0, 0,0 ) );
+			//editableLabelsImp.getProcessor().setValue( 0 );
 		} );
 		return button;
 	}
 
-	public JButton deleteRoiButton()
+	public JButton drawButton()
 	{
-		final JButton button = new JButton( "Delete" );
+		final JButton button = new JButton( "Draw" );
 		button.addActionListener( e -> {
-			setValueInRoi( editableLabelsImp, 0 );
+			Toolbar.setForegroundColor( new Color( 255, 255,0 ) );
 		} );
 		return button;
 	}

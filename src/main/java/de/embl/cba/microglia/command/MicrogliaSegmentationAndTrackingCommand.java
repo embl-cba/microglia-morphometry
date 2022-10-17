@@ -31,7 +31,7 @@ public class MicrogliaSegmentationAndTrackingCommand< T extends RealType<T> & Na
 	@Parameter( label = "Intensity image time series (single channel 2D+t)")
 	public File intensityFile;
 
-	@Parameter( label = "Intensity threshold [relative]")
+	@Parameter( label = "Intensity threshold [relative]", style = "format:#.00")
 	public double relativeIntensityThreshold = 1.5;
 
 	@Parameter( label = "Output directory", style = "directory" )
