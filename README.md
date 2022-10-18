@@ -34,14 +34,14 @@ For in depth instructions, please read the below documentation and follow the vi
 - [Microglia 2D time-lapse (3 frames) segmentation data](https://github.com/embl-cba/microglia-morphometry/raw/main/src/test/resources/data/MAX_pg6-3CF1_20--t1-3-labelMasks.tif)
   - Output of `[ Plugins › Microglia › New Microglia Segmentation And Tracking ]`
 
-The above files serve as input to `[ Plugins › Microglia › Measure Microglia Morphometry ]`
+The two files above together may serve as input to `[ Plugins › Microglia › Measure Microglia Morphometry ]`
 
 ### Partially segmented
 
 - [Microglia 2D time-lapse (5 frames) image data](https://github.com/embl-cba/microglia-morphometry/raw/main/src/test/resources/data/MAX_pg6-3CF1_20--t1-5.tif)
 - [Microglia 2D time-lapse (3 frames) segmentation data](https://github.com/embl-cba/microglia-morphometry/raw/main/src/test/resources/data/MAX_pg6-3CF1_20--t1-3-labelMasks.tif)
 
-The above files can be used as input to `[ Plugins › Microglia › Continue Microglia Segmentation And Tracking ]`, where the last two frames can be segmented.
+The two files above may be used as input to `[ Plugins › Microglia › Continue Microglia Segmentation And Tracking ]`, where the last two frames can be segmented.
 
 ### Morphometry output
 
@@ -107,7 +107,8 @@ The binary masks are converted to label masks using connected component analysis
 
 ### Manual label mask correction 
 
-For each time point, the result of above automated steps are presented to the user for manual correction. The user sees the intensity image and the label mask image side by side and has the ability to draw into the label mask image. Using the ImageJ ROI tools (e.g. the polyline tool)  one can select a region and either set pixels to `0` (`[ Edit > Clear ]`) for splitting or removing parts of cells or set pixels to some arbitrary value `> 0` (`[ Edit > Draw ]`) for joining cells. The  **[ Update labels ]** button will first convert the corrected label mask image to a binary image (thus, for the drawing it only matters whether pixel values are `0` or `>0` ) and then recompute a new label mask image by means of a connected component labeling. 
+For each time point, the result of above automated steps are presented to the user for manual correction. The user sees the intensity image and the label mask image side by side and has the ability to draw into the label mask image. Using the ImageJ ROI tools (e.g. the polyline tool)  one can select a region and either set pixels to `0` (`[ Edit > Clear ]`) for splitting or removing parts of cells or set pixels to some arbitrary value `> 0` (`[ Edit > Draw ]`) for joining cells. The  `[ Update labels ]` button will first convert the corrected label mask image to a binary image (thus, for drawing or erasing it only matters whether pixel values are `0` or `> 0` ) and then recompute a new label mask image by means of a connected component labeling.
+Alternatively, there are two buttons in the user interface: `[ Draw ]` and `[ Erase ]`. Clicking them will set the drawing color in Fiji such that segments can be joined (draw) or separted (erase), e.g. using the [pencil tool](https://imagej.nih.gov/ij/docs/guide/146-19.html#sub:Pencil). This enables freehand drawing for segmentation correction (see the above video tutorial for a demonstration). Please note that also here the drawing color does not matter as long as it paints pixels values `> 0`. Upon pressing the `[ Update labels ]` button the colors will be corrected to reflect the cell identity.
 
 ### Automated tracking and splitting
 
