@@ -57,7 +57,7 @@ The two files above may be used as input to `[ Plugins › Microglia › Continu
 
 ### Microglia morphometry
 
-[This video](https://youtu.be/jooXDrIq_L8) will demonstrate the usage of `[ Plugins › Microglia › Continue Microglia Segmentation And Tracking ]`
+[This video](https://youtu.be/jooXDrIq_L8) will demonstrate the usage of `[ Plugins › Microglia › Measure Microglia Morphometry ]`
 
 ## Screenshots
 
