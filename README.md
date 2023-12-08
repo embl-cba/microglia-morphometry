@@ -2,9 +2,11 @@
 
 A Fiji plugin for semi-automated segmentation, tracking and morphometric analysis of microglia cells in 2D images.
 
-## Publication
+## Publication and Citation
 
-Soon to come....
+If you are using this plugin, please read and cite:
+
+[Martinez A, Hériché JK, Calvo M, Tischer C, Otxoa-de-Amezaga A, Pedragosa J, Bosch A, Planas AM, Petegnief V. Characterization of microglia behaviour in healthy and pathological conditions with image analysis tools. Open Biol. 2023 Jan;13(1):220200. doi: 10.1098/rsob.220200. Epub 2023 Jan 11. PMID: 36629019; PMCID: PMC9832574.](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC9832574/pdf/rsob.220200.pdf)
 
 ## Installation
 
