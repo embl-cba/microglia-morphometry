@@ -185,7 +185,7 @@ The CSV file contains columns for the following features:
     - ImageBoundaryContact_Pixel: The number of pixels of the cell that are at the image boundary. This is useful to reject cells from the statistical analysis that are not fully in the image and therefore have compormised shape and intensity measurements.
 - Other columns:
     - FrameInterval, FrameInterval_Unit: Temporal calibration of the image.
-    - VoxelSpacing_Unit, VoxelSpacing_X, VoxelSpacing_Y, VoxelSpacing_Z: Spatial calibration of the image.
+    - VoxelSpacing_Unit, VoxelSpacing_X, VoxelSpacing_Y, VoxelSpacing_Z: Spatial calibration of the image. This is useful for converting all measurments to the physical VoxelSpacing_Unit units. Given that VoxelSpacing_X and VoxelSpacing_Y are identical, one can do so by multiplying all measurements that end with _Pixel by VoxelSpacing_X, and by multiplying all measurements that end with _Pixel2 with VoxelSpacing_X * VoxelSpacing_Y.
     - Path_LabelMasks, Path_Intensities, Path_Skeletons, Path_Annotations: Relative paths to all associated images. This is useful for downstream analysis and visualisation. 	
 
 #### Suggested derived features
@@ -194,6 +194,8 @@ It can be useful to compute derived features, e.g. using a statistical data anal
 
 For example:
 
+- Area_Calibrated = Area_Pixel2 * VoxelSpacing_X * VoxelSpacing_Y
+- SkeletonAvgBranchLength_Calibrated = SkeletonAvgBranchLength_Pixel * VoxelSpacing_X
 - Solidity = Area_Pixel2 / ConvexArea_Pixel2
 - Roundness = Area_Pixel2 / EllipsoidLongestAxisRadius_Pixel^2
 - Roundness2 = Area_Pixel2 / EllipsoidShortestAxisRadius_Pixel^2
@@ -201,7 +203,7 @@ For example:
 - AspectRatio = LargestInscribedCircleRadius_Pixel^2 / Area_Pixel2
 - Circularity = Area_Pixel2 / Perimeter_Pixel^2
 - Somaness = RadiusAtBrightestPoint_Pixel^2 / Area_Pixel2
-- Branchiness = SkeletonNumBranchPoints / GeodesicDiameter_Pixel
+- Branchness = SkeletonNumBranchPoints / GeodesicDiameter_Pixel
 - Straightness = SkeletonLongestBranchLength_Pixel^2 / Area_Pixel2
 - Thickness = Area_Pixel2 / SkeletonTotalLength_Pixel^2
 
