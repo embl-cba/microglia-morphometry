@@ -211,7 +211,7 @@ For example:
 
 ## Data exploration and downstream analysis
 
-### Segmentation Annotator (Fiji)
+### Segmentation Annotator (Fiji) DEPRECATED! USE MoBIE INSTEAD...TODO: add instructions
 
 - Open Fiji and install the update site:
   - [X] Segmentation-Annotator
