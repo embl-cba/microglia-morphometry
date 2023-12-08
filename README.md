@@ -2,9 +2,9 @@
 
 A Fiji plugin for semi-automated segmentation, tracking and morphometric analysis of microglia cells in 2D images.
 
-## Publication and Citation
+## Citation
 
-If you are using this plugin, please read and cite:
+If you are using this plugin, please cite:
 
 [Martinez A, Hériché JK, Calvo M, Tischer C, Otxoa-de-Amezaga A, Pedragosa J, Bosch A, Planas AM, Petegnief V. Characterization of microglia behaviour in healthy and pathological conditions with image analysis tools. Open Biol. 2023 Jan;13(1):220200. doi: 10.1098/rsob.220200. Epub 2023 Jan 11. PMID: 36629019; PMCID: PMC9832574.](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC9832574/pdf/rsob.220200.pdf)
 
@@ -211,20 +211,25 @@ For example:
 
 ## Data exploration and downstream analysis
 
-### Segmentation Annotator (Fiji) DEPRECATED! USE MoBIE INSTEAD...TODO: add instructions
+It is very important to check and explore the results. We recommend two software for this, as described below, but there may be other options.
+
+### MoBIE (Fiji)
 
 - Open Fiji and install the update site:
-  - [X] Segmentation-Annotator
-- [Download](https://github.com/embl-cba/microglia-morphometry/raw/main/src/test/resources/data/MAX_pg6-3CF1_20--t1-3.zip) an example data set, including the input intensity images, output segmentation images and results table.
+  - [X] MoBIE
+- [Download](https://github.com/embl-cba/microglia-morphometry/raw/main/src/test/resources/data/MAX_pg6-3CF1_20--t1-3.zip); an example data set, including the input intensity images, output segmentation images and results table.
   - Unzip 
-- Open the table in the [Segmentation Annotator](https://github.com/tischi/segmentation-annotator#segmentation-annotator) as shown below
+- Open the table in the [MoBIE](https://github.com/mobie/mobie-viewer-fiji#mobie-fiji-viewer) as shown below
 
 #### Open dataset from table
 
 <img src="./documentation/seg-anno-plugin.png" width="800">
 
-- "Image path column prefix" needs to be set to `Path_` in order for the plugin to automatically identify the columns in the table containing the paths to the images. Note that these paths are relative, which means here that the images must reside in the same folder as the table. 
-- "Object positions are calibrated" needs to be unchecked, because the positions in the table are in fact in pixel units. This is important, because when clicking on a table row (see below) the image will be automatically focussed on the clicked cell (for which the image and object coordinate systems need to match).
+<img src="./documentation/seg-anno-plugin-2.png" width="800">
+
+- "Table Path" points to the table that is output by the Microglia plugin.
+- "Root Folder" points to the folder where all the input and output images are stored; note that these images must reside within one and the same folder. The reason is that the paths to these images in the table are relative paths and MoBIE thus needs to know their common root folder. 
+- "Remove spatial calibration" needs to be checked, because the positions in the table are in pixel units. This is important, because when clicking on a table row (see below) the image will be automatically focussed on the clicked cell (for which the image and object coordinate systems need to match).
 
 #### Segmented cells and measured features exploration
 <img src="./documentation/seg-anno-glasbey.png" width="800">
