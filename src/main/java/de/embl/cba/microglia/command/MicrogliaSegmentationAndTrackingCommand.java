@@ -92,6 +92,9 @@ public class MicrogliaSegmentationAndTrackingCommand< T extends RealType<T> & Na
 
 		settings.calibration = imagePlus.getCalibration();
 
+		// FIXME: Check the calibration of the image!
+		// Throw an error if that is not in micrometer!
+
 		intensities = Utils.get2DImagePlusMovieAsFrameList(
 				imagePlus,
 				1,

@@ -5,12 +5,12 @@
 	<parent>
 		<groupId>org.scijava</groupId>
 		<artifactId>pom-scijava</artifactId>
-		<version>33.2.0</version>
+		<version>37.0.0</version>
 	</parent>
 
 	<groupId>de.embl.cba</groupId>
 	<artifactId>microglia-morphometry</artifactId>
-	<version>0.5.3</version>
+	<version>0.6.0-SNAPSHOT</version>
 
 	<!-- mvn clean install -Dscijava.app.directory=/Users/tischer/Desktop/Fiji/Fiji-Microglia-Morphometry.app -->
      <!-- mvn clean install -Dmaven.test.skip=true -Dscijava.app.directory=/Users/tischer/Desktop/Fiji/Fiji-Microglia-Morphometry.app -->
