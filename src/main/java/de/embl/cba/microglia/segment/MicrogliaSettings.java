@@ -31,20 +31,19 @@ public class MicrogliaSettings<T extends RealType<T> & NativeType< T > >
 	public double thresholdInUnitsOfBackgroundPeakHalfWidth = 1.5;
 	public double closingRadius = 3.0;
 
-
 	public double[] calibration2D;
-	public RandomAccessibleInterval<T> image;
 	public Calibration calibration;
 
 	public double maxShortAxisDist;
 	public double interestPointsRadius;
+
 	public File outputDirectory;
 	public String inputDataSetName;
 	public boolean returnEarly;
-	public double minimalObjectSize;
-	public double minimalTrackingSplittingObjectArea;
+	public Double minimalObjectSize;
+	public Double minimalTrackingSplittingObjectArea;
+	public Double skeletonMaxLength;
 	public boolean splitTouchingObjects = false;
-	public double skeletonMaxLength;
 	public double minimalObjectCenterDistance;
 	public double maximalWatershedLength;
 	public double minimalOverlapFraction = 0.05;
@@ -62,8 +61,13 @@ public class MicrogliaSettings<T extends RealType<T> & NativeType< T > >
 	 */
 	public static MicrogliaSettings addMissingSettings( MicrogliaSettings settings )
 	{
+		if ( settings.skeletonMaxLength == null )
+			settings.skeletonMaxLength = 450.0; // um
+		if ( settings.minimalObjectSize == null )
+			settings.minimalObjectSize = 200.0; // um2
+
 		settings.calibration2D = Utils.get2dCalibration( settings.calibration );
-		settings.workingVoxelSize = settings.calibration2D[ 0 ];
+		settings.workingVoxelSize = settings.calibration2D[ 0 ]; // TODO: why not use something standard here?
 		settings.maxShortAxisDist = 6;
 		settings.watershedSeedsLocalMaximaDistanceThreshold = Double.MAX_VALUE;
 		settings.watershedSeedsGlobalDistanceThreshold = 2.5;
@@ -71,9 +75,7 @@ public class MicrogliaSettings<T extends RealType<T> & NativeType< T > >
 		settings.outputDirectory = null; //new File( path ).getParentFile();
 		settings.inputDataSetName = "test";
 		settings.returnEarly = true;
-		settings.skeletonMaxLength = 450; // um
-		settings.minimalObjectSize = 200; // um2
-		settings.minimalTrackingSplittingObjectArea = 20; // um2, this can be very small
+		settings.minimalTrackingSplittingObjectArea = 20.0; // um2, this can be very small
 		settings.minimalObjectCenterDistance = 6;
 		settings.maximalWatershedLength = 10;
 		settings.closingRadius = 3;

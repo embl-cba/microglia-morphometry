@@ -10,6 +10,7 @@ import de.embl.cba.morphometry.Utils;
 import de.embl.cba.morphometry.regions.Regions;
 import ij.IJ;
 import ij.ImagePlus;
+import ij.measure.Calibration;
 import net.imglib2.RandomAccess;
 import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.algorithm.labeling.ConnectedComponents;
@@ -53,8 +54,12 @@ public class SemiAutomatedTrackingSplitter< T extends RealType< T > & NativeType
 		setMinimalObjectSize( settings, masks.get( 0 ).numDimensions() );
 
 		this.labelings = new ArrayList();
-		this.intensitiesImp =
-				Utils.getAsImagePlusMovie( intensities, Constants.INTENSITIES );
+		this.intensitiesImp = Utils.getAsImagePlusMovie( intensities, Constants.INTENSITIES );
+		Calibration cal = new Calibration();
+		cal.setUnit( "micrometer" );
+		cal.pixelHeight = settings.workingVoxelSize;
+		cal.pixelWidth = settings.workingVoxelSize;
+		this.intensitiesImp.setCalibration( cal );
 	}
 
 	public void setMinimalObjectSize( MicrogliaSettings settings, int numDimensions )

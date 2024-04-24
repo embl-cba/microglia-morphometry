@@ -60,8 +60,6 @@ public class MicrogliaBinarizer< T extends RealType< T > & NativeType< T > >
 
 		if ( showIntermediateResults ) ImageJFunctions.show( image, "smoothed image" );
 
-
-
 		/**
 		 *  Compute offset and threshold
 		 */
@@ -76,7 +74,7 @@ public class MicrogliaBinarizer< T extends RealType< T > & NativeType< T > >
 		double threshold = offset + ( rightHandHalfMode.coordinate - mode.coordinate ) * settings.thresholdInUnitsOfBackgroundPeakHalfWidth;
 
 		Logger.debug( "Intensity offset: " + offset );
-		Logger.debug( "Threshold: " + threshold );
+		Logger.log( "Threshold: " + threshold );
 
 		/**
 		 * Create mask
@@ -89,6 +87,7 @@ public class MicrogliaBinarizer< T extends RealType< T > & NativeType< T > >
 		/**
 		 * Remove small objects from mask
 		 */
+		Logger.log( "Removing objects of an area less than " + settings.minimalObjectSize + " um^2..." );
 		Regions.removeSmallRegionsInMask( mask, settings.minimalObjectSize, settings.workingVoxelSize );
 
 		if ( showIntermediateResults ) show( mask, "size filtered mask", null, workingCalibration, false );
