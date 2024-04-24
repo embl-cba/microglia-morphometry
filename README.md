@@ -29,6 +29,11 @@ For in depth instructions, please read the below documentation and follow the vi
 
 ## Sample data
 
+### Data requirements
+
+- The input images must be calibrated and in micrometer units; please use `"micrometer"` or `"micron"` as unit in `[ Image > Properties ]`.
+- The plugin works best if the pixel size is around 0.5 - 1.0 micrometer. If your images have a higher resolution we recommend downscaling the images first, e.g. using `[ Image > Scale ]`.
+
 ### Fully segmented
 
 - [Microglia 2D time-lapse (3 frames) image data](https://github.com/embl-cba/microglia-morphometry/raw/main/src/test/resources/data/MAX_pg6-3CF1_20--t1-3.tif)
