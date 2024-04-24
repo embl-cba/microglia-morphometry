@@ -10,10 +10,9 @@
 
 	<groupId>de.embl.cba</groupId>
 	<artifactId>microglia-morphometry</artifactId>
-	<version>0.6.0-SNAPSHOT</version>
+	<version>0.6.0</version>
 
-	<!-- mvn clean install -Dscijava.app.directory=/Users/tischer/Desktop/Fiji/Fiji-Microglia-Morphometry.app -->
-     <!-- mvn clean install -Dmaven.test.skip=true -Dscijava.app.directory=/Users/tischer/Desktop/Fiji/Fiji-Microglia-Morphometry.app -->
+	<!-- mvn clean install -Dmaven.test.skip=true -Dscijava.app.directory=/Users/tischer/Desktop/Fiji/Fiji-MicrogliaMorphometry.app -->
 
 	<name>microglia morphometry</name>
 	<description>Fiji plugin for semi-automated microglia segmentation and morphometry</description>
@@ -76,7 +75,7 @@
 		<license.copyrightOwners>EMBL</license.copyrightOwners>
 		<enforcer.skip>true</enforcer.skip>
 
-		<imagej-utils.version>0.6.9</imagej-utils.version>
+		<imagej-utils.version>0.7.0</imagej-utils.version>
 	</properties>
 
 	<repositories>

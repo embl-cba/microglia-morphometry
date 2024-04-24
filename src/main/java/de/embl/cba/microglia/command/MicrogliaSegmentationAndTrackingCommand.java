@@ -4,7 +4,9 @@ import de.embl.cba.microglia.segment.MicrogliaSegmentationAndTracking;
 import de.embl.cba.microglia.segment.MicrogliaSettings;
 import de.embl.cba.morphometry.Logger;
 import de.embl.cba.morphometry.Utils;
+import ij.IJ;
 import ij.ImagePlus;
+import ij.LookUpTable;
 import net.imagej.ops.OpService;
 import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.type.NativeType;
@@ -73,6 +75,9 @@ public class MicrogliaSegmentationAndTrackingCommand< T extends RealType<T> & Na
 	{
 		openIntensitiesAsFrameList( intensityFile );
 
+		if ( intensities == null )
+			return;
+
 		final ArrayList< RandomAccessibleInterval< T > > labelings = computeLabels( segmentationFile );
 
 		saveLabels( labelings, imagePlus.getCalibration(), settings.outputLabelingsPath );
@@ -92,8 +97,16 @@ public class MicrogliaSegmentationAndTrackingCommand< T extends RealType<T> & Na
 
 		settings.calibration = imagePlus.getCalibration();
 
-		// FIXME: Check the calibration of the image!
-		// Throw an error if that is not in micrometer!
+		if ( settings.calibration.getUnit() != "micrometer" && settings.calibration.getUnit() != "micron" )
+		{
+			boolean ok = IJ.showMessageWithCancel( "Wrong calibration?", "The calibration unit of your image is: " + settings.calibration.getUnit() +
+					"\nThis plugin expects micrometer units." +
+					"\nPlease cancel and use [ Image > Properties ] to configure the pixel size in micrometers." +
+					"\nTo avoid that this error message pops up you must use \"micrometer\" as the unit." );
+			if ( !ok )
+				return;
+		}
+
 
 		intensities = Utils.get2DImagePlusMovieAsFrameList(
 				imagePlus,
