@@ -33,6 +33,7 @@ For in depth instructions, please read the below documentation and follow the vi
 
 - The input images must be calibrated and in micrometer units; please use `"micrometer"` or `"micron"` as unit in `[ Image > Properties ]`.
 - The plugin works best if the pixel size is around 0.5 - 1.0 micrometer. If your images have a higher resolution we recommend downscaling the images first, e.g. using `[ Image > Scale ]`.
+- The plugin works best if the datatype is 8-bit. [There seems to be a problem with 16-bit data](https://github.com/embl-cba/microglia-morphometry/issues/12). We therefore currently recommend changing the datatype to 8-bit using `[Image > Type > 8-bit]`. Please note that for a consistent conversion to 8-bit of different data sets you **must** set the same min and max values in `[Adjust > Brightness & Contrast]` before converting to 8-bit!!
 
 ### Fully segmented
 
