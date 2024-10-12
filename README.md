@@ -27,7 +27,7 @@ For in depth instructions, please read the below documentation and follow the vi
   - Unzip
 - Drag and drop one of the macros onto Fiji and click [ Run ] in the script editor.
 
-## Sample data
+## Data
 
 ### Data requirements
 
@@ -35,7 +35,7 @@ For in depth instructions, please read the below documentation and follow the vi
 - The plugin works best if the pixel size is around 0.5 - 1.0 micrometer. If your images have a higher resolution we recommend downscaling the images first, e.g. using `[ Image > Scale ]`.
 - The plugin works best if the datatype is 8-bit. [There seems to be a problem with 16-bit data](https://github.com/embl-cba/microglia-morphometry/issues/12). We therefore currently recommend changing the datatype to 8-bit using `[Image > Type > 8-bit]`. Please note that for a consistent conversion to 8-bit of different data sets you **must** set the same min and max values in `[Adjust > Brightness & Contrast]` before converting to 8-bit!!
 
-### Fully segmented
+### Fully segmented example data
 
 - [Microglia 2D time-lapse (3 frames) image data](https://github.com/embl-cba/microglia-morphometry/raw/main/src/test/resources/data/MAX_pg6-3CF1_20--t1-3.tif)
   - Input to `[ Plugins › Microglia › New Microglia Segmentation And Tracking ]`
@@ -44,14 +44,14 @@ For in depth instructions, please read the below documentation and follow the vi
 
 The two files above together may serve as input to `[ Plugins › Microglia › Measure Microglia Morphometry ]`
 
-### Partially segmented
+### Partially segmented example data
 
 - [Microglia 2D time-lapse (5 frames) image data](https://github.com/embl-cba/microglia-morphometry/raw/main/src/test/resources/data/MAX_pg6-3CF1_20--t1-5.tif)
 - [Microglia 2D time-lapse (3 frames) segmentation data](https://github.com/embl-cba/microglia-morphometry/raw/main/src/test/resources/data/MAX_pg6-3CF1_20--t1-3-labelMasks.tif)
 
 The two files above may be used as input to `[ Plugins › Microglia › Continue Microglia Segmentation And Tracking ]`, where the last two frames can be segmented.
 
-### Morphometry output
+### Morphometry output example data
 
 - [Skeletons](https://github.com/embl-cba/microglia-morphometry/raw/main/src/test/resources/data/MAX_pg6-3CF1_20--t1-3-skeletons.tif)
 - [Soma and centroid annotations](https://github.com/embl-cba/microglia-morphometry/raw/main/src/test/resources/data/MAX_pg6-3CF1_20--t1-3-annotations.tif)
