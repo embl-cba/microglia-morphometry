@@ -2,6 +2,7 @@ package de.embl.cba.microglia.track;
 
 import de.embl.cba.morphometry.Utils;
 import de.embl.cba.morphometry.regions.Regions;
+import net.imglib2.Cursor;
 import net.imglib2.RandomAccess;
 import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.algorithm.labeling.ConnectedComponents;
@@ -65,12 +66,12 @@ public class TrackingUtils
 		final HashMap< Integer, Long > overlaps = new HashMap<>();
 
 		final RandomAccess< T > previousLabelsAccess = previousLabeling.randomAccess();
-		final LabelRegionCursor currentRegionCursor = region.cursor();
+		Cursor cursor = region.inside().cursor();
 
-		while ( currentRegionCursor.hasNext() )
+		while ( cursor.hasNext() )
 		{
-			currentRegionCursor.fwd();
-			previousLabelsAccess.setPosition( currentRegionCursor );
+			cursor.fwd();
+			previousLabelsAccess.setPosition( cursor );
 
 			final int label = (int) previousLabelsAccess.get().getRealDouble();
 

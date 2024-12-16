@@ -351,7 +351,7 @@ public class SemiAutomatedTrackingSplitter< T extends RealType< T > & NativeType
 		final HashMap< Integer, Long > overlaps = new HashMap<>();
 
 		final RandomAccess< I > previousLabelsAccess = previousLabeling.randomAccess();
-		final LabelRegionCursor cursor = region.cursor();
+		net.imglib2.Cursor cursor = region.inside().cursor();
 
 		while ( cursor.hasNext() )
 		{

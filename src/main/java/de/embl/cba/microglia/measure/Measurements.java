@@ -465,7 +465,7 @@ public class Measurements
 	private static < T extends RealType< T > & NativeType< T > >
 	long measureSumIntensity( RandomAccess< T > imageRandomAccess, LabelRegion labelRegion )
 	{
-		final LabelRegionCursor cursor = labelRegion.cursor();
+		Cursor cursor = labelRegion.inside().cursor();
 
 		long sum = 0;
 
@@ -481,7 +481,7 @@ public class Measurements
 	private static < T extends RealType< T > & NativeType< T > >
 	long measureImageBoundaryContact( LabelRegion labelRegion, long[] min, long[] max )
 	{
-		final LabelRegionCursor cursor = labelRegion.cursor();
+		Cursor cursor = labelRegion.inside().cursor();
 
 		long numBoundaryPixels = 0;
 
@@ -526,7 +526,6 @@ public class Measurements
 	public static
 	long measureSizeInPixels( RandomAccessibleInterval< BitType > mask )
 	{
-
 		final Cursor< BitType > cursor = Views.iterable( mask ).cursor();
 		long size = 0;
 
