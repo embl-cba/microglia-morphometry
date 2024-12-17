@@ -1,7 +1,7 @@
 package de.embl.cba.microglia.segment;
 
-import de.embl.cba.morphometry.Constants;
-import de.embl.cba.morphometry.Measurements;
+import de.embl.cba.microglia.measure.Measurements;
+import de.embl.cba.microglia.morphometry.Constants;
 import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.roi.labeling.ImgLabeling;
 import net.imglib2.type.logic.BitType;
@@ -22,7 +22,8 @@ public class SplittingUtils
 		HashMap< Integer, Integer > numObjects = new HashMap<>();
 		for ( int label : skeletonMeasurements.keySet() )
 		{
-			final double skeletonLength = settings.workingVoxelSize * (long) skeletonMeasurements.get( label ).get( Measurements.SUM_INTENSITY + "_" + Constants.SKELETON );
+			final double skeletonLength = settings.workingVoxelSize *
+					(long) skeletonMeasurements.get( label ).get( Measurements.SUM_INTENSITY + "_" + Constants.SKELETON );
 			int n = (int) ( Math.ceil( skeletonLength / settings.skeletonMaxLength ) );
 			numObjects.put( label, n );
 		}

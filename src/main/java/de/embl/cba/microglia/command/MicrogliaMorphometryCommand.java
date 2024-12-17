@@ -1,10 +1,9 @@
 package de.embl.cba.microglia.command;
 
+import de.embl.cba.microglia.Utils;
+import de.embl.cba.microglia.measure.Measurements;
 import de.embl.cba.microglia.measure.MicrogliaMorphometry;
-import de.embl.cba.morphometry.Logger;
-import de.embl.cba.morphometry.Measurements;
-import de.embl.cba.morphometry.Utils;
-import de.embl.cba.tables.Tables;
+import ij.IJ;
 import ij.ImagePlus;
 import inra.ijpb.measure.region2d.GeodesicDiameter;
 import net.imagej.ops.OpService;
@@ -23,8 +22,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static de.embl.cba.microglia.Utils.*;
-import static de.embl.cba.tables.Tables.addRelativeImagePathColumn;
-import static de.embl.cba.tables.Tables.saveTable;
 
 @Plugin(type = Command.class, menuPath = "Plugins>Microglia>Measure Microglia Morphometry" )
 public class MicrogliaMorphometryCommand < T extends RealType< T > & NativeType< T > >
@@ -53,8 +50,8 @@ public class MicrogliaMorphometryCommand < T extends RealType< T > & NativeType<
 
 		dataSetID = FilenameUtils.removeExtension( intensityFile.getName() );
 
-		Logger.log( "\n# Microglia Morphometry Measurements");
-		Logger.log( "Analyzing: " + dataSetID );
+		IJ.log( "\n# Microglia Morphometry Measurements");
+		IJ.log( "Analyzing: " + dataSetID );
 
 		final MicrogliaMorphometry< T > microgliaMorphometry =
 				new MicrogliaMorphometry(
@@ -65,7 +62,7 @@ public class MicrogliaMorphometryCommand < T extends RealType< T > & NativeType<
 
 		microgliaMorphometry.run();
 		saveResults( dataSetID, microgliaMorphometry );
-		Logger.log( "Done!" );
+		IJ.log( "Done!" );
 	}
 
 	private boolean checkInstallationOfMorpholibJ()
@@ -74,7 +71,7 @@ public class MicrogliaMorphometryCommand < T extends RealType< T > & NativeType<
 			new GeodesicDiameter(  );
 		}
 		catch( NoClassDefFoundError e ) {
-			Logger.error( "Please install MorpholibJ by adding the Update Site: IJPB-plugins" );
+			IJ.error( "Please install MorpholibJ by adding the Update Site: IJPB-plugins" );
 			return false;
 		}
 
@@ -121,7 +118,7 @@ public class MicrogliaMorphometryCommand < T extends RealType< T > & NativeType<
 
 		saveAnnotations( dataSetID, microgliaMorphometry, table );
 
-		Logger.log( "Saving results table: " + tableOutputFile );
+		IJ.log( "Saving results table: " + tableOutputFile );
 
 		saveTable( table, tableOutputFile );
 	}
@@ -146,8 +143,9 @@ public class MicrogliaMorphometryCommand < T extends RealType< T > & NativeType<
 				outputDirectory.toString() + File.separator + file,
 				imageName );
 
-		Tables.addColumn( table, "Path_Skeletons", file );
+		Utils.addColumn( table, "Path_Skeletons", file );
 	}
+
 
 	private void saveAnnotations(
 			String dataSetID,
@@ -164,7 +162,7 @@ public class MicrogliaMorphometryCommand < T extends RealType< T > & NativeType<
 				outputDirectory.toString() + File.separator + file,
 				imageName );
 
-		Tables.addColumn( table, "Path_Annotations", file );
+		Utils.addColumn( table, "Path_Annotations", file );
 	}
 
 }

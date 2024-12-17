@@ -1,12 +1,9 @@
 package de.embl.cba.microglia.track;
 
-import de.embl.cba.morphometry.SyncWindowsHack;
-import de.embl.cba.morphometry.Utils;
-import de.embl.cba.morphometry.regions.Regions;
-import de.embl.cba.tables.FileAndUrlUtils;
+import de.embl.cba.microglia.morphometry.SyncWindowsHack;
+import de.embl.cba.microglia.morphometry.regions.Regions;
 import ij.IJ;
 import ij.ImagePlus;
-import ij.WindowManager;
 import ij.gui.Roi;
 import ij.gui.Toolbar;
 import ij.measure.Calibration;

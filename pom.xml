@@ -91,14 +91,26 @@
 			<groupId>net.imagej</groupId>
 			<artifactId>imagej</artifactId>
 		</dependency>
-		<dependency>
-			<groupId>de.embl.cba</groupId>
-			<artifactId>imagej-utils</artifactId>
-			<version>${imagej-utils.version}</version>
-		</dependency>
+<!--		<dependency>-->
+<!--			<groupId>de.embl.cba</groupId>-->
+<!--			<artifactId>imagej-utils</artifactId>-->
+<!--			<version>${imagej-utils.version}</version>-->
+<!--		</dependency>-->
 		<dependency>
 			<groupId>sc.fiji</groupId>
 			<artifactId>Anisotropic_Diffusion_2D</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>fr.inra.ijpb</groupId>
+			<artifactId>MorphoLibJ_</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>ome</groupId>
+			<artifactId>bio-formats_plugins</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>net.imglib2</groupId>
+			<artifactId>imglib2-ij</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.junit.jupiter</groupId>

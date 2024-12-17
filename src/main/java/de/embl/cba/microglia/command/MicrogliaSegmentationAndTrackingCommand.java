@@ -1,12 +1,10 @@
 package de.embl.cba.microglia.command;
 
+import de.embl.cba.microglia.Utils;
 import de.embl.cba.microglia.segment.MicrogliaSegmentationAndTracking;
 import de.embl.cba.microglia.segment.MicrogliaSettings;
-import de.embl.cba.morphometry.Logger;
-import de.embl.cba.morphometry.Utils;
 import ij.IJ;
 import ij.ImagePlus;
-import ij.LookUpTable;
 import net.imagej.ops.OpService;
 import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.type.NativeType;
@@ -89,7 +87,7 @@ public class MicrogliaSegmentationAndTrackingCommand< T extends RealType<T> & Na
 
 		if ( imagePlus.getNChannels() > 1 )
 		{
-			Logger.error( "Only single channel files are supported. " +
+			IJ.error( "Only single channel files are supported. " +
 					"Please use [ Image > Color > Split Channels ] and [ File > Save as..] to " +
 					"save the channel that you want to segment and track as a single file.");
 			return;
@@ -106,7 +104,6 @@ public class MicrogliaSegmentationAndTrackingCommand< T extends RealType<T> & Na
 			if ( !ok )
 				return;
 		}
-
 
 		intensities = Utils.get2DImagePlusMovieAsFrameList(
 				imagePlus,

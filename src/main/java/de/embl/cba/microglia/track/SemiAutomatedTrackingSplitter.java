@@ -1,13 +1,10 @@
 package de.embl.cba.microglia.track;
 
+import de.embl.cba.microglia.morphometry.Algorithms;
+import de.embl.cba.microglia.morphometry.Constants;
+import de.embl.cba.microglia.morphometry.regions.Regions;
 import de.embl.cba.microglia.segment.MicrogliaSettings;
 import de.embl.cba.microglia.segment.MicrogliaShapeAndIntensitySplitter;
-import de.embl.cba.morphometry.Algorithms;
-import de.embl.cba.morphometry.Constants;
-import de.embl.cba.morphometry.Logger;
-import de.embl.cba.morphometry.Measurements;
-import de.embl.cba.morphometry.Utils;
-import de.embl.cba.morphometry.regions.Regions;
 import ij.IJ;
 import ij.ImagePlus;
 import ij.measure.Calibration;
@@ -16,7 +13,6 @@ import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.algorithm.labeling.ConnectedComponents;
 import net.imglib2.roi.labeling.ImgLabeling;
 import net.imglib2.roi.labeling.LabelRegion;
-import net.imglib2.roi.labeling.LabelRegionCursor;
 import net.imglib2.roi.labeling.LabelRegions;
 import net.imglib2.type.NativeType;
 import net.imglib2.type.logic.BitType;
@@ -96,7 +92,7 @@ public class SemiAutomatedTrackingSplitter< T extends RealType< T > & NativeType
 
 	private void createAndAddNewLabeling(int t )
 	{
-		Logger.log( "Instance segmentation of frame " + t );
+		IJ.log( "Instance segmentation of frame " + t );
 
 		if ( t == 0 )
 		{
@@ -297,7 +293,7 @@ public class SemiAutomatedTrackingSplitter< T extends RealType< T > & NativeType
 				currentObjectRegion.getLabel(),
 				currentIntensityImage );
 
-		Logger.log( "Object intensity: " + (long) currentObjectIntensity );
+		IJ.log( "Object intensity: " + (long) currentObjectIntensity );
 
 		final HashMap< Integer, Double > previousIntensities = new HashMap<>();
 
@@ -311,8 +307,8 @@ public class SemiAutomatedTrackingSplitter< T extends RealType< T > & NativeType
 			previousIntensities.put( previousLabel , previousObjectIntensity );
 
 			final double overlapFraction = 1.0 * previousSizes.get( previousLabel ).longValue() / currentObjectRegion.size();
-			Logger.log( "Previous object intensity: " + (long) previousObjectIntensity );
-			Logger.log( "Overlap pixel fraction: " + overlapFraction );
+			IJ.log( "Previous object intensity: " + (long) previousObjectIntensity );
+			IJ.log( "Overlap pixel fraction: " + overlapFraction );
 
 			if ( overlapFraction < settings.minimalOverlapFraction ) splitObjects = false;
 
@@ -322,12 +318,12 @@ public class SemiAutomatedTrackingSplitter< T extends RealType< T > & NativeType
 
 		final double sumIntensityRatio = currentObjectIntensity / previousIntensitySum;
 
-		Logger.log( "Intensity ratio: " + sumIntensityRatio );
+		IJ.log( "Intensity ratio: " + sumIntensityRatio );
 
 		if ( sumIntensityRatio < settings.minimalSumIntensityRatio ) splitObjects = false;
 		if ( sumIntensityRatio > settings.maximalSumIntensityRatio ) splitObjects = false;
 
-		Logger.log( "Split objects: " + splitObjects );
+		IJ.log( "Split objects: " + splitObjects );
 
 		return splitObjects;
 	}

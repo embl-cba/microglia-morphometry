@@ -1,14 +1,12 @@
 package de.embl.cba.microglia.track;
 
-import de.embl.cba.morphometry.Utils;
-import de.embl.cba.morphometry.regions.Regions;
+import de.embl.cba.microglia.morphometry.regions.Regions;
 import net.imglib2.Cursor;
 import net.imglib2.RandomAccess;
 import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.algorithm.labeling.ConnectedComponents;
 import net.imglib2.img.array.ArrayImgs;
 import net.imglib2.roi.labeling.LabelRegion;
-import net.imglib2.roi.labeling.LabelRegionCursor;
 import net.imglib2.roi.labeling.LabelRegions;
 import net.imglib2.type.NativeType;
 import net.imglib2.type.numeric.RealType;

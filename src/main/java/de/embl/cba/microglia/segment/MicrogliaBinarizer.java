@@ -73,8 +73,8 @@ public class MicrogliaBinarizer< T extends RealType< T > & NativeType< T > >
 		double offset = mode.coordinate;
 		double threshold = offset + ( rightHandHalfMode.coordinate - mode.coordinate ) * settings.thresholdInUnitsOfBackgroundPeakHalfWidth;
 
-		Logger.debug( "Intensity offset: " + offset );
-		Logger.log( "Threshold: " + threshold );
+		IJ.debug( "Intensity offset: " + offset );
+		IJ.log( "Threshold: " + threshold );
 
 		/**
 		 * Create mask
@@ -87,7 +87,7 @@ public class MicrogliaBinarizer< T extends RealType< T > & NativeType< T > >
 		/**
 		 * Remove small objects from mask
 		 */
-		Logger.log( "Removing objects of an area less than " + settings.minimalObjectSize + " um^2..." );
+		IJ.log( "Removing objects of an area less than " + settings.minimalObjectSize + " um^2..." );
 		Regions.removeSmallRegionsInMask( mask, settings.minimalObjectSize, settings.workingVoxelSize );
 
 		if ( showIntermediateResults ) show( mask, "size filtered mask", null, workingCalibration, false );

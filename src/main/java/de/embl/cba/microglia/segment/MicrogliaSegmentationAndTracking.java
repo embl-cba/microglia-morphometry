@@ -35,7 +35,7 @@ public class MicrogliaSegmentationAndTracking< T extends RealType< T > & NativeT
 		final int numFrames = intensities.size();
 		for ( long t = 0; t < numFrames; ++t )
 		{
-			Logger.log("Creating binary masks " + ( t + 1 ) + "/" + numFrames );
+			IJ.log("Creating binary masks " + ( t + 1 ) + "/" + numFrames );
 			final MicrogliaBinarizer microgliaBinarizer =
 					new MicrogliaBinarizer( intensities.get( ( int ) t ), settings );
 			microgliaBinarizer.run();

@@ -28,12 +28,11 @@
  */
 package de.embl.cba.microglia.measure;
 
-import de.embl.cba.morphometry.Algorithms;
-import de.embl.cba.morphometry.Logger;
-import de.embl.cba.morphometry.Utils;
-import de.embl.cba.morphometry.regions.Regions;
-import de.embl.cba.morphometry.skeleton.SkeletonAnalyzer;
-import de.embl.cba.tables.Tables;
+import de.embl.cba.microglia.Utils;
+import de.embl.cba.microglia.morphometry.Algorithms;
+import de.embl.cba.microglia.morphometry.regions.Regions;
+import de.embl.cba.microglia.morphometry.skeleton.SkeletonAnalyzer;
+import ij.IJ;
 import ij.ImagePlus;
 import ij.measure.Calibration;
 import ij.process.ImageProcessor;
@@ -72,7 +71,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import static de.embl.cba.morphometry.Algorithms.getMaximumLocation;
+import static de.embl.cba.microglia.morphometry.Algorithms.getMaximumLocation;
 
 public class Measurements
 {
@@ -358,8 +357,7 @@ public class Measurements
 				Regions.asMask( labelRegion );
 
 		final Calibration calibration = new Calibration();
-		final ImageProcessor maskProcessor =
-				ImageJFunctions.wrap( mask, "" ).getProcessor();
+		final ImageProcessor maskProcessor = ImageJFunctions.wrap( mask, "" ).getProcessor();
 		final int[] labels = { 255 };
 
 		final GeodesicDiameter.Result[] geodesicDiameters = GeodesicDiameter.geodesicDiameters(
@@ -603,7 +601,7 @@ public class Measurements
 				out.println( line );
 			}
 
-			Logger.log( "\nSaved table to: " + file );
+			IJ.log( "\nSaved table to: " + file );
 		}
 		catch ( FileNotFoundException e )
 		{
@@ -615,13 +613,13 @@ public class Measurements
 	{
 		final ArrayList< HashMap< Integer, Map< String, Object > > > timepoints = new ArrayList<>();
 		timepoints.add( objectMeasurements );
-		return Tables.createJTableFromStringList( measurementsAsTableRowsStringList( timepoints, "\t" ), "\t" );
+		return Utils.createJTableFromStringList( measurementsAsTableRowsStringList( timepoints, "\t" ), "\t" );
 	}
 
 	public static JTable asTable(
 			ArrayList< HashMap< Integer, Map< String, Object > > > timepoints )
 	{
-		return Tables.createJTableFromStringList(
+		return Utils.createJTableFromStringList(
 				measurementsAsTableRowsStringList( timepoints, "\t" ),
 				"\t" );
 	}

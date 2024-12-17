@@ -1,9 +1,8 @@
 package de.embl.cba.microglia.measure;
 
-import de.embl.cba.microglia.measure.Measurements;
-import de.embl.cba.morphometry.Logger;
-import de.embl.cba.morphometry.Utils;
-import de.embl.cba.morphometry.skeleton.SkeletonCreator;
+import de.embl.cba.microglia.Utils;
+import de.embl.cba.microglia.morphometry.skeleton.SkeletonCreator;
+import ij.IJ;
 import ij.measure.Calibration;
 import net.imagej.ops.OpService;
 import net.imglib2.RandomAccessibleInterval;
@@ -54,7 +53,7 @@ public class MicrogliaMorphometry < T extends RealType< T > & NativeType< T > >
 
 		for ( int t = 0; t < nt; ++t )
 		{
-			Logger.log( "Measuring morphometries, frame " + ( t + 1 ) + " / " + nt );
+			IJ.log( "Measuring morphometries, frame " + ( t + 1 ) + " / " + nt );
 
 			final HashMap< Integer, Map< String, Object > > measurements =
 					measurementsTimepointList.get( t );
