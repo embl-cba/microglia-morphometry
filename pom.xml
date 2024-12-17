@@ -10,7 +10,7 @@
 
 	<groupId>de.embl.cba</groupId>
 	<artifactId>microglia-morphometry</artifactId>
-	<version>0.6.2</version>
+	<version>0.7.0</version>
 
 	<!-- mvn clean install -Dmaven.test.skip=true -Dscijava.app.directory=/Users/tischer/Desktop/Fiji/Fiji-MicrogliaMorphometry.app -->
 
