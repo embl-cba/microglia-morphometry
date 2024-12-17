@@ -28,8 +28,8 @@
  */
 package de.embl.cba.microglia.morphometry;
 
-import de.embl.cba.morphometry.geometry.CoordinateToValue;
-import de.embl.cba.morphometry.geometry.CoordinatesAndValues;
+import de.embl.cba.microglia.morphometry.geometry.CoordinateToValue;
+import de.embl.cba.microglia.morphometry.geometry.CoordinatesAndValues;
 import ij.gui.Plot;
 
 import java.util.ArrayList;

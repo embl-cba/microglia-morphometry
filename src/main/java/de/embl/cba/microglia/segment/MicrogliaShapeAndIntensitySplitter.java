@@ -1,8 +1,8 @@
 package de.embl.cba.microglia.segment;
 
-import de.embl.cba.morphometry.Algorithms;
-import de.embl.cba.morphometry.Utils;
-import de.embl.cba.morphometry.regions.Regions;
+import de.embl.cba.microglia.Utils;
+import de.embl.cba.microglia.morphometry.Algorithms;
+import de.embl.cba.microglia.morphometry.regions.Regions;
 import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.algorithm.labeling.ConnectedComponents;
 import net.imglib2.roi.labeling.ImgLabeling;

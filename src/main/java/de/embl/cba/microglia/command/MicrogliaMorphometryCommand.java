@@ -16,7 +16,10 @@ import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
 import javax.swing.*;
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -121,6 +124,39 @@ public class MicrogliaMorphometryCommand < T extends RealType< T > & NativeType<
 		IJ.log( "Saving results table: " + tableOutputFile );
 
 		saveTable( table, tableOutputFile );
+	}
+
+	public static void saveTable( JTable table, File tableOutputFile )
+	{
+		try
+		{
+			saveTableWithIOException( table, tableOutputFile );
+		} catch ( IOException e )
+		{
+			e.printStackTrace();
+		}
+	}
+
+	private static void saveTableWithIOException( JTable table, File file ) throws IOException
+	{
+		BufferedWriter bfw = new BufferedWriter( new FileWriter( file ) );
+
+		final int lastColumn = table.getColumnCount() - 1;
+
+		// header
+		for ( int col = 0; col < lastColumn; col++ )
+			bfw.write( table.getColumnName( col ) + "\t" );
+		bfw.write( table.getColumnName( lastColumn ) + "\n" );
+
+		// content
+		for ( int row = 0; row < table.getRowCount(); row++ )
+		{
+			for ( int col = 0; col < lastColumn; col++ )
+				bfw.write( table.getValueAt( row, col ) + "\t" );
+			bfw.write( table.getValueAt( row, lastColumn ) + "\n" );
+		}
+
+		bfw.close();
 	}
 
 	public File getTableOutputFile()

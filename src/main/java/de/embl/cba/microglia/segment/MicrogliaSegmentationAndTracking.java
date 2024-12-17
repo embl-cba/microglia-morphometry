@@ -1,7 +1,7 @@
 package de.embl.cba.microglia.segment;
 
 import de.embl.cba.microglia.track.SemiAutomatedTrackingSplitter;
-import de.embl.cba.morphometry.Logger;
+import ij.IJ;
 import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.type.NativeType;
 import net.imglib2.type.numeric.RealType;

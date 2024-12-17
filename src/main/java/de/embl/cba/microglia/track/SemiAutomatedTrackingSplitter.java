@@ -1,5 +1,7 @@
 package de.embl.cba.microglia.track;
 
+import de.embl.cba.microglia.Utils;
+import de.embl.cba.microglia.measure.Measurements;
 import de.embl.cba.microglia.morphometry.Algorithms;
 import de.embl.cba.microglia.morphometry.Constants;
 import de.embl.cba.microglia.morphometry.regions.Regions;
@@ -175,7 +177,7 @@ public class SemiAutomatedTrackingSplitter< T extends RealType< T > & NativeType
 
 		while ( ! trackingSplitterManualCorrectionUI.isThisFrameFinished() )
 		{
-			Utils.wait( 100 );
+			IJ.wait( 100 );
 		}
 
 		labelings = trackingSplitterManualCorrectionUI.getLabelings();

@@ -28,10 +28,11 @@
  */
 package de.embl.cba.microglia.morphometry;
 
-import de.embl.cba.morphometry.geometry.CoordinateToValue;
-import de.embl.cba.morphometry.geometry.CoordinatesAndValues;
-import de.embl.cba.morphometry.regions.Regions;
-import de.embl.cba.transforms.utils.Transforms;
+import de.embl.cba.microglia.Transforms;
+import de.embl.cba.microglia.Utils;
+import de.embl.cba.microglia.morphometry.geometry.CoordinateToValue;
+import de.embl.cba.microglia.morphometry.geometry.CoordinatesAndValues;
+import de.embl.cba.microglia.morphometry.regions.Regions;
 import ij.IJ;
 import ij.ImagePlus;
 import net.imagej.ops.OpService;
@@ -40,6 +41,7 @@ import net.imagej.ops.threshold.otsu.ComputeOtsuThreshold;
 import net.imagej.ops.threshold.yen.ComputeYenThreshold;
 import net.imglib2.RandomAccess;
 import net.imglib2.*;
+import net.imglib2.algorithm.gauss3.Gauss3;
 import net.imglib2.algorithm.labeling.ConnectedComponents;
 import net.imglib2.algorithm.morphology.Closing;
 import net.imglib2.algorithm.morphology.Dilation;
@@ -53,6 +55,8 @@ import net.imglib2.converter.Converters;
 import net.imglib2.histogram.Histogram1d;
 import net.imglib2.histogram.Real1dBinMapper;
 import net.imglib2.img.Img;
+import net.imglib2.img.ImgFactory;
+import net.imglib2.img.array.ArrayImgFactory;
 import net.imglib2.img.array.ArrayImgs;
 import net.imglib2.img.display.imagej.ImageJFunctions;
 import net.imglib2.interpolation.randomaccess.NearestNeighborInterpolatorFactory;
@@ -70,17 +74,14 @@ import net.imglib2.type.numeric.RealType;
 import net.imglib2.type.numeric.integer.IntType;
 import net.imglib2.type.numeric.integer.UnsignedByteType;
 import net.imglib2.type.numeric.real.DoubleType;
-import net.imglib2.util.Intervals;
-import net.imglib2.util.LinAlgHelpers;
-import net.imglib2.util.Pair;
-import net.imglib2.util.ValuePair;
+import net.imglib2.util.*;
 import net.imglib2.view.IntervalView;
 import net.imglib2.view.Views;
 
 import java.util.*;
 
-import static de.embl.cba.transforms.utils.ImageCreators.copyAsArrayImg;
-import static de.embl.cba.transforms.utils.Transforms.createTransformedInterval;
+import static de.embl.cba.microglia.Transforms.createTransformedInterval;
+import static de.embl.cba.microglia.Utils.copyAsArrayImg;
 
 public class Algorithms
 {
@@ -265,7 +266,7 @@ public class Algorithms
 	{
 		final Img< BitType > centralObjectImg = ArrayImgs.bits( dimensions );
 
-		final Cursor< Void > regionCursor = region.cursor();
+		final Cursor< Void > regionCursor = region.inside().cursor();
 		final RandomAccess< BitType > access = centralObjectImg.randomAccess();
 		while ( regionCursor.hasNext() )
 		{
@@ -310,7 +311,7 @@ public class Algorithms
 				Converters.convert( rai, ( i, o )
 						-> o.set( i.getRealDouble() > threshold ? true : false ), new BitType() );
 
-		return Utils.copyAsArrayImg( mask );
+		return copyAsArrayImg( mask );
 	}
 
 	public static < T extends RealType< T > & NativeType< T > >
@@ -440,7 +441,7 @@ public class Algorithms
 		final Cursor< Neighborhood< R > > neighborhoodCursor = Views.iterable( neighborhoodsInterval ).cursor();
 		final RandomAccess< R > inputAccess = input.randomAccess();
 
-		final RandomAccessibleInterval< R > gradient = Utils.copyAsArrayImg( input );
+		final RandomAccessibleInterval< R > gradient = copyAsArrayImg( input );
 		final RandomAccess< R > gradientAccess = gradient.randomAccess();
 
 		while ( neighborhoodCursor.hasNext() )
@@ -875,6 +876,7 @@ public class Algorithms
 
 		return sortedLocalMaxima;
 	}
+
 
 	public static < I extends IntegerType< I > >
 	RandomAccessibleInterval< IntType > createOverlapLabeling(

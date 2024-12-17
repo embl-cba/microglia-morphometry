@@ -28,9 +28,9 @@
  */
 package de.embl.cba.microglia.morphometry.skeleton;
 
-import de.embl.cba.morphometry.Utils;
-import de.embl.cba.morphometry.regions.RegionAndSize;
-import de.embl.cba.morphometry.regions.Regions;
+import de.embl.cba.microglia.Utils;
+import de.embl.cba.microglia.morphometry.regions.RegionAndSize;
+import de.embl.cba.microglia.morphometry.regions.Regions;
 import net.imagej.ops.OpService;
 import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.algorithm.labeling.ConnectedComponents;

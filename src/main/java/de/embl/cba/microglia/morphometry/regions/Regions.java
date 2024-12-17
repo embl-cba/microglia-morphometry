@@ -28,10 +28,10 @@
  */
 package de.embl.cba.microglia.morphometry.regions;
 
-import de.embl.cba.morphometry.Algorithms;
-import de.embl.cba.morphometry.Logger;
-import de.embl.cba.morphometry.Utils;
-import de.embl.cba.transforms.utils.Transforms;
+import de.embl.cba.microglia.Transforms;
+import de.embl.cba.microglia.Utils;
+import de.embl.cba.microglia.morphometry.Algorithms;
+import ij.IJ;
 import net.imglib2.Cursor;
 import net.imglib2.Interval;
 import net.imglib2.RandomAccess;

@@ -26,17 +26,60 @@
  * POSSIBILITY OF SUCH DAMAGE.
  * #L%
  */
-package de.embl.cba.microglia.morphometry.geometry.ellipsoids;
+package de.embl.cba.microglia;
 
-import mcib3d.geom.Vector3D;
+import bdv.util.BdvOverlay;
+import net.imglib2.RealPoint;
+import net.imglib2.realtransform.AffineTransform3D;
 
-public class EllipsoidVectors
+import java.awt.*;
+import java.util.List;
+
+public class BdvPointListOverlay extends BdvOverlay
 {
-	public Vector3D shortestAxis;
-	public Vector3D middleAxis;
-	public Vector3D longestAxis;
-	public double[] center;
-	public double shortestAxisLength;
-	public double middleAxisLength;
-	public double longestAxisLength;
+	final List< RealPoint > points;
+	private final double depthOfField;
+
+	public BdvPointListOverlay( List< RealPoint > points, double depthOfField )
+	{
+		super();
+		this.points = points;
+		this.depthOfField = depthOfField;
+	}
+
+	@Override
+	protected void draw( final Graphics2D g )
+	{
+		final AffineTransform3D t = new AffineTransform3D();
+		getCurrentTransform3D( t );
+
+		final double[] lPos = new double[ 3 ];
+		final double[] gPos = new double[ 3 ];
+		for ( final RealPoint p : points )
+		{
+			p.localize( gPos );
+			t.apply( gPos, lPos );
+			final int size = getSize( lPos[ 2 ] );
+			final int x = ( int ) ( lPos[ 0 ] - 0.5 * size );
+			final int y = ( int ) ( lPos[ 1 ] - 0.5 * size );
+			g.setColor( getColor( lPos[ 2 ] ) );
+			g.fillOval( x, y, size, size );
+		}
+	}
+
+	private Color getColor( final double depth )
+	{
+		int alpha = 255 - ( int ) Math.round( Math.abs( depth ) );
+
+		if ( alpha < 64 )
+			alpha = 64;
+
+		return new Color( 255, 0, 0, alpha );
+	}
+
+	private int getSize( final double depth )
+	{
+		return ( int ) Math.max( 5, 20 - 1.0 / depthOfField * Math.round( Math.abs( depth ) ) );
+	}
+
 }

@@ -28,7 +28,7 @@
  */
 package de.embl.cba.microglia.morphometry.geometry;
 
-import de.embl.cba.morphometry.CoordinateAndValue;
+import de.embl.cba.microglia.morphometry.CoordinateAndValue;
 
 import java.util.ArrayList;
 

@@ -1,9 +1,8 @@
 package de.embl.cba.microglia.segment;
 
-import de.embl.cba.morphometry.Utils;
+import de.embl.cba.microglia.Utils;
 import ij.measure.Calibration;
 import net.imagej.ops.OpService;
-import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.type.NativeType;
 import net.imglib2.type.numeric.RealType;
 

@@ -28,11 +28,11 @@
  */
 package de.embl.cba.microglia.morphometry;
 
-import de.embl.cba.transforms.utils.Transforms;
+import de.embl.cba.microglia.Transforms;
 import net.imglib2.RealPoint;
 
-import static de.embl.cba.morphometry.Constants.X;
-import static de.embl.cba.morphometry.Constants.Y;
+import static de.embl.cba.microglia.morphometry.Constants.X;
+import static de.embl.cba.microglia.morphometry.Constants.Y;
 import static java.lang.Math.atan;
 import static java.lang.Math.toDegrees;
 
@@ -67,14 +67,5 @@ public abstract class Angles
 		return angleToZAxisInDegrees;
 	}
 
-
-	public static double angleOfSpindleAxisToXAxisInRadians( final double[] vector )
-	{
-		double[] xAxis = new double[]{ 1, 0, 0};
-
-		double angleInRadians = Transforms.getAngle( vector, xAxis );
-
-		return angleInRadians;
-	}
 
 }

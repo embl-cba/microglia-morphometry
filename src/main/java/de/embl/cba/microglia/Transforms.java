@@ -104,59 +104,12 @@ public abstract class Transforms
         }
     }
 
-    public static < T extends NumericType< T > & NativeType< T > >
-	RandomAccessibleInterval createTransformedView( RandomAccessibleInterval< T > rai,
-													InvertibleRealTransform combinedTransform,
-													InterpolatorFactory interpolatorFactory)
-	{
-		final RandomAccessible transformedRA = createTransformedRaView( rai, combinedTransform, interpolatorFactory );
-		final FinalInterval transformedInterval = createBoundingIntervalAfterTransformation( rai, combinedTransform );
-		final RandomAccessibleInterval< T > transformedIntervalView = Views.interval( transformedRA, transformedInterval );
-
-		return transformedIntervalView;
-	}
-
-	public static < T extends NumericType< T > & NativeType< T > >
-	RandomAccessibleInterval createTransformedView( RandomAccessibleInterval< T > rai,
-													InvertibleRealTransform combinedTransform,
-													InterpolatorFactory interpolatorFactory,
-													BorderExtension borderExtension)
-	{
-		final RandomAccessible transformedRA = createTransformedRaView( rai, combinedTransform, interpolatorFactory, borderExtension );
-		final FinalInterval transformedInterval = createBoundingIntervalAfterTransformation( rai, combinedTransform );
-		final RandomAccessibleInterval< T > transformedIntervalView = Views.interval( transformedRA, transformedInterval );
-
-		return transformedIntervalView;
-	}
-
-	public static < T extends NumericType< T > & NativeType< T > >
-	RandomAccessibleInterval createTransformedView( RandomAccessibleInterval< T > rai, InvertibleRealTransform transform )
-	{
-		final RandomAccessible transformedRA = createTransformedRaView( rai, transform, new ClampingNLinearInterpolatorFactory() );
-		final FinalInterval transformedInterval = createBoundingIntervalAfterTransformation( rai, transform );
-		final RandomAccessibleInterval< T > transformedIntervalView = Views.interval( transformedRA, transformedInterval );
-
-		return transformedIntervalView;
-	}
-
 	public enum BorderExtension
 	{
 		ExtendZero,
 		ExtendBorder,
 		ExtendMirror
 	}
-
-	public static < T extends NumericType< T > & NativeType< T > >
-	RandomAccessibleInterval createTransformedView( RandomAccessibleInterval< T > rai, InvertibleRealTransform transform, BorderExtension borderExtension  )
-	{
-		final RandomAccessible transformedRA = createTransformedRaView( rai, transform, new ClampingNLinearInterpolatorFactory(), borderExtension );
-
-		final FinalInterval transformedInterval = createBoundingIntervalAfterTransformation( rai, transform );
-		final RandomAccessibleInterval< T > transformedIntervalView = Views.interval( transformedRA, transformedInterval );
-
-		return transformedIntervalView;
-	}
-
 
 	public static < T extends Type< T > >
 	RandomAccessibleInterval< T > getWithAdjustedOrigin(
@@ -453,22 +406,6 @@ public abstract class Transforms
 		return scaling;
 	}
 
-	public static <T extends RealType<T> & NativeType< T > >
-	RandomAccessibleInterval< T > transformAllChannels( RandomAccessibleInterval< T > images, AffineTransform3D registrationTransform )
-	{
-		ArrayList< RandomAccessibleInterval< T > > transformedChannels = new ArrayList<>(  );
-
-		long numChannels = images.dimension( 3 );
-
-		for ( int c = 0; c < numChannels; ++c )
-		{
-			final RandomAccessibleInterval< T > channel = Views.hyperSlice( images, 3, c );
-			transformedChannels.add( createTransformedView( channel, registrationTransform ) );
-		}
-
-		return Views.stack( transformedChannels );
-	}
-
 	public static < T extends RealType< T > & NativeType< T > >
 	RandomAccessibleInterval< T > scaledView( RandomAccessibleInterval< T > input,
 											  double[] scalingFactors )
@@ -505,71 +442,6 @@ public abstract class Transforms
 		return center;
 	}
 
-	/**
-	 * Rotation transform which rotates {@code axis} onto {@code targetAxis}
-	 *
-	 * @param normalisedTargetAxis
-	 * @param normalisedAxis
-	 * @return rotationTransform
-	 */
-	public static AffineTransform3D getRotationTransform3D(
-			double[] normalisedTargetAxis,
-			double[] normalisedAxis )
-	{
-
-		// Note that for the dot-product the order of the vectors does not matter.
-		double rotationAngle = Math.acos( LinAlgHelpers.dot( normalisedAxis, normalisedTargetAxis ) );
-
-		if ( rotationAngle == 0.0 ) return new AffineTransform3D();
-
-		// Note that here, for the cross-product, the order of the vectors is important!
-		double[] rotationAxis = new double[3];
-		LinAlgHelpers.cross( normalisedAxis, normalisedTargetAxis, rotationAxis );
-
-		if ( LinAlgHelpers.length( rotationAxis ) == 0.0 )
-		{
-			// Since the rotation angle is not zero (see above), the vectors are anti-parallel.
-			// This means that the cross product does not work for finding a perpendicular vector.
-			// It also means we need to rotate 180 degrees around any axis that
-			// is perpendicular to any of the two vectors.
-			// That means that the dot-product of the rotation axis and any
-			// of the two vectors should be zero:
-			// u * x + v * y + w * z != 0
-
-			rotationAxis = VectorUtils.getPerpendicularVector( normalisedAxis );
-
-		}
-
-		LinAlgHelpers.normalize( rotationAxis );
-
-		final double[] q = new double[ 4 ];
-		LinAlgHelpers.quaternionFromAngleAxis( rotationAxis, rotationAngle, q );
-
-		final double[][] m = new double[ 3 ][ 4 ];
-		LinAlgHelpers.quaternionToR( q, m );
-
-		AffineTransform3D rotation = new AffineTransform3D();
-		rotation.set( m );
-
-		return rotation;
-	}
-
-	public static double getAngle( double[] v1, double[] v2 )
-	{
-		double le = LinAlgHelpers.length( v1 ) * LinAlgHelpers.length( v2 );
-		double alpha = 0.0D;
-		if (le > 0.0D) {
-			double sca = LinAlgHelpers.dot( v1, v2 );
-			sca /= le;
-			if (sca < 0.0D) {
-				sca *= -1.0D;
-			}
-
-			alpha = Math.acos(sca);
-		}
-
-		return alpha;
-	}
 
 	public static double[] getScale( AffineTransform3D sourceTransform )
 	{

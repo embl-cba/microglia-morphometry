@@ -1,5 +1,6 @@
 package de.embl.cba.microglia.track;
 
+import de.embl.cba.microglia.Utils;
 import de.embl.cba.microglia.morphometry.regions.Regions;
 import net.imglib2.Cursor;
 import net.imglib2.RandomAccess;

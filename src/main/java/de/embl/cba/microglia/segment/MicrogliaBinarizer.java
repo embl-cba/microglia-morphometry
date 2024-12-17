@@ -1,12 +1,12 @@
 package de.embl.cba.microglia.segment;
 
 import anisotropic_diffusion.Anisotropic_Diffusion_2D;
-import de.embl.cba.morphometry.Algorithms;
-import de.embl.cba.morphometry.CoordinateAndValue;
-import de.embl.cba.morphometry.IntensityHistogram;
-import de.embl.cba.morphometry.Logger;
-import de.embl.cba.morphometry.Utils;
-import de.embl.cba.morphometry.regions.Regions;
+import de.embl.cba.microglia.Utils;
+import de.embl.cba.microglia.morphometry.Algorithms;
+import de.embl.cba.microglia.morphometry.CoordinateAndValue;
+import de.embl.cba.microglia.morphometry.IntensityHistogram;
+import de.embl.cba.microglia.morphometry.regions.Regions;
+import ij.IJ;
 import ij.ImagePlus;
 import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.img.display.imagej.ImageJFunctions;
@@ -14,9 +14,9 @@ import net.imglib2.type.NativeType;
 import net.imglib2.type.logic.BitType;
 import net.imglib2.type.numeric.RealType;
 
-import static de.embl.cba.morphometry.viewing.BdvViewer.show;
-import static de.embl.cba.transforms.utils.Scalings.createRescaledArrayImg;
-import static de.embl.cba.transforms.utils.Transforms.getScalingFactors;
+import static de.embl.cba.microglia.Transforms.getScalingFactors;
+import static de.embl.cba.microglia.Utils.createRescaledArrayImg;
+import static de.embl.cba.microglia.Utils.show;
 
 public class MicrogliaBinarizer< T extends RealType< T > & NativeType< T > >
 {
@@ -45,7 +45,11 @@ public class MicrogliaBinarizer< T extends RealType< T > & NativeType< T > >
 		// settings.workingVoxelSize = settings.calibration2D
 		RandomAccessibleInterval< T > image = createRescaledArrayImg( intensity, getScalingFactors( settings.calibration2D, settings.workingVoxelSize ) );
 
-		if ( showIntermediateResults ) show( image, "rescaled image", null, workingCalibration, false );
+		if ( showIntermediateResults )
+		{
+			// this was from imagej-utils the bdvViewer
+			show( image, "rescaled image", null, workingCalibration, false );
+		}
 
 
 		/**
@@ -73,7 +77,7 @@ public class MicrogliaBinarizer< T extends RealType< T > & NativeType< T > >
 		double offset = mode.coordinate;
 		double threshold = offset + ( rightHandHalfMode.coordinate - mode.coordinate ) * settings.thresholdInUnitsOfBackgroundPeakHalfWidth;
 
-		IJ.debug( "Intensity offset: " + offset );
+		IJ.log( "Intensity offset: " + offset );
 		IJ.log( "Threshold: " + threshold );
 
 		/**
@@ -81,7 +85,10 @@ public class MicrogliaBinarizer< T extends RealType< T > & NativeType< T > >
 		 */
 		mask = Algorithms.createMask( image, threshold );
 
-		if ( showIntermediateResults ) show( mask, "mask", null, workingCalibration, false );
+		if ( showIntermediateResults )
+		{
+			show( mask, "mask", null, workingCalibration, false );
+		}
 
 
 		/**
@@ -90,7 +97,10 @@ public class MicrogliaBinarizer< T extends RealType< T > & NativeType< T > >
 		IJ.log( "Removing objects of an area less than " + settings.minimalObjectSize + " um^2..." );
 		Regions.removeSmallRegionsInMask( mask, settings.minimalObjectSize, settings.workingVoxelSize );
 
-		if ( showIntermediateResults ) show( mask, "size filtered mask", null, workingCalibration, false );
+		if ( showIntermediateResults )
+		{
+			show( mask, "size filtered mask", null, workingCalibration, false );
+		}
 
 	}
 

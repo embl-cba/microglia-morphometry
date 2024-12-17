@@ -1,5 +1,6 @@
 package de.embl.cba.microglia.track;
 
+import de.embl.cba.microglia.Utils;
 import de.embl.cba.microglia.morphometry.SyncWindowsHack;
 import de.embl.cba.microglia.morphometry.regions.Regions;
 import ij.IJ;
@@ -185,7 +186,7 @@ public class TrackingSplitterManualCorrectionUI< T extends RealType< T > & Nativ
 	{
 		final JButton button = new JButton( "Help" );
 		button.addActionListener( e -> SwingUtilities.invokeLater( () -> {
-			FileAndUrlUtils.openURI( "https://github.com/embl-cba/microglia-morphometry#manual-label-mask-correction" );
+			Utils.openURI( "https://github.com/embl-cba/microglia-morphometry#manual-label-mask-correction" );
 		} ) );
 		return button;
 	}
@@ -218,7 +219,7 @@ public class TrackingSplitterManualCorrectionUI< T extends RealType< T > & Nativ
 
 	public ArrayList< RandomAccessibleInterval< T > > runMaximalOverlapTrackerOnEditedImagePlus()
 	{
-		final ArrayList< RandomAccessibleInterval< IntType > > labels = de.embl.cba.microglia.Utils.asIntType( Utils.get2DImagePlusMovieAsFrameList( editableLabelsImp, 1 ) );
+		final ArrayList< RandomAccessibleInterval< IntType > > labels = Utils.asIntType( Utils.get2DImagePlusMovieAsFrameList( editableLabelsImp, 1 ) );
 
 		// Due to the editing small unconnected regions of pixels may occur
 		Regions.removeSmallRegionsInMasks( labels, minimalObjectSizeInPixels );
