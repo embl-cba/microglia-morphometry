@@ -10,7 +10,7 @@
 
 	<groupId>de.embl.cba</groupId>
 	<artifactId>microglia-morphometry</artifactId>
-	<version>0.7.0</version>
+	<version>0.7.1-SNAPSHOT</version>
 
 	<!-- mvn clean install -Dmaven.test.skip=true -Dscijava.app.directory=/Users/tischer/Desktop/Fiji/Fiji-MicrogliaMorphometry.app -->
 
@@ -91,11 +91,6 @@
 			<groupId>net.imagej</groupId>
 			<artifactId>imagej</artifactId>
 		</dependency>
-<!--		<dependency>-->
-<!--			<groupId>de.embl.cba</groupId>-->
-<!--			<artifactId>imagej-utils</artifactId>-->
-<!--			<version>${imagej-utils.version}</version>-->
-<!--		</dependency>-->
 		<dependency>
 			<groupId>sc.fiji</groupId>
 			<artifactId>Anisotropic_Diffusion_2D</artifactId>

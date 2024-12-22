@@ -37,7 +37,6 @@ import net.imglib2.roi.labeling.LabelRegion;
 import net.imglib2.roi.labeling.LabelRegions;
 import net.imglib2.roi.labeling.LabelingType;
 import net.imglib2.type.NativeType;
-import net.imglib2.type.Type;
 import net.imglib2.type.logic.BitType;
 import net.imglib2.type.numeric.RealType;
 import net.imglib2.type.numeric.integer.AbstractIntegerType;
@@ -350,13 +349,6 @@ public abstract class Utils
 		return array;
 	}
 
-	public static double[] as3dDoubleArray( double value )
-	{
-		double[] array = new double[ 3 ];
-		Arrays.fill( array, value );
-		return array;
-	}
-
 	public static LUT getGoldenAngleLUT()
 	{
 		byte[][] bytes = createGoldenAngleLut( 256 );
@@ -377,11 +369,6 @@ public abstract class Utils
 
 		LUT lut = new LUT( rgb[ 0 ], rgb[ 1 ], rgb[ 2 ] );
 		return lut;
-	}
-
-	public static void addColumn( JTable table, String column, Object[] values )
-	{
-		addColumn( table.getModel(), column, values );
 	}
 
 	public static void addColumn( TableModel model, String column, Object[] values )
@@ -432,42 +419,6 @@ public abstract class Utils
 
 		final RandomAccessibleInterval< T > blurred =
 				createOptimallyBlurredArrayImg( input, scalingFactors );
-
-		/*
-		 * Sample values from blurred image
-		 */
-
-		final RandomAccessibleInterval< T > resampled =
-				createResampledArrayImg( blurred, scalingFactors );
-
-		return resampled;
-	}
-
-	public static < T extends RealType< T > & NativeType< T > >
-	RandomAccessibleInterval< T > createRescaledCellImg(
-			RandomAccessibleInterval< T > input,
-			double[] scalingFactors )
-	{
-		assert scalingFactors.length == input.numDimensions();
-
-		/**
-		 * - In principle, writing a function that computes weighted averages
-		 *   of an appropriate number of neighboring (not only nearest) pixels
-		 *   around each requested (real) position in the new image appears to me
-		 *   the most straight-forward way of rescaling.
-		 * - However, in practice, blurring and subsequent re-sampling seems to be more commonly done,
-		 *   maybe for implementation efficiency?
-		 * - http://imagej.1557.x6.nabble.com/downsampling-methods-td3690444.html
-		 * - https://github.com/axtimwalde/mpicbg/blob/050bc9110a186394ea15190fd326b3e32829e018/mpicbg/src/main/java/mpicbg/ij/util/Filter.java#L424
-		 * - https://imagej.net/Downsample
-		 */
-
-		/*
-		 * Blur image
-		 */
-
-		final RandomAccessibleInterval< T > blurred =
-				createOptimallyBlurredCellImg( input, scalingFactors );
 
 		/*
 		 * Sample values from blurred image

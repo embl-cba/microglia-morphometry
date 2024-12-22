@@ -50,7 +50,6 @@ import net.imglib2.img.display.imagej.ImageJFunctions;
 import net.imglib2.roi.geom.real.Polygon2D;
 import net.imglib2.roi.labeling.ImgLabeling;
 import net.imglib2.roi.labeling.LabelRegion;
-import net.imglib2.roi.labeling.LabelRegionCursor;
 import net.imglib2.roi.labeling.LabelRegions;
 import net.imglib2.type.NativeType;
 import net.imglib2.type.logic.BitType;
@@ -402,62 +401,10 @@ public class Measurements
 			HashMap< Integer, Map< String, Object > > objectMeasurements,
 			int objectLabel, String name, Object value )
 	{
-		if ( ! objectMeasurements.keySet().contains( objectLabel ) )
+		if ( ! objectMeasurements.containsKey( objectLabel ) )
 			objectMeasurements.put( objectLabel, new HashMap<>(  ) );
 
 		objectMeasurements.get( objectLabel ).put( name, value );
-	}
-
-	public static < T extends RealType< T > & NativeType< T > >
-	double sumIntensity( RandomAccessibleInterval< T > image,
-						 RandomAccessibleInterval< BitType > mask
-
-	)
-	{
-		final Cursor< BitType > maskCursor = Views.iterable( mask ).cursor();
-		final RandomAccess< T > intensityAccess = image.randomAccess();
-
-		double sum = 0;
-
-		while ( maskCursor.hasNext() )
-		{
-			if ( maskCursor.next().get() )
-			{
-				intensityAccess.setPosition( maskCursor );
-				sum += intensityAccess.get().getRealDouble();
-			}
-
-
-		}
-
-		return sum;
-	}
-
-	public static < T extends RealType< T > & NativeType< T > >
-	double meanIntensity( RandomAccessibleInterval< T > image,
-						 RandomAccessibleInterval< BitType > mask
-
-	)
-	{
-		final Cursor< BitType > maskCursor = Views.iterable( mask ).cursor();
-		final RandomAccess< T > intensityAccess = image.randomAccess();
-
-		double sum = 0;
-		long n = 0;
-
-		while ( maskCursor.hasNext() )
-		{
-			if ( maskCursor.next().get() )
-			{
-				intensityAccess.setPosition( maskCursor );
-				sum += intensityAccess.get().getRealDouble();
-				n++;
-			}
-
-
-		}
-
-		return sum / n;
 	}
 
 	private static < T extends RealType< T > & NativeType< T > >
@@ -521,24 +468,6 @@ public class Measurements
 		return size;
 	}
 
-	public static
-	long measureSizeInPixels( RandomAccessibleInterval< BitType > mask )
-	{
-		final Cursor< BitType > cursor = Views.iterable( mask ).cursor();
-		long size = 0;
-
-		while ( cursor.hasNext() )
-		{
-			if( cursor.next().get() )
-			{
-				size++;
-			}
-		}
-
-		return size;
-
-	}
-
 	public static < T extends RealType< T > & NativeType< T > >
 	double measureBgCorrectedSumIntensity( RandomAccessibleInterval< IntType > labeling,
 										   int label,
@@ -577,43 +506,6 @@ public class Measurements
 		final double meanBg = sumBg / nBackground;
 		return ( sum - nObject * meanBg );
 
-	}
-
-	public static void addGlobalBackgroundMeasurement(
-			HashMap<Integer, Map<String, Object>> objectMeasurements,
-			ImgLabeling<Integer, IntType> imgLabeling,
-			double offset )
-	{
-		final LabelRegions< Integer > labelRegions = new LabelRegions<>( imgLabeling );
-		for ( LabelRegion labelRegion : labelRegions )
-		{
-			final int label = ( int ) ( labelRegion.getLabel() );
-			addMeasurement( objectMeasurements, label, GLOBAL_BACKGROUND_INTENSITY, offset );
-		}
-	}
-
-	public static void saveRowsToFile( File file, ArrayList<String> lines )
-	{
-		try ( PrintWriter out = new PrintWriter( file ) )
-		{
-			for ( String line : lines )
-			{
-				out.println( line );
-			}
-
-			IJ.log( "\nSaved table to: " + file );
-		}
-		catch ( FileNotFoundException e )
-		{
-			e.printStackTrace();
-		}
-	}
-
-	public static JTable asTable( HashMap< Integer, Map< String, Object > > objectMeasurements )
-	{
-		final ArrayList< HashMap< Integer, Map< String, Object > > > timepoints = new ArrayList<>();
-		timepoints.add( objectMeasurements );
-		return Utils.createJTableFromStringList( measurementsAsTableRowsStringList( timepoints, "\t" ), "\t" );
 	}
 
 	public static JTable asTable(

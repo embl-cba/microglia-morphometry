@@ -41,12 +41,10 @@ public class SkeletonAnalyzer< R extends RealType< R > >
 {
 
 	final RandomAccessibleInterval< BitType > skeleton;
-	final OpService opService;
 
 	double totalSkeletonLength;
 	long numBranchPoints;
 	private RandomAccessibleInterval<BitType> branchpoints;
-	private long longestBranchLength;
 	private ArrayList< Long > branchLengths;
 
 	public SkeletonAnalyzer(
@@ -54,7 +52,6 @@ public class SkeletonAnalyzer< R extends RealType< R > >
 			OpService opService )
 	{
 		this.skeleton = skeleton;
-		this.opService = opService;
 
 		run();
 	}
@@ -79,16 +76,10 @@ public class SkeletonAnalyzer< R extends RealType< R > >
 	}
 
 
-	public long getNumBranches()
-	{
-		return branchLengths.size();
-	}
-
-
 	public double getAverageBranchLength()
 	{
 
-		if ( branchLengths.size() == 0 ) return 0;
+		if ( branchLengths.isEmpty() ) return 0;
 
 		double avg = 0;
 
@@ -101,21 +92,9 @@ public class SkeletonAnalyzer< R extends RealType< R > >
 	}
 
 
-	public long getLongestBranchLength()
-	{
-		if ( branchLengths.size() == 0 ) return 0;
-
-		return branchLengths.get( 0 );
-	}
-
 	public long getNumBranchPoints()
 	{
 		return numBranchPoints;
-	}
-
-	public RandomAccessibleInterval< BitType > getBranchpoints()
-	{
-		return branchpoints;
 	}
 
 	public double getTotalSkeletonLength() { return totalSkeletonLength; }
@@ -132,6 +111,11 @@ public class SkeletonAnalyzer< R extends RealType< R > >
 		return sum;
 	}
 
+	public long getLongestBranchLength()
+	{
+		if ( branchLengths.size() == 0 ) return 0;
 
+		return branchLengths.get( 0 );
+	}
 
 }

@@ -45,20 +45,6 @@ import java.util.ArrayList;
 
 public class Skeletons
 {
-	public static RandomAccessibleInterval< BitType > longestBranch(
-			RandomAccessibleInterval< BitType > skeleton )
-	{
-
-		final RandomAccessibleInterval< BitType > longestBranch =
-				Utils.copyAsArrayImg( skeleton );
-
-		removeBranchpoints( longestBranch );
-
-		Regions.onlyKeepLargestRegion( longestBranch,
-				ConnectedComponents.StructuringElement.EIGHT_CONNECTED );
-
-		return longestBranch;
-	}
 
 	public static ArrayList< Long > branchLengths(
 			RandomAccessibleInterval< BitType > skeleton )
@@ -105,12 +91,4 @@ public class Skeletons
 	}
 
 
-	public static RandomAccessibleInterval< BitType > skeleton(
-			RandomAccessibleInterval< BitType > input,
-			OpService opService )
-	{
-		final RandomAccessibleInterval< BitType > thin = Utils.createEmptyCopy( input );
-		opService.morphology().thinGuoHall( thin, input );
-		return thin;
-	}
 }

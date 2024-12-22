@@ -35,7 +35,7 @@ public class TrackingSplitterManualCorrectionUI< T extends RealType< T > & Nativ
 	private static Point frameLocation;
 	private static Point editedLabelsImpLocation;
 	private boolean isStopped;
-	private String outputLabelingsPath;
+	private final String outputLabelingsPath;
 
 	public TrackingSplitterManualCorrectionUI(
 			ArrayList< RandomAccessibleInterval< T > > labels,
@@ -126,16 +126,6 @@ public class TrackingSplitterManualCorrectionUI< T extends RealType< T > & Nativ
 			Toolbar.setForegroundColor( new Color( 255, 255,0 ) );
 		} );
 		return button;
-	}
-
-	private void setValueInRoi( ImagePlus imagePlus, int value )
-	{
-		final Roi roi = imagePlus.getRoi();
-		ImageProcessor ip = imagePlus.getProcessor();
-		ip.setColor( value );
-		ip.fill( roi );
-		imagePlus.deleteRoi();
-		imagePlus.updateAndDraw();
 	}
 
 	public JButton nextFrameButton()

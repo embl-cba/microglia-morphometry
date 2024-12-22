@@ -23,7 +23,7 @@ import static de.embl.cba.microglia.Utils.*;
 @Plugin(type = Command.class, menuPath = "Plugins>Microglia>New Microglia Segmentation And Tracking" )
 public class MicrogliaSegmentationAndTrackingCommand< T extends RealType<T> & NativeType< T > > implements Command
 {
-	protected MicrogliaSettings settings = new MicrogliaSettings();
+	protected final MicrogliaSettings settings = new MicrogliaSettings();
 
 	@Parameter
 	public OpService opService;
@@ -38,15 +38,15 @@ public class MicrogliaSegmentationAndTrackingCommand< T extends RealType<T> & Na
 	public File outputDirectory = new File("src/test/resources/data");
 
 	@Parameter( label = "Minimal cell size [um^2]" )
-	public double minimalMicrogliaSize = 200;
+	public final double minimalMicrogliaSize = 200;
 
 	@Parameter( label = "Maximal cell skeleton length [um]" )
-	public double skeletonMaxLength = 450;
+	public final double skeletonMaxLength = 450;
 
-	public boolean showIntermediateResults = settings.showIntermediateResults;
+	public final boolean showIntermediateResults = settings.showIntermediateResults;
 
-	public long tMinOneBased = 1;
-	public long tMaxOneBased = 1000000000L;
+	public final long tMinOneBased = 1;
+	public final long tMaxOneBased = 1000000000L;
 
 	protected ImagePlus imagePlus;
 	protected ArrayList< RandomAccessibleInterval< T > > intensities;
@@ -62,7 +62,6 @@ public class MicrogliaSegmentationAndTrackingCommand< T extends RealType<T> & Na
 		settings.outputLabelingsPath = outputDirectory + File.separator
 			+ intensityFile.getName().split( "\\." )[ 0 ] + "-labelMasks.tif";
 		settings.showIntermediateResults = showIntermediateResults;
-		settings.outputDirectory = outputDirectory;
 		settings.opService = opService;
 		settings.thresholdInUnitsOfBackgroundPeakHalfWidth = relativeIntensityThreshold;
 		settings.minimalObjectSize = minimalMicrogliaSize;

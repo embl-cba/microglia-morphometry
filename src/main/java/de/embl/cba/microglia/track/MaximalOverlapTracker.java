@@ -13,9 +13,7 @@ import java.util.ArrayList;
 public class MaximalOverlapTracker< T extends RealType< T > & NativeType< T > >
 {
 
-	ArrayList< RandomAccessibleInterval< T > > masks;
-
-	private Integer maxIndex;
+	final ArrayList< RandomAccessibleInterval< T > > masks;
 
 	private ArrayList< RandomAccessibleInterval< IntType > > labelings;
 
@@ -31,7 +29,7 @@ public class MaximalOverlapTracker< T extends RealType< T > & NativeType< T > >
 
 		int t = tMin;
 
-		maxIndex = Utils.getNumObjects( masks.get( t ) );
+		Integer maxIndex = Utils.getNumObjects( masks.get( t ) );
 
 		RandomAccessibleInterval< IntType > previousLabeling = Regions.asImgLabeling( masks.get( tMin ), ConnectedComponents.StructuringElement.FOUR_CONNECTED ).getSource();
 

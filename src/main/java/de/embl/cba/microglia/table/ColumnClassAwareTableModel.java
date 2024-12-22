@@ -28,8 +28,6 @@
  */
 package de.embl.cba.microglia.table;
 
-import de.embl.cba.microglia.Utils;
-
 import javax.swing.table.DefaultTableModel;
 import java.util.ArrayList;
 import java.util.List;
@@ -43,11 +41,6 @@ public class ColumnClassAwareTableModel extends DefaultTableModel
 		super();
 	}
 
-	public ColumnClassAwareTableModel( int rowCount, int columnCount )
-	{
-		super( rowCount, columnCount );
-	}
-
 	@Override
 	public Class getColumnClass( int column )
 	{
@@ -58,29 +51,6 @@ public class ColumnClassAwareTableModel extends DefaultTableModel
 	public boolean isCellEditable( int row, int column )
 	{
 		return true;
-	}
-
-	/**
-	 * Determines getColumnName classes from entries in 1st row.
-	 */
-	public void refreshColumnClassesFromStringColumns()
-	{
-		columnClasses = new ArrayList<>(  );
-
-		for ( int column = 0; column < getColumnCount(); column++ )
-		{
-			final String string = (String) this.getValueAt( 0, column );
-
-			try
-			{
-				Utils.parseDouble( string );
-				columnClasses.add( Double.class );
-			}
-			catch ( Exception e )
-			{
-				columnClasses.add( String.class );
-			}
-		}
 	}
 
 	/**

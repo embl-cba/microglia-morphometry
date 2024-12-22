@@ -32,11 +32,6 @@ public class PositionAndValue implements Comparable< PositionAndValue >
 {
 	double[] position;
 
-	public double[] getPosition()
-	{
-		return position;
-	}
-
 	public double getValue()
 	{
 		return value;

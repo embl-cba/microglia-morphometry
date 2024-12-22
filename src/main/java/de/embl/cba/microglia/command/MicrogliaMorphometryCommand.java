@@ -44,14 +44,12 @@ public class MicrogliaMorphometryCommand < T extends RealType< T > & NativeType<
 
 	private ImagePlus labelMaskImagePlus;
 	private File tableOutputFile;
-	private String dataSetID;
-	private ImagePlus intensityImagePlus;
 
 	public void run()
 	{
 		if ( ! checkInstallationOfMorpholibJ() ) return;
 
-		dataSetID = FilenameUtils.removeExtension( intensityFile.getName() );
+		String dataSetID = FilenameUtils.removeExtension( intensityFile.getName() );
 
 		IJ.log( "\n# Microglia Morphometry Measurements");
 		IJ.log( "Analyzing: " + dataSetID );
@@ -89,7 +87,7 @@ public class MicrogliaMorphometryCommand < T extends RealType< T > & NativeType<
 
 	private ArrayList< RandomAccessibleInterval< T > > openIntensities()
 	{
-		intensityImagePlus = openAsImagePlus( intensityFile );
+		ImagePlus intensityImagePlus = openAsImagePlus( intensityFile );
 		return Utils.get2DImagePlusMovieAsFrameList( intensityImagePlus, 1 );
 	}
 
@@ -157,11 +155,6 @@ public class MicrogliaMorphometryCommand < T extends RealType< T > & NativeType<
 		}
 
 		bfw.close();
-	}
-
-	public File getTableOutputFile()
-	{
-		return tableOutputFile;
 	}
 
 	private void saveSkeletons(

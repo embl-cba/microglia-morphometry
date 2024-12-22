@@ -60,44 +60,6 @@ import java.util.Set;
 public abstract class Regions
 {
 
-	public static Set< LabelRegion< Integer > > getCentralRegions(
-			ImgLabeling< Integer, IntType > labeling,
-			double[] center,
-			long radius )
-	{
-		final Set< Integer > centralLabels = Algorithms.getCentralLabels( labeling, center, radius );
-
-		final LabelRegions< Integer > regions = new LabelRegions<>( labeling );
-
-		final HashSet< LabelRegion< Integer > > centralRegions = new HashSet< >();
-
-		for ( int label : centralLabels )
-		{
-			centralRegions.add( regions.getLabelRegion( label ) );
-		}
-
-		return centralRegions;
-	}
-
-	public static LabelRegion< Integer > getLargestRegion( ImgLabeling< Integer, IntType > labeling )
-	{
-		final LabelRegions< Integer > labelRegions = new LabelRegions<>( labeling );
-
-		long maxSize = Long.MIN_VALUE;
-		LabelRegion largestRegion = null;
-
-		for ( LabelRegion labelRegion : labelRegions )
-		{
-			if ( labelRegion.size() > maxSize)
-			{
-				largestRegion = labelRegion;
-				maxSize = labelRegion.size();
-			}
-		}
-
-		return largestRegion;
-	}
-
 	public static RandomAccessibleInterval< BitType > asMask( LabelRegion labelRegion )
 	{
 		RandomAccessibleInterval< BitType > rai = ArrayImgs.bits( Intervals.dimensionsAsLongArray( labelRegion ) );
@@ -114,37 +76,6 @@ public abstract class Regions
 		}
 
 		return rai;
-	}
-
-	public static void drawRegionInMask(
-			LabelRegion labelRegion,
-			RandomAccessibleInterval< BitType > mask )
-	{
-		final RandomAccess< BitType > maskAccess = mask.randomAccess();
-
-		final Cursor cursor = labelRegion.inside().cursor();
-
-		while ( cursor.hasNext() )
-		{
-			cursor.fwd();
-			maskAccess.setPosition( cursor );
-			maskAccess.get().set( true );
-		}
-	}
-
-	public static long size( LabelRegion labelRegion )
-	{
-
-		final Cursor cursor = labelRegion.inside().cursor();
-
-		long size = 0;
-		while ( cursor.hasNext() )
-		{
-			cursor.fwd();
-			size++;
-		}
-
-		return size;
 	}
 
 	public static < T extends RealType< T > & NativeType< T > >
@@ -166,19 +97,6 @@ public abstract class Regions
 		}
 
 		return output;
-	}
-
-	public static < T extends RealType< T > & NativeType< T > >
-	void removeSmallRegionsInMasks(
-			ArrayList< RandomAccessibleInterval< T > > masks,
-			double sizeInCalibratedUnits,
-			double calibration )
-	{
-
-		for ( RandomAccessibleInterval mask : masks )
-		{
-			removeSmallRegionsInMask( mask, sizeInCalibratedUnits, calibration );
-		}
 	}
 
 	public static < T extends RealType< T > & NativeType< T > >
@@ -339,55 +257,6 @@ public abstract class Regions
 				structuringElement );
 
 		return imgLabeling;
-	}
-
-	public static RandomAccessibleInterval< BitType > asMask(
-			Set< LabelRegion< Integer > > regions,
-			Interval interval )
-	{
-		RandomAccessibleInterval< BitType > regionsMask =  ArrayImgs.bits(
-				Intervals.dimensionsAsLongArray( interval ) );
-
-		regionsMask = Transforms.getWithAdjustedOrigin( interval, regionsMask );
-
-		final RandomAccess< BitType > maskAccess = regionsMask.randomAccess();
-
-		for ( LabelRegion region : regions )
-		{
-			final Cursor< Void > regionCursor = region.cursor();
-			while ( regionCursor.hasNext() )
-			{
-				regionCursor.fwd();
-				maskAccess.setPosition( regionCursor );
-				maskAccess.get().set( true );
-			}
-		}
-
-		return regionsMask;
-	}
-
-	public static RandomAccessibleInterval< BitType > asMask(
-			Set< LabelRegion< Integer > > regions,
-			long[] dimensions,
-			long[] offset )
-	{
-		RandomAccessibleInterval< BitType > regionsMask = ArrayImgs.bits( dimensions );
-		regionsMask = Views.translate( regionsMask, offset );
-
-		final RandomAccess< BitType > maskAccess = regionsMask.randomAccess();
-
-		for ( LabelRegion region : regions )
-		{
-			final Cursor< Void > regionCursor = region.cursor();
-			while ( regionCursor.hasNext() )
-			{
-				regionCursor.fwd();
-				maskAccess.setPosition( regionCursor );
-				maskAccess.get().set( true );
-			}
-		}
-
-		return regionsMask;
 	}
 
 }

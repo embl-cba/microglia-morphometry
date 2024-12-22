@@ -1,7 +1,6 @@
 package issues;
 
 import de.embl.cba.microglia.command.MicrogliaMorphometryCommand;
-import de.embl.cba.microglia.command.MicrogliaSegmentationAndTrackingCommand;
 import net.imagej.ImageJ;
 
 import java.io.File;

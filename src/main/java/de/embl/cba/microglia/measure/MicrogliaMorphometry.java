@@ -23,7 +23,6 @@ public class MicrogliaMorphometry < T extends RealType< T > & NativeType< T > >
 	private final ArrayList< RandomAccessibleInterval< T > > labelMaps;
 	private final ArrayList< RandomAccessibleInterval< T > > intensities;
 	private final OpService opService;
-	private final Calibration calibration;
 	private ArrayList< HashMap< Integer, Map< String, Object > > > measurementsTimepointList;
 	private ArrayList< RandomAccessibleInterval< BitType > > skeletons;
 	private ArrayList< RandomAccessibleInterval< BitType > > annotations;
@@ -36,7 +35,6 @@ public class MicrogliaMorphometry < T extends RealType< T > & NativeType< T > >
 		this.labelMaps = labelMasks;
 		this.intensities = intensities;
 		this.opService = opService;
-		this.calibration = calibration;
 	}
 
 	public void run()

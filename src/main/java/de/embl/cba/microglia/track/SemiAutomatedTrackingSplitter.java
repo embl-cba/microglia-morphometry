@@ -31,14 +31,12 @@ public class SemiAutomatedTrackingSplitter< T extends RealType< T > & NativeType
 
 	final ArrayList< RandomAccessibleInterval< BitType > > masks;
 	final ArrayList< RandomAccessibleInterval< T > > intensities;
-	private Integer maxIndex;
 	private ArrayList< RandomAccessibleInterval< IntType > > labelings;
 	final MicrogliaSettings settings;
 	private final ImagePlus intensitiesImp;
 	private long minimalObjectSizeInPixels;
 	private static Point intensitiesImpLocation;
 	private TrackingSplitterManualCorrectionUI trackingSplitterManualCorrectionUI;
-	private RandomAccessibleInterval< IntType > previousLabeling;
 
 	public SemiAutomatedTrackingSplitter(
 			ArrayList< RandomAccessibleInterval< BitType > > masks,
@@ -106,8 +104,8 @@ public class SemiAutomatedTrackingSplitter< T extends RealType< T > & NativeType
 		}
 		else
 		{
-			previousLabeling = labelings.get( t - 1 );
-			maxIndex = Algorithms.getMaximumValue( previousLabeling ).intValue();
+			RandomAccessibleInterval< IntType > previousLabeling = labelings.get( t - 1 );
+			Integer maxIndex = Algorithms.getMaximumValue( previousLabeling ).intValue();
 
 			RandomAccessibleInterval< BitType > mask = splitCurrentMaskBasedOnPreviousLabeling( t, previousLabeling );
 
@@ -211,7 +209,7 @@ public class SemiAutomatedTrackingSplitter< T extends RealType< T > & NativeType
 		{
 			final HashMap< Integer, Long > overlapSizes = computeOverlaps( previousLabeling, region );
 
-			if ( overlapSizes.size() == 0 )
+			if ( overlapSizes.isEmpty() )
 			{
 				overlappingObjectsLabelsMap.put( region.getLabel(), new ArrayList<>() );
 			}
@@ -280,56 +278,6 @@ public class SemiAutomatedTrackingSplitter< T extends RealType< T > & NativeType
 		return trulyOverlappingObjectLabels;
 	}
 
-	public boolean isReallyTwoObjects( RandomAccessibleInterval< T > previousIntensityImage,
-									   RandomAccessibleInterval< T > currentIntensityImage,
-									   RandomAccessibleInterval< IntType > previousLabeling,
-									   RandomAccessibleInterval< IntType > currentLabeling,
-									   LabelRegion< Integer > currentObjectRegion,
-									   HashMap< Integer, Long > previousSizes )
-	{
-
-		boolean splitObjects =  true;
-
-		final double currentObjectIntensity = Measurements.measureBgCorrectedSumIntensity(
-				currentLabeling,
-				currentObjectRegion.getLabel(),
-				currentIntensityImage );
-
-		IJ.log( "Object intensity: " + (long) currentObjectIntensity );
-
-		final HashMap< Integer, Double > previousIntensities = new HashMap<>();
-
-		for ( int previousLabel : previousSizes.keySet() )
-		{
-			final double previousObjectIntensity = Measurements.measureBgCorrectedSumIntensity(
-					previousLabeling,
-					previousLabel,
-					previousIntensityImage );
-
-			previousIntensities.put( previousLabel , previousObjectIntensity );
-
-			final double overlapFraction = 1.0 * previousSizes.get( previousLabel ).longValue() / currentObjectRegion.size();
-			IJ.log( "Previous object intensity: " + (long) previousObjectIntensity );
-			IJ.log( "Overlap pixel fraction: " + overlapFraction );
-
-			if ( overlapFraction < settings.minimalOverlapFraction ) splitObjects = false;
-
-		}
-
-		double previousIntensitySum = getPreviousIntensitySum( previousIntensities );
-
-		final double sumIntensityRatio = currentObjectIntensity / previousIntensitySum;
-
-		IJ.log( "Intensity ratio: " + sumIntensityRatio );
-
-		if ( sumIntensityRatio < settings.minimalSumIntensityRatio ) splitObjects = false;
-		if ( sumIntensityRatio > settings.maximalSumIntensityRatio ) splitObjects = false;
-
-		IJ.log( "Split objects: " + splitObjects );
-
-		return splitObjects;
-	}
-
 	private double getPreviousIntensitySum( HashMap< Integer, Double > previousIntensities )
 	{
 		double previousIntensitySum = 0;
@@ -369,7 +317,7 @@ public class SemiAutomatedTrackingSplitter< T extends RealType< T > & NativeType
 
 	public void addOverlap( HashMap< Integer, Long > overlaps, int integer )
 	{
-		if ( overlaps.keySet().contains( integer ) )
+		if ( overlaps.containsKey( integer ) )
 		{
 			overlaps.put( integer,  overlaps.get( integer ).longValue() + 1 );
 		}

@@ -30,23 +30,14 @@ package de.embl.cba.microglia.morphometry;
 
 import de.embl.cba.microglia.Transforms;
 import de.embl.cba.microglia.Utils;
-import de.embl.cba.microglia.morphometry.geometry.CoordinateToValue;
-import de.embl.cba.microglia.morphometry.geometry.CoordinatesAndValues;
 import de.embl.cba.microglia.morphometry.regions.Regions;
 import ij.IJ;
-import ij.ImagePlus;
 import net.imagej.ops.OpService;
-import net.imagej.ops.threshold.huang.ComputeHuangThreshold;
-import net.imagej.ops.threshold.otsu.ComputeOtsuThreshold;
-import net.imagej.ops.threshold.yen.ComputeYenThreshold;
 import net.imglib2.RandomAccess;
 import net.imglib2.*;
-import net.imglib2.algorithm.gauss3.Gauss3;
 import net.imglib2.algorithm.labeling.ConnectedComponents;
 import net.imglib2.algorithm.morphology.Closing;
-import net.imglib2.algorithm.morphology.Dilation;
 import net.imglib2.algorithm.morphology.Erosion;
-import net.imglib2.algorithm.morphology.Opening;
 import net.imglib2.algorithm.morphology.distance.DistanceTransform;
 import net.imglib2.algorithm.neighborhood.HyperSphereShape;
 import net.imglib2.algorithm.neighborhood.Neighborhood;
@@ -54,15 +45,8 @@ import net.imglib2.algorithm.neighborhood.Shape;
 import net.imglib2.converter.Converters;
 import net.imglib2.histogram.Histogram1d;
 import net.imglib2.histogram.Real1dBinMapper;
-import net.imglib2.img.Img;
-import net.imglib2.img.ImgFactory;
-import net.imglib2.img.array.ArrayImgFactory;
 import net.imglib2.img.array.ArrayImgs;
 import net.imglib2.img.display.imagej.ImageJFunctions;
-import net.imglib2.interpolation.randomaccess.NearestNeighborInterpolatorFactory;
-import net.imglib2.loops.LoopBuilder;
-import net.imglib2.realtransform.RealViews;
-import net.imglib2.realtransform.Scale;
 import net.imglib2.roi.labeling.ImgLabeling;
 import net.imglib2.roi.labeling.LabelRegion;
 import net.imglib2.roi.labeling.LabelRegions;
@@ -72,21 +56,17 @@ import net.imglib2.type.logic.BitType;
 import net.imglib2.type.numeric.IntegerType;
 import net.imglib2.type.numeric.RealType;
 import net.imglib2.type.numeric.integer.IntType;
-import net.imglib2.type.numeric.integer.UnsignedByteType;
 import net.imglib2.type.numeric.real.DoubleType;
 import net.imglib2.util.*;
-import net.imglib2.view.IntervalView;
 import net.imglib2.view.Views;
 
 import java.util.*;
 
-import static de.embl.cba.microglia.Transforms.createTransformedInterval;
 import static de.embl.cba.microglia.Utils.copyAsArrayImg;
 
 public class Algorithms
 {
 	public static final int WATERSHED = -1;
-	private static int closingRadius;
 
 	public static < T extends RealType< T > & NativeType< T > >
 	RealPoint getMaximumLocation(
@@ -184,26 +164,6 @@ public class Algorithms
 		return centerIsLargest;
 	}
 
-	public static < T extends RealType< T > & NativeType< T > >
-	List< RealPoint > findLocalMaximumValues( RandomAccessibleInterval< T > rai, Shape shape )
-	{
-		List< RealPoint > points = new ArrayList<>();
-
-		RandomAccessible<Neighborhood<T>> neighborhoods = shape.neighborhoodsRandomAccessible( Views.extendBorder( rai ) );
-		RandomAccessibleInterval<Neighborhood<T>> neighborhoodsInterval = Views.interval( neighborhoods, rai );
-
-		LoopBuilder.setImages( neighborhoodsInterval, rai ).forEachPixel(
-				(neighborhood, center) -> {
-					if( isCenterLargest( center, neighborhood ) )
-					{
-						points.add( new RealPoint( neighborhood ) );
-					}
-				}
-		);
-
-		return points;
-	}
-
 	public static Set< Integer > getCentralLabels(
 			ImgLabeling< Integer, IntType > labeling,
 			double[] center,
@@ -246,62 +206,6 @@ public class Algorithms
 	}
 
 
-	public static Img< UnsignedByteType > createUnsignedByteTypeMaskFromLabelRegion( LabelRegion< Integer > centralObjectRegion, long[] dimensions )
-	{
-		final Img< UnsignedByteType > centralObjectImg = ArrayImgs.unsignedBytes( dimensions );
-
-		final Cursor< Void > regionCursor = centralObjectRegion.inside().cursor();
-		final RandomAccess< UnsignedByteType > access = centralObjectImg.randomAccess();
-		while ( regionCursor.hasNext() )
-		{
-			regionCursor.fwd();
-			access.setPosition( regionCursor );
-			access.get().set( 255 );
-		}
-		return centralObjectImg;
-	}
-
-
-	public static Img< BitType > createMaskFromLabelRegion( LabelRegion< Integer > region, long[] dimensions )
-	{
-		final Img< BitType > centralObjectImg = ArrayImgs.bits( dimensions );
-
-		final Cursor< Void > regionCursor = region.inside().cursor();
-		final RandomAccess< BitType > access = centralObjectImg.randomAccess();
-		while ( regionCursor.hasNext() )
-		{
-			regionCursor.fwd();
-			access.setPosition( regionCursor );
-			access.get().set( true );
-		}
-		return centralObjectImg;
-	}
-
-
-	public static ArrayList< RealPoint > origin()
-	{
-		final ArrayList< RealPoint > origin = new ArrayList<>();
-		origin.add( new RealPoint( new double[]{ 0, 0, 0 } ) );
-		return origin;
-	}
-
-
-	public static < T extends RealType< T > & NativeType< T > >
-	void copy( RandomAccessibleInterval< T > source, RandomAccessibleInterval< T > target )
-	{
-		final Cursor< T > cursor = Views.iterable( source ).cursor();
-		final RandomAccess< T > randomAccess = target.randomAccess();
-
-		while( cursor.hasNext() )
-		{
-			cursor.fwd();
-			randomAccess.setPosition( cursor );
-			randomAccess.get().set( cursor.get() );
-		}
-
-	}
-
-
 	public static < T extends RealType< T > & NativeType< T > >
 	RandomAccessibleInterval< BitType > createMask(
 			RandomAccessibleInterval< T > rai,
@@ -309,213 +213,9 @@ public class Algorithms
 	{
 		RandomAccessibleInterval< BitType > mask =
 				Converters.convert( rai, ( i, o )
-						-> o.set( i.getRealDouble() > threshold ? true : false ), new BitType() );
+						-> o.set( i.getRealDouble() > threshold ), new BitType() );
 
 		return copyAsArrayImg( mask );
-	}
-
-	public static < T extends RealType< T > & NativeType< T > >
-	RandomAccessibleInterval< BitType > fillHoles3Din2D(
-			RandomAccessibleInterval< BitType > mask,
-			int axis,
-			OpService opService )
-	{
-		final ArrayList< RandomAccessibleInterval< BitType > > holesFilled = new ArrayList<>();
-
-		final IntervalView< BitType > rotated = Views.rotate( mask, axis, 2 );
-
-		for ( long coordinate = rotated.min( 2 ); coordinate <= rotated.max( 2 ); ++coordinate )
-		{
-			RandomAccessibleInterval< BitType > maskSlice = Views.hyperSlice( rotated, 2, coordinate );
-			holesFilled.add( opService.morphology().fillHoles( maskSlice ) );
-		}
-
-		RandomAccessibleInterval< BitType > stack =  Views.stack( holesFilled );
-
-		stack = Views.zeroMin( Views.rotate( stack, 2, axis ) );
-
-		stack = Transforms.getWithAdjustedOrigin( mask, stack );
-
-		return stack;
-	}
-
-	public static < T extends RealType< T > & NativeType< T > >
-	RandomAccessibleInterval< BitType > createWatershedSeeds(
-			RandomAccessibleInterval< T > distance,
-			Shape shape,
-			double globalThreshold,
-			double localThreshold )
-	{
-		RandomAccessibleInterval< BitType > seeds = ArrayImgs.bits( Intervals.dimensionsAsLongArray( distance ) );
-		seeds = Transforms.getWithAdjustedOrigin( distance, seeds );
-
-		RandomAccessible< Neighborhood< T > > neighborhoods = shape.neighborhoodsRandomAccessible( Views.extendPeriodic( distance ) );
-		RandomAccessibleInterval< Neighborhood< T > > neighborhoodsInterval = Views.interval( neighborhoods, distance );
-
-		final Cursor< Neighborhood< T > > neighborhoodCursor = Views.iterable( neighborhoodsInterval ).cursor();
-		final RandomAccess< T > distanceRandomAccess = distance.randomAccess();
-		final RandomAccess< BitType > seedsRandomAccess = seeds.randomAccess();
-
-		double[] currentPosition = new double[ distance.numDimensions() ];
-
-		while ( neighborhoodCursor.hasNext() )
-		{
-			final Neighborhood< T > neighborhood = neighborhoodCursor.next();
-			neighborhood.localize( currentPosition );
-			seedsRandomAccess.setPosition( neighborhood );
-			distanceRandomAccess.setPosition( neighborhood );
-
-			T centerValue = distanceRandomAccess.get();
-
-			if ( centerValue.getRealDouble() > globalThreshold )
-			{
-				seedsRandomAccess.get().set( true );
-			}
-			else if ( Utils.isLateralBoundaryPixel( neighborhood, distance ) && distanceRandomAccess.get().getRealDouble() >  0 )
-			{
-				seedsRandomAccess.get().set( true );
-			}
-			else if ( isCenterLargestOrEqual( centerValue, neighborhood ) )
-			{
-				if ( centerValue.getRealDouble() > localThreshold )
-				{
-					seedsRandomAccess.get().set( true );
-				}
-			}
-
-		}
-
-		return seeds;
-	}
-
-
-	public static < T extends RealType< T > & NativeType< T > >
-	RandomAccessibleInterval< BitType > createLocalMaximaMask(
-			RandomAccessibleInterval< T > input,
-			Shape shape,
-			double minimumValue )
-	{
-		RandomAccessibleInterval< BitType > localMaxima = ArrayImgs.bits( Intervals.dimensionsAsLongArray( input ) );
-		localMaxima = Transforms.getWithAdjustedOrigin( input, localMaxima );
-
-		RandomAccessible< Neighborhood< T > > neighborhoods = shape.neighborhoodsRandomAccessible( Views.extendPeriodic( input ) );
-		RandomAccessibleInterval< Neighborhood< T > > neighborhoodsInterval = Views.interval( neighborhoods, input );
-
-		final Cursor< Neighborhood< T > > neighborhoodCursor = Views.iterable( neighborhoodsInterval ).cursor();
-		final RandomAccess< T > inputAccess = input.randomAccess();
-		final RandomAccess< BitType > maximaAccess = localMaxima.randomAccess();
-
-		while ( neighborhoodCursor.hasNext() )
-		{
-			final Neighborhood< T > neighborhood = neighborhoodCursor.next();
-			maximaAccess.setPosition( neighborhood );
-			inputAccess.setPosition( neighborhood );
-
-			T centerValue = inputAccess.get();
-
-			if ( isCenterLargestOrEqual( centerValue, neighborhood ) )
-			{
-				if ( centerValue.getRealDouble() > minimumValue )
-				{
-					maximaAccess.get().set( true );
-				}
-			}
-			else
-			{
-				maximaAccess.get().set( false );
-			}
-
-		}
-
-		return localMaxima;
-	}
-
-	public static < R extends RealType< R > & NativeType< R > >
-	RandomAccessibleInterval< R > computeGradient(
-			RandomAccessibleInterval< R > input,
-			Shape shape )
-	{
-		RandomAccessible< Neighborhood< R > > neighborhoods = shape.neighborhoodsRandomAccessible( Views.extendBorder( input ) );
-		RandomAccessibleInterval< Neighborhood< R > > neighborhoodsInterval = Views.interval( neighborhoods, input );
-
-		final Cursor< Neighborhood< R > > neighborhoodCursor = Views.iterable( neighborhoodsInterval ).cursor();
-		final RandomAccess< R > inputAccess = input.randomAccess();
-
-		final RandomAccessibleInterval< R > gradient = copyAsArrayImg( input );
-		final RandomAccess< R > gradientAccess = gradient.randomAccess();
-
-		while ( neighborhoodCursor.hasNext() )
-		{
-			final Neighborhood< R > neighborhood = neighborhoodCursor.next();
-
-			inputAccess.setPosition( neighborhood );
-			gradientAccess.setPosition( neighborhood );
-
-			double centerValue = inputAccess.get().getRealDouble();
-			final double minimum = computeMinimum( neighborhood );
-
-			gradientAccess.get().setReal( centerValue - minimum );
-		}
-
-		return gradient;
-	}
-
-
-
-	public static < T extends RealType< T > & NativeType< T > >
-	RandomAccessibleInterval< BitType > createCenterAndBoundarySeeds( RandomAccessibleInterval< T > distance, Shape shape, double globalThreshold, double localThreshold )
-	{
-		RandomAccessibleInterval< BitType > seeds = ArrayImgs.bits( Intervals.dimensionsAsLongArray( distance ) );
-		seeds = Transforms.getWithAdjustedOrigin( distance, seeds );
-
-		RandomAccessible< Neighborhood< T > > neighborhoods = shape.neighborhoodsRandomAccessible( Views.extendPeriodic( distance ) );
-		RandomAccessibleInterval< Neighborhood< T > > neighborhoodsInterval = Views.interval( neighborhoods, distance );
-
-		final Cursor< Neighborhood< T > > neighborhoodCursor = Views.iterable( neighborhoodsInterval ).cursor();
-		final RandomAccess< T > distanceRandomAccess = distance.randomAccess();
-		final RandomAccess< BitType > seedsRandomAccess = seeds.randomAccess();
-
-		double[] centerPosition = new double[ distance.numDimensions() ];
-		double[] currentPosition = new double[ distance.numDimensions() ];
-
-		for ( int d = 0; d < centerPosition.length; ++d )
-		{
-			centerPosition[ d ] = (long) (distance.dimension( d ) / 2);
-		}
-
-		while ( neighborhoodCursor.hasNext() )
-		{
-			final Neighborhood< T > neighborhood = neighborhoodCursor.next();
-			neighborhood.localize( currentPosition );
-			seedsRandomAccess.setPosition( neighborhood );
-			distanceRandomAccess.setPosition( neighborhood );
-
-			T centerValue = distanceRandomAccess.get();
-
-			if ( centerValue.getRealDouble() > globalThreshold )
-			{
-				// maximaRandomAccess.get().set( true );
-			}
-			else if ( LinAlgHelpers.distance( currentPosition, centerPosition  ) < 3 )
-			{
-				seedsRandomAccess.get().set( true );
-			}
-			else if ( Utils.isLateralBoundaryPixel( neighborhood, distance ) && distanceRandomAccess.get().getRealDouble() >  0 )
-			{
-				seedsRandomAccess.get().set( true );
-			}
-//			else if ( isCenterLargestOrEqual( centerValue, neighborhood ) )
-//			{
-//				if ( centerValue.getRealDouble() > localThreshold )
-//				{
-//					// local maximum and larger than local Threshold
-//					// maximaRandomAccess.get().set( true );
-//				}
-//			}
-
-		}
-
-		return seeds;
 	}
 
 
@@ -812,7 +512,7 @@ public class Algorithms
 
 				if ( showSplittingAttempts )
 				{
-					ImageJFunctions.show( watershedImgLabeling.getSource(), "" + label + "-" + isValidSplit );
+					ImageJFunctions.show( watershedImgLabeling.getSource(), label + "-" + isValidSplit );
 				}
 
 				if ( isValidSplit )
@@ -900,7 +600,7 @@ public class Algorithms
 		int previousLabel;
 		while ( maskCursor.hasNext() )
 		{
-			if ( maskCursor.next().get() == true )
+			if ( maskCursor.next().get() )
 			{
 				previousLabelingAccess.setPosition( maskCursor );
 				previousLabel = previousLabelingAccess.get().getInteger();
@@ -962,11 +662,8 @@ public class Algorithms
 			Collections.sort( regionSizes );
 			Collections.reverse( regionSizes );
 
-			if ( regionSizes.get( 1 ) < minimumObjectSize )
-			{
-				// 2nd largest object too small
-				return false;
-			}
+            // 2nd largest object too small
+            return regionSizes.get( 1 ) >= minimumObjectSize;
 		}
 
 		return true;
@@ -1015,7 +712,7 @@ public class Algorithms
 
 		while( skeletonCursor.hasNext() )
 		{
-			if ( skeletonCursor.next().get() == true )
+			if ( skeletonCursor.next().get() )
 			{
 				skeletonCursor.localize( position );
 				addOffset( regionOffset, position );
@@ -1085,100 +782,11 @@ public class Algorithms
 	}
 
 
-	public static < T extends RealType< T > & NativeType< T > >
-	RandomAccessibleInterval< T > createNearestNeighborResampledArrayImg(
-			RandomAccessibleInterval< T > input,
-			double[] scalingFactors )
-	{
-		// Convert to RealRandomAccessible such that we can obtain values at (infinite) non-integer coordinates
-		RealRandomAccessible< T > rra =
-				Views.interpolate( Views.extendBorder( input ),
-						new NearestNeighborInterpolatorFactory<>() );
-
-		// Change scale such that we can sample from integer coordinates (for raster function below)
-		Scale scale = new Scale( scalingFactors );
-		RealRandomAccessible< T > rescaledRRA  = RealViews.transform( rra, scale );
-
-		// Create view sampled at integer coordinates
-		final RandomAccessible< T > rastered = Views.raster( rescaledRRA );
-
-		// Put an interval to make it a finite "normal" image again
-		final RandomAccessibleInterval< T > finiteRastered =
-				Views.interval( rastered, createTransformedInterval( input, scale ) );
-
-		// Convert from View to a "conventional" image in RAM
-		// - Above code would also run on, e.g. 8 TB image, within ms
-		// - Now, we really force it to create the image
-		// (we actually might now have to, depends...)
-		final RandomAccessibleInterval< T > output = copyAsArrayImg( finiteRastered );
-
-		return output;
-	}
-
-	/**
-	 *
-	 * very slow...
-	 *
-	 * @param mask
-	 * @param radius
-	 * @return
-	 */
-	public static RandomAccessibleInterval< BitType > open(
-			RandomAccessibleInterval< BitType > mask,
-			int radius )
-	{
-		if ( radius <= 0 ) return mask;
-
-		// TODO: Bug(?!) in imglib2 makes enlargement necessary,
-		//  otherwise one gets weird results at boundaries
-
-		RandomAccessibleInterval< BitType > morphed =
-				ArrayImgs.bits( Intervals.dimensionsAsLongArray( mask ) );
-
-		morphed = Views.translate( morphed, Intervals.minAsLongArray( mask ) );
-
-		final RandomAccessibleInterval< BitType > enlargedMask =
-				Utils.getEnlargedRai( mask, radius );
-		final RandomAccessibleInterval< BitType > enlargedMorphed =
-				Utils.getEnlargedRai( morphed, radius );
-
-		Shape shape = new HyperSphereShape( radius );
-
-		Opening.open(
-				Views.extendZero( enlargedMask ),
-				Views.iterable( enlargedMorphed ),
-				shape,
-				4 );
-
-		return Views.interval( enlargedMorphed, mask );
-	}
-
-
-
 	public static ImgLabeling< Integer, IntType > createEmptyImgLabeling( RandomAccessibleInterval< BitType > mask )
 	{
 		RandomAccessibleInterval< IntType > watershedLabelImg = ArrayImgs.ints( Intervals.dimensionsAsLongArray( mask ) );
 		watershedLabelImg = Transforms.getWithAdjustedOrigin( mask, watershedLabelImg );
 		return new ImgLabeling<>( watershedLabelImg );
-	}
-
-	public static < T extends RealType< T > & NativeType< T > > ArrayList< RandomAccessibleInterval< T > >
-	createMaximumIntensityProjectionsAssumingImagePlusDimensionOrder(
-			RandomAccessibleInterval< T > inputImages,
-			long channel,
-			long tMin, long tMax )
-	{
-		ArrayList<  RandomAccessibleInterval< T > > intensities = new ArrayList<>();
-
-		for ( long t = tMin; t <= tMax; ++t )
-		{
-			final IntervalView< T > channelView = Views.hyperSlice( inputImages, 2, channel );
-			final IntervalView< T > timePointView = Views.hyperSlice( channelView, 3, t );
-			final RandomAccessibleInterval maximum = new Projection( timePointView, 2 ).maximum();
-			intensities.add( maximum );
-		}
-
-		return intensities;
 	}
 
 	public static RandomAccessibleInterval< DoubleType > computeSquaredDistances( RandomAccessibleInterval< BitType > mask )
@@ -1210,99 +818,6 @@ public class Algorithms
 		return morphed;
 	}
 
-	public static < R extends RealType< R > & NativeType< R > >
-	RandomAccessibleInterval< R > dilate(
-			RandomAccessibleInterval< R > image,
-			int radius )
-	{
-		final RandomAccessibleInterval< R > morphed = Utils.createEmptyCopy( image );
-
-		if ( radius > 0 )
-		{
-			Shape shape = new HyperSphereShape( radius );
-			Dilation.dilate( Views.extendBorder( image ), Views.iterable( morphed ), shape, 1 );
-		}
-
-		return morphed;
-	}
-
-	public static < R extends RealType< R > & NativeType< R > >
-	RandomAccessibleInterval< R > median(
-			RandomAccessibleInterval< R > intensity,
-			int radius,
-			OpService opService )
-	{
-		RandomAccessibleInterval< R > median = Utils.createEmptyCopy( intensity );
-
-		opService.filter().median(
-				Views.iterable( Views.zeroMin( median ) ),
-				Views.zeroMin( intensity ),
-				new HyperSphereShape( radius ));
-
-		median = Views.translate( median, Intervals.minAsLongArray( intensity ) );
-
-		return median;
-	}
-
-	public static < R extends RealType< R > & NativeType< R > >
-	RandomAccessibleInterval< R > median2dUsingIJ1(
-			RandomAccessibleInterval< R > intensity,
-			int radius )
-	{
-
-		final ImagePlus imagePlus = ImageJFunctions.wrap( intensity, "" ).duplicate();
-
-		IJ.run( imagePlus, "Median...", "radius=" + radius );
-
-		RandomAccessibleInterval< R > median = ImageJFunctions.wrapReal( imagePlus );
-
-		//median = Views.translate( median, Intervals.minAsLongArray( intensity ) );
-
-		return median;
-	}
-
-	public static < T extends RealType< T > & NativeType< T > >
-	CoordinatesAndValues computeRadialProfile(
-			RandomAccessibleInterval< T > image,
-			double[] center,
-			double spacing,
-			double maxDistanceInMicrometer )
-	{
-		final Cursor< T > cursor = Views.iterable( image ).cursor();
-		final int numDimensions = image.numDimensions();
-
-		final double[] position = new double[ numDimensions ];
-
-		int maxBin = ( int ) ( maxDistanceInMicrometer / spacing );
-		double[] counts = new double[ maxBin ];
-		double[] values = new double[ maxBin ];
-
-		while ( cursor.hasNext() )
-		{
-			cursor.localize( position );
-			final double distance = LinAlgHelpers.distance( center, position ) * spacing;
-			final double value = cursor.next().getRealDouble();
-
-			final int bin = ( int ) ( distance / spacing );
-			if ( bin < maxBin )
-			{
-				counts[ bin ] += 1;
-				values[ bin ] += value;
-			}
-		}
-
-		final CoordinatesAndValues radialProfileOld = new CoordinatesAndValues();
-		final CoordinateToValue radialProfile = new CoordinateToValue();
-		for ( int bin = 0; bin < maxBin; bin++ )
-		{
-			radialProfileOld.values.add( values[ bin ] / counts[ bin ] );
-			radialProfileOld.coordinates.add( bin * spacing );
-			radialProfile.put( bin * spacing, values[ bin ] / counts[ bin ] );
-		}
-
-		return radialProfileOld;
-	}
-
 	public static < T extends RealType< T > > Histogram1d< T >
 	histogram( RandomAccessibleInterval< T > rai, int numBins )
 	{
@@ -1319,46 +834,6 @@ public class Algorithms
 		histogram1d.countData( Views.iterable(  rai ) );
 
 		return histogram1d;
-	}
-
-	public static < T extends RealType< T > >
-	double thresholdOtsu( RandomAccessibleInterval< T > rai )
-	{
-		final Histogram1d< T > histogram =
-				histogram( rai, 256 );
-
-		final T type = Views.iterable( rai ).firstElement().createVariable();
-		final ComputeOtsuThreshold< T > threshold = new ComputeOtsuThreshold<>();
-		final long bin = threshold.computeBin( histogram );
-		histogram.getCenterValue( bin, type );
-
-		return type.getRealDouble();
-	}
-
-	public static < T extends RealType< T > >
-	double thresholdHuang( RandomAccessibleInterval< T > rai )
-	{
-		final Histogram1d< T > histogram =
-				histogram( rai, 256 );
-
-		final T type = Views.iterable( rai ).firstElement().createVariable();
-		final ComputeHuangThreshold< T > threshold = new ComputeHuangThreshold<>();
-		final long bin = threshold.computeBin( histogram );
-		histogram.getCenterValue( bin, type );
-
-		return type.getRealDouble();
-	}
-
-	public static < T extends RealType< T > >
-	double thresholdYen( RandomAccessibleInterval< T > rai )
-	{
-		final Histogram1d< T > histogram = histogram( rai, 256 );
-		final T type = Views.iterable( rai ).firstElement().createVariable();
-		final ComputeYenThreshold< T > threshold = new ComputeYenThreshold<>();
-		final long bin = threshold.computeBin( histogram );
-		histogram.getCenterValue( bin, type );
-
-		return type.getRealDouble();
 	}
 
 }

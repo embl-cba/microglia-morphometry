@@ -21,7 +21,7 @@ public class TrackingUtils
 {
 	public static void addOverlap( HashMap< Integer, Long > overlaps, int integer )
 	{
-		if ( overlaps.keySet().contains( integer ) )
+		if ( overlaps.containsKey( integer ) )
 		{
 			overlaps.put( integer,  overlaps.get( integer ).longValue() + 1 );
 		}
@@ -106,7 +106,7 @@ public class TrackingUtils
 
 			int objectId;
 
-			if( overlaps.size() == 0 )
+			if( overlaps.isEmpty() )
 			{
 				// no overlap => create new label
 				objectId = ++maxIndex;
