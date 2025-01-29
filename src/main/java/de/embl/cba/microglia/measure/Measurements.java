@@ -427,7 +427,6 @@ public class Measurements
 	long measureImageBoundaryContact( LabelRegion labelRegion, long[] min, long[] max )
 	{
 		Cursor cursor = labelRegion.inside().cursor();
-
 		long numBoundaryPixels = 0;
 
 		final int numDimensions = min.length;

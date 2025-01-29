@@ -10,6 +10,7 @@ import de.embl.cba.microglia.segment.MicrogliaShapeAndIntensitySplitter;
 import ij.IJ;
 import ij.ImagePlus;
 import ij.measure.Calibration;
+import net.imglib2.Cursor;
 import net.imglib2.RandomAccess;
 import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.algorithm.labeling.ConnectedComponents;
@@ -22,7 +23,7 @@ import net.imglib2.type.numeric.IntegerType;
 import net.imglib2.type.numeric.RealType;
 import net.imglib2.type.numeric.integer.IntType;
 
-import java.awt.*;
+import java.awt.Point;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -297,7 +298,7 @@ public class SemiAutomatedTrackingSplitter< T extends RealType< T > & NativeType
 		final HashMap< Integer, Long > overlaps = new HashMap<>();
 
 		final RandomAccess< I > previousLabelsAccess = previousLabeling.randomAccess();
-		net.imglib2.Cursor cursor = region.inside().cursor();
+		Cursor< I > cursor = region.inside().cursor();
 
 		while ( cursor.hasNext() )
 		{

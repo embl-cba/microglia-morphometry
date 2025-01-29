@@ -738,7 +738,7 @@ public class Algorithms
 	{
 		final long[] regionOffset = Intervals.minAsLongArray( labelRegions.getLabelRegion( label ) );
 		LabelRegion watershed = splitObjects.getLabelRegion( -1 );
-		final Cursor cursor = watershed.inside().cursor();
+		final Cursor cursor = watershed.cursor();
 		final RandomAccess< BitType > maskRandomAccess = mask.randomAccess();
 		long[] position = new long[ watershed.numDimensions() ];
 		while( cursor.hasNext() )

@@ -38,10 +38,10 @@ public class MicrogliaSegmentationAndTrackingCommand< T extends RealType<T> & Na
 	public File outputDirectory = new File("src/test/resources/data");
 
 	@Parameter( label = "Minimal cell size [um^2]" )
-	public final double minimalMicrogliaSize = 200;
+	public double minimalMicrogliaSize = 200;
 
 	@Parameter( label = "Maximal cell skeleton length [um]" )
-	public final double skeletonMaxLength = 450;
+	public double skeletonMaxLength = 450;
 
 	public final boolean showIntermediateResults = settings.showIntermediateResults;
 
