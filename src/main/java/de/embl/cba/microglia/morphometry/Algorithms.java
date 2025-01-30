@@ -653,7 +653,7 @@ public class Algorithms
 
 		for( LabelRegion region : splitObjects )
 		{
-			regionSizes.add( region.size() );
+			regionSizes.add( region.inside().size() );
 		}
 
 
@@ -685,9 +685,9 @@ public class Algorithms
 				long maximalLength = 0;
 				for ( LabelRegion splitRegion : splitRegions )
 				{
-					if ( splitRegion.size() > maximalLength )
+					if ( splitRegion.inside().size() > maximalLength )
 					{
-						maximalLength = splitRegion.size();
+						maximalLength = splitRegion.inside().size();
 					}
 				}
 

@@ -16,7 +16,7 @@ public class TestNewSegmentationCommandMultipleFrames
 		final MicrogliaSegmentationAndTrackingCommand command = new MicrogliaSegmentationAndTrackingCommand();
 		command.opService = ij.op();
 		command.intensityFile = new File("src/test/resources/data/MAX_pg6-3CF1_20--t1-3.tif");
-		command.outputDirectory = new File( "src/test/resources/data" );
+		command.outputDirectory = new File( "src/test/resources/test-data" );
 		command.relativeIntensityThreshold = 1.5;
 		command.run();
 	}

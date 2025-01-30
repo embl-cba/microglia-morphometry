@@ -253,14 +253,13 @@ public class Measurements
 		final LabelRegions< Integer > labelRegions = new LabelRegions<>( imgLabeling );
 		for ( LabelRegion labelRegion : labelRegions )
 		{
-
 			final int label = ( int ) ( labelRegion.getLabel() );
 			addMeasurement(
 					objectMeasurements,
 					label,
 					getVolumeName( labelRegion.numDimensions() )
 							+ SEP + PIXEL_UNIT + POW + labelRegion.numDimensions(),
-					labelRegion.size() );
+					labelRegion.inside().size() );
 		}
 	}
 
