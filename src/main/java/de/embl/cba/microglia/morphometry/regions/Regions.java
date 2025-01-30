@@ -147,7 +147,7 @@ public abstract class Regions
 		final LabelRegions< Integer > labelRegions = new LabelRegions<>( imgLabeling );
 		for ( LabelRegion labelRegion : labelRegions )
 		{
-			if ( labelRegion.size() < minimalObjectSize )
+			if ( labelRegion.inside().size() < minimalObjectSize )
 			{
 				removeRegion( mask, labelRegion );
 			}
@@ -209,7 +209,7 @@ public abstract class Regions
 
 		for ( LabelRegion labelRegion : labelRegions )
 		{
-			regionsAndSizes.add( new RegionAndSize( labelRegion, labelRegion.size() ) );
+			regionsAndSizes.add( new RegionAndSize( labelRegion, labelRegion.inside().size() ) );
 		}
 
 		Collections.sort( regionsAndSizes );
