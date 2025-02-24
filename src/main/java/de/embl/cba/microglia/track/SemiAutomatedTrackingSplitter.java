@@ -76,17 +76,17 @@ public class SemiAutomatedTrackingSplitter< T extends RealType< T > & NativeType
 		{
 			if ( t > tMaxExistingLabeling )
 			{
-				createAndAddNewLabeling(t );
+				createAndAddNewLabeling( t );
 			}
 
 			if ( settings.manualSegmentationCorrection )
 			{
 				manuallyCorrectLabelings( t );
-			}
 
-			if( trackingSplitterManualCorrectionUI.isStopped() )
-			{
-				break; // saving will happen in the command
+				if( trackingSplitterManualCorrectionUI.isStopped() )
+				{
+					break; // saving will happen in the command
+				}
 			}
 		}
 	}

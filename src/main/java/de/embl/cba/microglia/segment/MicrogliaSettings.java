@@ -32,11 +32,11 @@ public class MicrogliaSettings<T extends RealType<T> & NativeType< T > >
 	public final double minimalOverlapFraction = 0.05;
 	public final double minimalSumIntensityRatio = 0.5;
 	public final double maximalSumIntensityRatio = 1.5;
-	public final boolean manualSegmentationCorrection = true;
-
+	public boolean manualSegmentationCorrection = true;
 	public String outputLabelingsPath;
 
-	/**
+
+    /**
 		// TODO: make a proper constructor with the missing settings...
 	 * 		microgliaSettings.opService = ij.op();
 	 microgliaSettings.calibration = imagePlus.getCalibration();

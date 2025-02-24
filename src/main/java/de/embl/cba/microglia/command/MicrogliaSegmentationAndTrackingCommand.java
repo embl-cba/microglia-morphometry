@@ -43,6 +43,9 @@ public class MicrogliaSegmentationAndTrackingCommand< T extends RealType<T> & Na
 	@Parameter( label = "Maximal cell skeleton length [um]" )
 	public double skeletonMaxLength = 450;
 
+	@Parameter( label = "Run headless" )
+	public boolean headless = false;
+
 	public final boolean showIntermediateResults = settings.showIntermediateResults;
 
 	public final long tMinOneBased = 1;
@@ -66,6 +69,7 @@ public class MicrogliaSegmentationAndTrackingCommand< T extends RealType<T> & Na
 		settings.thresholdInUnitsOfBackgroundPeakHalfWidth = relativeIntensityThreshold;
 		settings.minimalObjectSize = minimalMicrogliaSize;
 		settings.skeletonMaxLength = skeletonMaxLength;
+		settings.manualSegmentationCorrection = ! headless;
 	}
 
 	protected void processFile( File intensityFile, File segmentationFile )
@@ -113,20 +117,17 @@ public class MicrogliaSegmentationAndTrackingCommand< T extends RealType<T> & Na
 
 	private ArrayList< RandomAccessibleInterval< T > > computeLabels( File segmentationFile )
 	{
-		final MicrogliaSegmentationAndTracking segmentationAndTracking = new MicrogliaSegmentationAndTracking( intensities, settings );
+		final MicrogliaSegmentationAndTracking segmentationAndTracking
+				= new MicrogliaSegmentationAndTracking( intensities, settings );
 
 		if ( segmentationFile != null )
 		{
-			final ArrayList< RandomAccessibleInterval< IntType > > labels = openLabels( segmentationFile );
-
-			segmentationAndTracking.setLabelings( labels );
+			segmentationAndTracking.setLabelings( openLabels( segmentationFile ) );
 		}
 
 		segmentationAndTracking.run();
 
-		final ArrayList< RandomAccessibleInterval< T > > labelings = segmentationAndTracking.getLabelings();
-
-		return labelings;
+        return ( ArrayList< RandomAccessibleInterval< T > > ) segmentationAndTracking.getLabelings();
 	}
 
 }

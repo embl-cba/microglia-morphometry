@@ -21,6 +21,7 @@ public class TestNewSegmentationCommandSingleFrame
 		command.intensityFile = new File("src/test/resources/data/MAX_pg22_1C8hF1--t1.tif");
 		command.outputDirectory = new File( "src/test/resources/test-data" );
 		command.relativeIntensityThreshold = 1.5;
+		command.headless = true;
 		command.run();
 
 		ImagePlus refLabels = IJ.openImage( new File( "src/test/resources/data/MAX_pg22_1C8hF1--t1-labelMasks.tif" ).toString() );
