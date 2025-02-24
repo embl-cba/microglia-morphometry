@@ -25,12 +25,12 @@ public class TestMorphometryMeasurements
 		command.opService = ij.op();
 		command.intensityFile = new File("src/test/resources/data/MAX_pg6-3CF1_20--t1-3.tif");
 		command.labelMaskFile = new File("src/test/resources/data/MAX_pg6-3CF1_20--t1-3-labelMasks.tif");
-		command.outputDirectory = new File( "src/test/resources/test-data/" );
+		command.outputDirectory = new File( "src/test/resources/tmp-data/" );
 		command.run();
 
 		assert compareCSV(
 				new File( "src/test/resources/data/MAX_pg6-3CF1_20--t1-3.csv" ).toString(),
-				new File( "src/test/resources/test-data/MAX_pg6-3CF1_20--t1-3.csv" ).toString()
+				new File( "src/test/resources/tmp-data/MAX_pg6-3CF1_20--t1-3.csv" ).toString()
 				);
 
 		System.out.println("Test passed.");

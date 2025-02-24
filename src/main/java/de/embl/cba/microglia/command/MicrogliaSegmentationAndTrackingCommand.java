@@ -98,13 +98,16 @@ public class MicrogliaSegmentationAndTrackingCommand< T extends RealType<T> & Na
 
 		settings.calibration = imagePlus.getCalibration();
 
-		if ( settings.calibration.getUnit() != "micrometer" && settings.calibration.getUnit() != "micron" )
+		if ( ! settings.calibration.getUnit().trim().equals( "micrometer" ) &&
+			 ! settings.calibration.getUnit().trim().equals( "micron" ) &&
+			 ! settings.calibration.getUnit().trim().equals( "microns" ))
 		{
-			boolean ok = IJ.showMessageWithCancel( "Wrong calibration?", "The calibration unit of your image is: " + settings.calibration.getUnit() +
+			boolean ok = IJ.showMessageWithCancel( "Wrong calibration?", "The calibration unit of your image is: \"" + settings.calibration.getUnit() + "\"" +
 					"\nThis plugin expects micrometer units." +
 					"\nPlease cancel and use [ Image > Properties ] to configure the pixel size in micrometers." +
 					"\nTo avoid that this error message pops up you must use \"micrometer\" as the unit." );
-			if ( !ok )
+
+			if ( ! ok )
 				return;
 		}
 

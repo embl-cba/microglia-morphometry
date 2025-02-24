@@ -24,6 +24,7 @@ public class SplittingUtils
 		{
 			final double skeletonLength = settings.workingVoxelSize *
 					(long) skeletonMeasurements.get( label ).get( Measurements.SUM_INTENSITY + "_" + Constants.SKELETON );
+			// System.out.println( "" + label + ": " + skeletonLength );
 			int n = (int) ( Math.ceil( skeletonLength / settings.skeletonMaxLength ) );
 			numObjects.put( label, n );
 		}

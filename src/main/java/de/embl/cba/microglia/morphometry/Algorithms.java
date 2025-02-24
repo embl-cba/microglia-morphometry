@@ -384,7 +384,6 @@ public class Algorithms
 
 				LabelRegions< Integer > splitObjects = new LabelRegions( watershedImgLabeling );
 
-
 				if ( splitObjects.getExistingLabels().contains( -1 ) )
 				{
 					// a watershed was found
@@ -451,7 +450,6 @@ public class Algorithms
 		{
 			if ( numObjectsPerRegion.get( label ) > 1 )
 			{
-
 				final RandomAccessibleInterval< T > maskedAndCroppedIntensities = Views.zeroMin( Regions.getMaskedAndCropped( intensity, labelRegions.getLabelRegion( label ) ) );
 				final RandomAccessibleInterval< BitType > labelRegionMask = Views.zeroMin( Regions.asMask( labelRegions.getLabelRegion( label ) ) );
 
@@ -483,7 +481,6 @@ public class Algorithms
 						true,
 						labelRegionMask );
 
-
 				LabelRegions< Integer > splitObjects = new LabelRegions( watershedImgLabeling );
 
 				if ( ! splitObjects.getExistingLabels().contains( -1 ) )
@@ -491,7 +488,6 @@ public class Algorithms
 					IJ.log( "\n\nERROR DURING OBJECT SPLITTING\n\n" );
 					continue; // TODO: examine these cases
 				}
-
 
 				boolean isValidSplit;
 
@@ -518,10 +514,9 @@ public class Algorithms
 				if ( isValidSplit )
 				{
 					drawWatershedIntoMask( mask, labelRegions, label, splitObjects );
-					// sometimes the watershed is weirdly placed such that very small (single pixel) objects can occur
-					Regions.removeSmallRegionsInMask( mask, minimalObjectSize, 1 );
 				}
 
+				IJ.log( "Splitting object #" + label + ": " + isValidSplit);
 			}
 		}
 
@@ -646,8 +641,10 @@ public class Algorithms
 			long minimumObjectSize,
 			long maximalWatershedLength )
 	{
-
-		if ( ! isWatershedValid( splitObjects, maximalWatershedLength ) ) return false;
+		if ( ! isWatershedValid( splitObjects, maximalWatershedLength ) )
+		{
+			return false;
+		}
 
 		ArrayList< Long > regionSizes = new ArrayList<>(  );
 
@@ -655,7 +652,6 @@ public class Algorithms
 		{
 			regionSizes.add( region.inside().size() );
 		}
-
 
 		if ( regionSizes.size() >=2 )
 		{
@@ -669,10 +665,9 @@ public class Algorithms
 		return true;
 	}
 
-	public static boolean isWatershedValid( LabelRegions< Integer > splitObjects, long maximalWatershedLength )
+	public static boolean isWatershedValid( LabelRegions< Integer > splitObjects,
+											long maximalWatershedLength )
 	{
-		boolean isValidSplit = true;
-
 		for( LabelRegion region : splitObjects )
 		{
 			int splitObjectLabel = ( int ) region.getLabel();
@@ -683,6 +678,7 @@ public class Algorithms
 				final LabelRegions< Integer > splitRegions = new LabelRegions( imgLabeling );
 
 				long maximalLength = 0;
+
 				for ( LabelRegion splitRegion : splitRegions )
 				{
 					if ( splitRegion.inside().size() > maximalLength )
@@ -693,12 +689,12 @@ public class Algorithms
 
 				if ( maximalLength > maximalWatershedLength )
 				{
-					isValidSplit = false;
-					break;
+					return false;
 				}
 			}
 		}
-		return isValidSplit;
+
+		return true;
 	}
 
 	public static void drawSkeleton( RandomAccessibleInterval< BitType > output,
@@ -738,7 +734,7 @@ public class Algorithms
 	{
 		final long[] regionOffset = Intervals.minAsLongArray( labelRegions.getLabelRegion( label ) );
 		LabelRegion watershed = splitObjects.getLabelRegion( -1 );
-		final Cursor cursor = watershed.cursor();
+		final Cursor cursor = watershed.inside().cursor();
 		final RandomAccess< BitType > maskRandomAccess = mask.randomAccess();
 		long[] position = new long[ watershed.numDimensions() ];
 		while( cursor.hasNext() )

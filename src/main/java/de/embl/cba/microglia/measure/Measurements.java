@@ -419,6 +419,7 @@ public class Measurements
 			imageRandomAccess.setPosition( cursor );
 			sum += imageRandomAccess.get().getRealDouble();
 		}
+
 		return sum;
 	}
 

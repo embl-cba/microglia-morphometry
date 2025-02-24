@@ -50,10 +50,11 @@ public class MicrogliaSettings<T extends RealType<T> & NativeType< T > >
 			settings.minimalObjectSize = 200.0; // um2
 
 		settings.calibration2D = Utils.get2dCalibration( settings.calibration );
-		settings.workingVoxelSize = settings.calibration2D[ 0 ]; // TODO: why not use something standard here?
+		settings.workingVoxelSize = settings.calibration2D[ 0 ];
 		settings.minimalTrackingSplittingObjectArea = 20.0; // um2, this can be very small
 		settings.minimalObjectCenterDistance = 6;
-		settings.maximalWatershedLength = 10;
+		// TODO: This should be something relative, or configurable
+		settings.maximalWatershedLength = 20; // um // used to be 10, but 20 works better in example data
 
 		return settings;
 	}

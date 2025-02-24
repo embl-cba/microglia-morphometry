@@ -56,19 +56,20 @@ public class MicrogliaShapeAndIntensitySplitter< T extends RealType< T > & Nativ
 		Algorithms.splitTouchingObjects(
 				imgLabeling,
 				intensity,
-				splitMask,
+				splitMask, // <= will hold the result
 				numObjectsPerRegion,
 				( int ) ( settings.minimalObjectCenterDistance / settings.workingVoxelSize ),
 				( long ) ( settings.minimalObjectSize / Math.pow( settings.workingVoxelSize, intensity.numDimensions() ) ),
 				( int ) ( settings.maximalWatershedLength / settings.workingVoxelSize ),
 				settings.opService, false, false );
 
+		// The splitting may have caused too small objects to appear
+		Regions.removeSmallRegionsInMask( splitMask, settings.minimalObjectSize, settings.workingVoxelSize );
 	}
 
 	public RandomAccessibleInterval< BitType > getSplitMask()
 	{
 		return splitMask;
 	}
-
 
 }

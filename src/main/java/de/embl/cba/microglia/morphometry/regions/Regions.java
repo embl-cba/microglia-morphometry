@@ -108,21 +108,23 @@ public abstract class Regions
 		final ImgLabeling< Integer, IntType > imgLabeling =
 				asImgLabeling( mask, ConnectedComponents.StructuringElement.FOUR_CONNECTED );
 
-		long minimalObjectSize = ( long ) ( sizeInCalibratedUnits / Math.pow( calibration, imgLabeling.numDimensions() ) );
+		int numDimensions = imgLabeling.numDimensions();
+		long sizeInPixelUnits = ( long ) ( sizeInCalibratedUnits / Math.pow( calibration, numDimensions ) );
 
 		final LabelRegions< Integer > labelRegions = new LabelRegions<>( imgLabeling );
 		int numRegions = 0, numRemoved = 0;
 		for ( LabelRegion labelRegion : labelRegions )
 		{
 			numRegions++;
-			if ( labelRegion.size() < minimalObjectSize )
+			if ( labelRegion.inside().size() < sizeInPixelUnits )
 			{
 				numRemoved ++;
 				removeRegion( mask, labelRegion );
 			}
 		}
 
-		IJ.log( "Removed " + numRemoved + " small regions of " + numRegions + " total regions." );
+		IJ.log( "Removed " + numRemoved + " small regions of " + numRegions + " total regions; " +
+				"leaving " + ( numRegions - numRemoved) + " regions.");
 	}
 
 	public static < T extends RealType< T > & NativeType< T > >

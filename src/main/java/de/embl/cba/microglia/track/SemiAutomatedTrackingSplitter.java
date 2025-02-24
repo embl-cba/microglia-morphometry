@@ -88,10 +88,14 @@ public class SemiAutomatedTrackingSplitter< T extends RealType< T > & NativeType
 					break; // saving will happen in the command
 				}
 			}
+			else
+			{
+
+			}
 		}
 	}
 
-	private void createAndAddNewLabeling(int t )
+	private void createAndAddNewLabeling( int t )
 	{
 		IJ.log( "Instance segmentation of frame " + t );
 
@@ -106,6 +110,7 @@ public class SemiAutomatedTrackingSplitter< T extends RealType< T > & NativeType
 		else
 		{
 			RandomAccessibleInterval< IntType > previousLabeling = labelings.get( t - 1 );
+
 			Integer maxIndex = Algorithms.getMaximumValue( previousLabeling ).intValue();
 
 			RandomAccessibleInterval< BitType > mask = splitCurrentMaskBasedOnPreviousLabeling( t, previousLabeling );
@@ -123,7 +128,10 @@ public class SemiAutomatedTrackingSplitter< T extends RealType< T > & NativeType
 	public RandomAccessibleInterval getSplitMask( int t )
 	{
 		final MicrogliaShapeAndIntensitySplitter splitter =
-				new MicrogliaShapeAndIntensitySplitter( masks.get( t ), intensities.get( t ), settings );
+				new MicrogliaShapeAndIntensitySplitter(
+						masks.get( t ),
+						intensities.get( t ),
+						settings );
 		splitter.run();
 		return splitter.getSplitMask();
 	}
