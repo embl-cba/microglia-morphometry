@@ -8,7 +8,8 @@ import java.io.File;
 
 public class TestContinueSegmentationMultipleFrames
 {
-	@Test
+	//@Test
+	// this is commented as a test because it opens the user interface
 	public void run( )
 	{
 		final ImageJ ij = new ImageJ();

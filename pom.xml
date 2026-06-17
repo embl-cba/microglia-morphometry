@@ -15,6 +15,7 @@
 	<!-- mvn clean install -Dscijava.app.directory=/Users/tischer/Desktop/Fiji/Fiji-MicrogliaMorphometry.app -->
 
 	<name>microglia morphometry</name>
+	<url>https://github.com/embl-cba/microglia-morphometry</url>
 	<description>Fiji plugin for semi-automated microglia segmentation and morphometry</description>
 	<inceptionYear>2018</inceptionYear>
 	<organization>
@@ -42,8 +43,18 @@
 			</roles>
 		</developer>
 	</developers>
+
 	<contributors>
 		<contributor>
+			<name>Christian Tischer</name>
+			<roles>
+				<role>lead</role>
+				<role>developer</role>
+				<role>debugger</role>
+				<role>reviewer</role>
+				<role>support</role>
+				<role>maintainer</role>
+			</roles>
 		</contributor>
 	</contributors>
 
@@ -73,7 +84,7 @@
 		<package-name>de.embl.cba</package-name>
 		<license.licenseName>bsd_2</license.licenseName>
 		<license.copyrightOwners>EMBL</license.copyrightOwners>
-		<enforcer.skip>true</enforcer.skip>
+		<enforcer.skip>false</enforcer.skip>
 
 		<mcib3d-core.version>3.96.3</mcib3d-core.version>
 	</properties>
@@ -81,8 +92,8 @@
 	<repositories>
 		<!-- NB: for SciJava dependencies -->
 		<repository>
-			<id>imagej.public</id>
-			<url>https://maven.imagej.net/content/groups/public</url>
+			<id>scijava.public</id>
+			<url>https://maven.scijava.org/content/groups/public</url>
 		</repository>
 	</repositories>
 
